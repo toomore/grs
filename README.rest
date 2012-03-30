@@ -1,0 +1,230 @@
+============================
+grs 台灣上市股票價格擷取
+============================
+
+.. image:: https://secure.travis-ci.org/toomore/grs.png
+   :target: http://travis-ci.org/toomore/grs
+
+主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
+
+-----------------------------
+版本資訊
+-----------------------------
+
+:Authors: Toomore Chiang
+:Version: 0.1.0 of 2012/03/31
+:Python Version: Python 2.6-2.7
+
+-----------------------------
+Report Issue or get involved
+-----------------------------
+
+- Github → https://github.com/toomore/grs
+- Issues → https://github.com/toomore/grs/issues
+
+-----------------------------
+Web Demo
+-----------------------------
+
+- grs Online → http://heroku.toomore.net/grs/
+
+-----------------------------
+Quick Start
+-----------------------------
+
+簡單計算
+
+::
+
+    from grs import stock
+
+    g = stock(2618)        # 擷取長榮航股價
+    print g.MA(5)          # 計算五日均價與持續天數
+    print g.MAV(5)         # 計算五日均量與持續天數
+    print g.MAO(5,10)      # 計算五日、十日乖離值與持續天數
+
+
+擷取 12 個月份資料
+
+::
+
+    g = stock(2618, 12)
+
+
+輸出 CSV 檔
+
+::
+
+    g.out_putfile('/dev/shm/2618.csv')
+
+-----------------------------
+其他功能
+-----------------------------
+
+顯示台灣時間：TWTime
+=============================
+
+適用於其他時區查詢台灣當地時間。
+
+::
+
+    from grs import TWTime
+
+    t = TWTime()
+    t.now                   # 顯示台灣此刻時間
+    t.localtime             # 顯示當地此刻時間
+
+
+判斷台灣股市是否開市：twseopen
+====================================
+
+::
+
+    from grs import twseopen
+    from datetime import datetime
+
+    t = twseopen()
+
+    t.Dday(datetime.today())        # 判斷今天是否開市，回傳 True or False
+    t.Dday(datetime(2012, 12, 22))  # 判斷 2012/12/22 是否開市
+
+
+各股即時盤資訊：rt_stock
+====================================
+
+::
+
+    from grs import rt_stock
+
+    rl = rt_stock(2618)       # 擷取長榮航即時股價
+    rl.raw                    # 原始資料
+    rl.real                   # 回傳 type: dict（如下表）
+
+
+:name:     股票名稱 Unicode
+:no:       股票代碼
+:range:    漲跌價
+:ranges:   漲跌判斷 True, False
+:time:     取得時間
+:max:      漲停價
+:min:      跌停價
+:unch:     昨日收盤價
+:pp:       漲跌幅 %
+:o:        開盤價
+:h:        當日最高價
+:l:        當日最低價
+:c:        成交價/收盤價
+:value:    累計成交量
+:pvalue:   該盤成交量
+:top5buy:  最佳五檔買進價量資訊
+:top5sell: 最佳五檔賣出價量資訊
+:crosspic: K線圖 by Google Chart
+
+
+大盤即時盤資訊：rt_weight
+====================================
+
+::
+
+    from grs import rt_weight
+
+    w = rt_weight()            # 擷取即時大盤資訊
+    w.raw                      # 原始檔案
+    w.real                     # 回傳 type: dict（如下表）
+
+
+原始檔案包含其他資訊請參閱 `對照表 <http://goristock.appspot.com/API#apiweight>`_ 
+
+:no: 編號
+:date: 日期
+:time: 時間
+:c: 加權指數
+:value: 成交金額（億）
+:range: 漲跌指數
+:ud: 回傳漲（True）、跌（False）
+
+
+上市股票代碼列表：twseno
+====================================
+
+回傳上市股票代碼與搜尋
+
+::
+
+    from grs import twseno
+
+
+    t = twseno()
+    t.AllStock              # 所有股票名稱、代碼 type: dict
+    t.AllStockNo            # 所有股票代碼 type: list
+    t.AllStockName          # 所有股票名稱 type: list
+    t.IndCode               # 回傳類別代碼 type: dict
+    t.IndComps              # 回傳類別所屬股票代碼 type: dict
+    t.search('中')           # 搜尋股票名稱，回傳 type: dict
+    t.searchbyno(23)        # 搜尋股票代碼，回傳 type: dict
+    t.LastUpdate            # 回傳列表最後更新時間（非同步）type: str
+
+
+單日倒數時間：Countdown
+====================================
+
+適用於設定 cache 時間。
+
+::
+
+    from grs import Countdown
+
+    c = Countdown(h=14, m=30)  # 預設為 14:30
+    c.nextday                  # 下一個 14:30 日期
+    c.countdown                # 到數秒數
+    c.exptime                  # 下一個 14:30 日期時間（type: datetime）
+    c.lastmod                  # 前一個 14:30 日期時間（type: datetime）
+
+
+判斷乖離轉折點：stock().ckMAO
+====================================
+
+判斷乖離轉折點
+
+::
+
+    from grs import stock
+
+    s = stock(2618)
+    ma = s.MAO(3,6)[0]               # 取得 3-6 乖離值 type: list
+    c = s.ckMAO(ma, s=5, pm= False)  # 計算五個區間負乖離轉折點
+    print ck                         # (T/F, 第幾轉折日, 乖離轉折點值) type: tuple
+
+
+四大買賣點判斷：B4P
+====================================
+
+判斷是否為技術分析的四大買賣點，條件成立，回傳條件結果，判斷結果僅供參考！
+
+::
+
+    from grs import B4P, stock
+
+    s = stock(2618)
+    b = B4P(s)
+    b.B4PB()                    # 判斷是否為四大買點
+    b.B4PS()                    # 判斷是否為四大賣點
+    b.B4Point()                 # 綜合判斷
+
+全部上市股票檢視
+
+::
+
+    from grs import B4P, stock, twseno
+
+    l = twseno().AllStockNo
+
+    for i in l:
+        try:
+            BS, info = B4P(stock(i)).B4Point()
+            if BS:  # 買點
+                print 'B: {0} {1}'.format(i, info)
+            else:   # 賣點
+                print 'S: {0} {1}'.format(i, info)
+        except:     # 不作為或資料不足
+            print 'X: {0}'.format(i)
