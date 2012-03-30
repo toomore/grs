@@ -21,7 +21,7 @@ setup(name='grs',
       keywords="stock taiwan taipei twse 台灣 股市 台北 即時",
       install_requires=[],
       classifiers=[
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 5 - Production/Stable',
           'Environment :: Console',
           'Environment :: Web Environment',
           'Intended Audience :: End Users/Desktop',

@@ -12,7 +12,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.1.0 of 2012/03/31
+:Version: 0.1.1 of 2012/03/31
 :Python Version: Python 2.6-2.7
 
 -----------------------------
@@ -26,7 +26,7 @@ Report Issue or get involved
 Web Demo
 -----------------------------
 
-- grs Online → http://heroku.toomore.net/grs/
+- grs Online → http://grs.herokuapp.com/
 
 -----------------------------
 Quick Start
@@ -181,7 +181,7 @@ Quick Start
     c.lastmod                  # 前一個 14:30 日期時間（type: datetime）
 
 
-判斷乖離轉折點：stock().ckMAO
+判斷乖離轉折點：stock(no).ckMAO
 ====================================
 
 判斷乖離轉折點
