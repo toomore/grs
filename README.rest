@@ -2,7 +2,7 @@
 grs 台灣上市股票價格擷取
 ============================
 
-.. image:: https://secure.travis-ci.org/toomore/grs.png
+.. image:: https://secure.travis-ci.org/toomore/grs.png?branch=dev
    :target: http://travis-ci.org/toomore/grs
 
 主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
@@ -12,7 +12,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.1.0 of 2012/03/31
+:Version: 0.1.x of 2012/03/31
 :Python Version: Python 2.6-2.7
 
 -----------------------------
