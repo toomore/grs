@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 
 from datetime import datetime
+from datetime import time
 from datetime import timedelta
 
 
@@ -75,9 +76,8 @@ class Countdown(object):
     def __init__(self, h=14, m=30):
         self.__back = timedelta(hours=h - 8, minutes=m)
         self.__zero = datetime.utcnow() - self.__back
-        self.nextday = datetime(self.__zero.year,
-                                self.__zero.month,
-                                self.__zero.day + 1)
+        self.nextday = self.__zero.date() + timedelta(days=1)
+        self.nextday = datetime.combine(self.nextday, time())
         self.countdown = (self.nextday - self.__zero).seconds
         self.exptime = self.nextday + timedelta(hours=h - 8, minutes=m)
         self.lastmod = self.exptime - timedelta(days=1)
