@@ -12,7 +12,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.1.1 of 2012/03/31
+:Version: 0.1.2 of 2012/03/31
 :Python Version: Python 2.6-2.7
 
 -----------------------------
@@ -228,3 +228,13 @@ Quick Start
                 print 'S: {0} {1}'.format(i, info)
         except:     # 不作為或資料不足
             print 'X: {0}'.format(i)
+
+
+-----------------------------
+Change Logs
+-----------------------------
+
+0.1.2 2012/03/31
+====================================
+
+- 修正：倒數時間計算錯誤（dateutil.relativedelta）

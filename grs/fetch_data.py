@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import csv
 import logging
 import random
 import urllib2
-
 
 class stock(object):
     """ 擷取股票股價 """
@@ -109,7 +109,7 @@ class stock(object):
         """ [list] 串接每月資料 舊→新 """
         re = []
         for i in range(month):
-            nowdatetime = datetime.today() - timedelta(30 * i)
+            nowdatetime = datetime.today() - relativedelta(months=i)
             tolist = self.__to_list(self.__fetch_data(no, nowdatetime))
             re = tolist + re
         return re
