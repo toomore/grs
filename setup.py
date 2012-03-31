@@ -19,7 +19,7 @@ setup(name='grs',
       include_package_data=True,
       license=grs.__license__,
       keywords="stock taiwan taipei twse 台灣 股市 台北 即時",
-      install_requires=[],
+      install_requires=['python-dateutil'],
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Console',
