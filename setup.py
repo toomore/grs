@@ -8,7 +8,7 @@ description = '台灣上市股票價格擷取（Fetch TWSE stock data）' + \
               '含即時盤、台灣時間轉換、開休市判斷。'
 
 setup(name='grs',
-      version='0.1.3',
+      version='0.1.4',
       description=description,
       long_description=long_description,
       author='Toomore Chiang',

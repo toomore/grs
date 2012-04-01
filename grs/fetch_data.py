@@ -100,10 +100,13 @@ class stock(object):
             except:
                 pass
             tolist.append(i)
-        self.__info = (tolist[0][0].split(' ')[1],
-                       tolist[0][0].split(' ')[2].decode('big5'))
-        self.__RawRowsName = tolist[1]
-        return tolist[2:]
+        if len(tolist):
+            self.__info = (tolist[0][0].split(' ')[1],
+                           tolist[0][0].split(' ')[2].decode('big5'))
+            self.__RawRowsName = tolist[1]
+            return tolist[2:]
+        else:
+            return []
 
     def __serial_fetch(self, no, month):
         """ [list] 串接每月資料 舊→新 """
