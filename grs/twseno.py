@@ -34,10 +34,10 @@ class twseno(object):
         re = {}
         for i in f:
             try:
-                re[int(i[0])] = str(i[1])
+                re[int(i[0])] = str(i[1]).decode('utf-8')
             except:
                 if i[0] == 'UPDATE':
-                    self.LastUpdate = str(i[1])
+                    self.LastUpdate = str(i[1]).decode('utf-8')
                 else:
                     pass
         return re
@@ -47,7 +47,7 @@ class twseno(object):
             open(os.path.join(os.path.dirname(__file__), 'industry_code.csv')))
         re = {}
         for i in f:
-            re[int(i[0])] = i[1]
+            re[int(i[0])] = i[1].decode('utf-8')
         return re
 
     def __loadindcomps(self):
@@ -56,16 +56,16 @@ class twseno(object):
         re = {}
         for i in f:
             try:
-                re[int(i[2])].append(i[0])
+                re[int(i[2])].append(i[0].decode('utf-8'))
             except:
                 try:
-                    re[int(i[2])] = [i[0]]
+                    re[int(i[2])] = [i[0].decode('utf-8')]
                 except:
                     pass
         return re
 
     def search(self, q):
-        """ 搜尋股票名稱 """
+        """ 搜尋股票名稱 by unicode """
         import re
         pattern = re.compile(q)
         result = {}
