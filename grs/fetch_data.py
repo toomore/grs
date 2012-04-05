@@ -111,11 +111,31 @@ class stock(object):
     def __serial_fetch(self, no, month):
         """ [list] 串接每月資料 舊→新 """
         re = []
+        self.__getMons = month
+        self.__getNo = no
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
             tolist = self.__to_list(self.__fetch_data(no, nowdatetime))
             re = tolist + re
         return re
+
+    def __plusMons(self, month):
+        re = []
+        existMons = self.__getMons
+        oldraw = self.__raw_data
+        for i in range(month):
+            nowdatetime = datetime.today() - relativedelta(months=existMons) - \
+                          relativedelta(months=i)
+            tolist = self.__to_list(
+                                self.__fetch_data(self.__info[0], nowdatetime))
+            re = tolist + re
+        re = re + oldraw
+        self.__getMons = existMons + month
+        return re
+
+    def plusMons(self, month):
+        """ 新增擴充月份資料 """
+        self.__raw_data = self.__plusMons(month)
 
     def out_putfile(self, fpath):
         """ 輸出成 CSV 檔 """
