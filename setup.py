@@ -18,7 +18,7 @@ setup(name='grs',
       include_package_data=True,
       license='MIT',
       keywords="stock taiwan taipei twse 台灣 股市 台北 即時",
-      install_requires=['python-dateutil==2.1'],
+      install_requires=['python-dateutil==1.5'],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',
