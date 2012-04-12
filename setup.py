@@ -8,7 +8,7 @@ description = '台灣上市股票價格擷取（Fetch TWSE stock data）' + \
               '含即時盤、台灣時間轉換、開休市判斷。'
 
 setup(name='grs',
-      version='0.2.dev',
+      version='0.2.0',
       description=description,
       long_description=long_description,
       author='Toomore Chiang',
@@ -20,7 +20,7 @@ setup(name='grs',
       keywords="stock taiwan taipei twse 台灣 股市 台北 即時",
       install_requires=['python-dateutil==1.5'],
       classifiers=[
-          'Development Status :: 4 - Beta',
+          'Development Status :: 5 - Production/Stable',
           'Environment :: Console',
           'Environment :: Web Environment',
           'Intended Audience :: End Users/Desktop',

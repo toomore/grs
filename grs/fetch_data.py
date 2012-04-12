@@ -63,7 +63,7 @@ class stock(object):
     @property
     def getRawRowsName(self):
         """ 原始檔案的欄位名稱 """
-        re = [i.decode('big5') for i in self.__RawRowsName]
+        re = [i.decode('cp950') for i in self.__RawRowsName]
         return re
 
     def __fetch_data(self, stock_no, nowdatetime=datetime.today()):
@@ -102,7 +102,7 @@ class stock(object):
             tolist.append(i)
         if len(tolist):
             self.__info = (tolist[0][0].split(' ')[1],
-                           tolist[0][0].split(' ')[2].decode('big5'))
+                           tolist[0][0].split(' ')[2].decode('cp950'))
             self.__RawRowsName = tolist[1]
             return tolist[2:]
         else:
