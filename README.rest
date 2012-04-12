@@ -12,14 +12,14 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.1.4 of 2012/04/01
+:Version: 0.2.0 of 2012/04/13
 :Python Version: Python 2.6-2.7
 
 -----------------------------
 Requires
 -----------------------------
 
-- python-dateutil==2.1
+- python-dateutil==1.5
 
 -----------------------------
 Report Issue or get involved
@@ -32,7 +32,7 @@ Report Issue or get involved
 Web Demo
 -----------------------------
 
-- grs Online → http://grs.herokuapp.com/
+- grs Online → http://grs.toomore.net/
 
 -----------------------------
 Quick Start
@@ -236,15 +236,40 @@ Quick Start
             print 'X: {0}'.format(i)
 
 
+擴充月份資料：stock(no).plusMons(month)
+============================================
+
+當原有的月份資料不夠時，不需要從頭抓取，只需要給予增額月份值即可。
+
+::
+
+    from grs import stock
+
+    s = stock(2618)                      # 預設為抓取３個月份資料
+    s.MA(60)
+    IndexError: list index out of range  # 資料不足
+    len(s.raw)                           # 回傳 51 個值
+    s.plusMons(1)                        # 在抓取一個月資料
+    len(s.raw)                           # 回傳 66 個值
+    s.MA(60)                             # 計算成功
+
+
 -----------------------------
 Change Logs
 -----------------------------
+
+0.2.0 2012/04/13
+====================================
+
+- 修正：輸出中文統一使用 Unicode
+- 修正：需要套件 python-dateutil 調整為 1.5
+- 修正：Web Demo 網站網址
+- 新增：stock.plusMons() 擴充月份資料
 
 0.1.4 2012/04/01
 ====================================
 
 - 修正：每月首日無資料抓取問題
-
 
 0.1.3 2012/03/31
 ====================================
