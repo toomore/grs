@@ -86,13 +86,13 @@ class B4P(object):
         if self.ckMinsGLI() and \
             (self.B1() or self.B2() or self.B3() or self.B4()):
             if self.B1():
-                re.append(self.B1.__doc__.strip())
+                re.append(self.B1.__doc__.strip().decode('utf-8'))
             if self.B2():
-                re.append(self.B2.__doc__.strip())
+                re.append(self.B2.__doc__.strip().decode('utf-8'))
             if self.B3():
-                re.append(self.B3.__doc__.strip())
+                re.append(self.B3.__doc__.strip().decode('utf-8'))
             if self.B4():
-                re.append(self.B4.__doc__.strip())
+                re.append(self.B4.__doc__.strip().decode('utf-8'))
             re = ', '.join(re)
         else:
             re = False
@@ -104,13 +104,13 @@ class B4P(object):
         if self.ckPlusGLI() and \
             (self.S1() or self.S2() or self.S3() or self.S4()):
             if self.S1():
-                re.append(self.S1.__doc__.strip())
+                re.append(self.S1.__doc__.strip().decode('utf-8'))
             if self.S2():
-                re.append(self.S2.__doc__.strip())
+                re.append(self.S2.__doc__.strip().decode('utf-8'))
             if self.S3():
-                re.append(self.S3.__doc__.strip())
+                re.append(self.S3.__doc__.strip().decode('utf-8'))
             if self.S4():
-                re.append(self.S4.__doc__.strip())
+                re.append(self.S4.__doc__.strip().decode('utf-8'))
             re = ', '.join(re)
         else:
             re = False
