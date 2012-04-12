@@ -94,17 +94,17 @@ class twseno(object):
 
     @property
     def AllStock(self):
-        """ 回船上市股票代碼與名稱 type: dict """
+        """ 回傳上市股票代碼與名稱 type: dict """
         return self.__allstockno
 
     @property
     def AllStockNo(self):
-        """ 回船上市股票代碼 type: list """
+        """ 回傳上市股票代碼 type: list """
         return self.__allstockno.keys()
 
     @property
     def AllStockName(self):
-        """ 回船上市股票名稱 type: list """
+        """ 回傳上市股票名稱 type: list """
         return self.__allstockno.values()
 
     @property
