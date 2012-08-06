@@ -90,12 +90,12 @@ class stock(object):
         return csv_read
 
     def __to_list(self, csv_file):
-        """ [list] 串接每日資料 舊→新"""
+        """ [tuple] 串接每日資料 舊→新"""
         tolist = []
         for i in csv_file:
             i = [v.strip().replace(',', '') for v in i]
             try:
-                for v in [1, 2, 3, 4, 5, 6, 8]:
+                for v in (1, 2, 3, 4, 5, 6, 8):
                     i[v] = float(i[v])
             except:
                 pass
@@ -104,20 +104,20 @@ class stock(object):
             self.__info = (tolist[0][0].split(' ')[1],
                            tolist[0][0].split(' ')[2].decode('cp950'))
             self.__RawRowsName = tolist[1]
-            return tolist[2:]
+            return tuple(tolist[2:])
         else:
-            return []
+            return tuple([])
 
     def __serial_fetch(self, no, month):
-        """ [list] 串接每月資料 舊→新 """
-        re = []
+        """ [tuple] 串接每月資料 舊→新 """
+        re = ()
         self.__getMons = month
         self.__getNo = no
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
             tolist = self.__to_list(self.__fetch_data(no, nowdatetime))
             re = tolist + re
-        return re
+        return tuple(re)
 
     def __plusMons(self, month):
         re = []
@@ -146,8 +146,8 @@ class stock(object):
         """ [list] 取出某一價格序列 舊→新
             預設序列收盤價 → __serial_price(6)
         """
-        re = [float(i[rows]) for i in self.__raw_data]
-        return re
+        re = (float(i[rows]) for i in self.__raw_data)
+        return list(re)
 
     def __cal_MA(self, date, row):
         """ 計算移動平均數
@@ -190,8 +190,8 @@ class stock(object):
     def MAV(self, date):
         """ 計算成交股數均量與持續天數 """
         val, conti = self.__cal_MA(date, 1)
-        val = [round(i / 1000, 3) for i in val]
-        return val, conti
+        val = (round(i / 1000, 3) for i in val)
+        return list(val), conti
 
     def MAO(self, date1, date2):
         """ 計算乖離率（均價）
@@ -220,8 +220,8 @@ class stock(object):
     @property
     def value(self):
         """ 成交量序列 """
-        val = [round(i / 1000, 3) for i in self.__serial_price(1)]
-        return val
+        val = (round(i / 1000, 3) for i in self.__serial_price(1))
+        return list(val)
 
     def __cal_MAOPoint(self, data, s=5, pm=False):
         """判斷轉折點位置
