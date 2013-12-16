@@ -47,7 +47,7 @@ TWSECLS = {'0049': u'封閉式基金',
            '19': u'綜合',
            '20': u'其他',
            'CB': u'可轉換公司債',
-           'ALL': u'全部'}
+           'ALL_1': u'全部'}
 
 def fetch_twse_list():
     with open('./twse_list.csv', 'a') as files:
