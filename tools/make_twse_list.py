@@ -7,8 +7,8 @@ TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.p
 TWSECLS = {'0049': u'封閉式基金',
            '0099P': u'ETF',
            '019919T': u'受益證券',
-           '0999': u'認購權證(不含牛證)',
-           '0999P': u'認售權證(不含熊證)',
+           '0999': u'認購權證',  #(不含牛證)
+           '0999P': u'認售權證',  #(不含熊證)
            '0999C': u'牛證',
            '0999B': u'熊證',
            '0999GA': u'附認股權特別股',
@@ -46,18 +46,26 @@ TWSECLS = {'0049': u'封閉式基金',
            '23': u'油電燃氣業',
            '19': u'綜合',
            '20': u'其他',
-           'CB': u'可轉換公司債',
-           'ALL_1': u'全部'}
+           'CB': u'可轉換公司債',}
+           #'ALL_1': u'全部'}
 
 def fetch_twse_list():
     with open('./twse_list.csv', 'a') as files:
         csv_file = csv.writer(files)
-        re_pattern = re.compile(r'^[\d\w]{4,6}$')
+        re_pattern = re.compile(r'(=")?[\d\w]{4,6}(=)?')
+        re_sub = re.compile(r'[^\w\d]')
 
         for no in TWSECLS.keys():
             for i in csv.reader(urllib2.urlopen(TWSEURL % no).readlines()):
-                if re_pattern.match(i[0]):
-                    csv_file.writerow([i[0], i[1].decode('cp950').encode('utf-8')])
+                if len(i) >= 3 and re_pattern.match(i[0]):
+                    pass
+                else:
+                    i.pop(0)
+
+                if len(i) >= 2 and re_pattern.match(i[0]):
+                    csv_file.writerow([re_sub.sub('', i[0]),
+                                       i[1].decode('cp950').encode('utf-8'),
+                                       TWSECLS[no].encode('utf-8')])
 
     with open('./twse_list.csv', 'r') as files:
         csv_file = csv.reader(files)
