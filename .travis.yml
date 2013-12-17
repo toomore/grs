@@ -3,4 +3,8 @@ python:
     - 2.6
     - 2.7
 install: python setup.py install
-script: python grsTestAll.py
+script:
+    - python grsTestAll.py
+    - python testopen.py
+    - python testtwseno.py
+    - python test_realtime.py
