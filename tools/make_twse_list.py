@@ -2,6 +2,7 @@
 import csv
 import re
 import urllib2
+from datetime import datetime
 
 TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report201312/A11220131216%s.php&type=csv'
 TWSECLS = {'0049': u'封閉式基金',
@@ -50,7 +51,7 @@ TWSECLS = {'0049': u'封閉式基金',
            #'ALL_1': u'全部'}
 
 def fetch_twse_list():
-    with open('./twse_list.csv', 'a') as files:
+    with open('./twse_list.csv', 'w') as files:
         csv_file = csv.writer(files)
         re_pattern = re.compile(r'(=")?[\d\w]{4,6}(=)?')
         re_sub = re.compile(r'[^\w\d]')
@@ -65,7 +66,7 @@ def fetch_twse_list():
                 if len(i) >= 2 and re_pattern.match(i[0]):
                     csv_file.writerow([re_sub.sub('', i[0]),
                                        i[1].decode('cp950').encode('utf-8'),
-                                       TWSECLS[no].encode('utf-8')])
+                                       no, TWSECLS[no].encode('utf-8')])
 
     with open('./twse_list.csv', 'r') as files:
         csv_file = csv.reader(files)
@@ -75,6 +76,8 @@ def fetch_twse_list():
 
     with open('./twse_list.csv', 'w') as files:
         csv_file = csv.writer(files)
+        csv_file.writerow(['文件更新', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'x', 'x'])
+        csv_file.writerow(['證期會代碼', '公司簡稱', '分類代碼', '分類名稱'])
         for i in sorted(all_items):
             csv_file.writerow(all_items[i])
 
