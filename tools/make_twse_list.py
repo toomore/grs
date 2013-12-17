@@ -55,7 +55,7 @@ def fetch_twse_list():
         re_pattern = re.compile(r'(=")?[\d\w]{4,6}(=)?')
         re_sub = re.compile(r'[^\w\d]')
 
-        for no in TWSECLS.keys():
+        for no in TWSECLS:
             for i in csv.reader(urllib2.urlopen(TWSEURL % no).readlines()):
                 if len(i) >= 3 and re_pattern.match(i[0]):
                     pass
@@ -75,8 +75,15 @@ def fetch_twse_list():
 
     with open('./twse_list.csv', 'w') as files:
         csv_file = csv.writer(files)
-        for i in sorted(all_items.keys()):
+        for i in sorted(all_items):
             csv_file.writerow(all_items[i])
+
+def output_industry_code():
+    with open('./industry_code.csv', 'w') as files:
+        csv_file = csv.writer(files)
+        for i in sorted(TWSECLS):
+            csv_file.writerow([i, TWSECLS[i].encode('utf-8')])
 
 if __name__ == '__main__':
     fetch_twse_list()
+    output_industry_code()
