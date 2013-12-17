@@ -4,7 +4,9 @@ import re
 import urllib2
 from datetime import datetime
 
-TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report201312/A11220131216%s.php&type=csv'
+
+NOW = datetime(2013, 12, 17)
+TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report%(year-m)s/A112%(year-m)s%(day)s%%s.php&type=csv' % {'year-m': '%s%s' % (NOW.year, NOW.month), 'day': NOW.day}
 TWSECLS = {'0049': u'封閉式基金',
            '0099P': u'ETF',
            '019919T': u'受益證券',
