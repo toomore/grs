@@ -16,5 +16,5 @@ print t.LastUpdate
 '''
 'last_update', 'search', 'searchbyno'
 '''
-print t.search('中') # 搜尋股票名稱，回傳 type: dict
+print t.search(u'中') # 搜尋股票名稱，回傳 type: dict
 print t.searchbyno(23) # 搜尋股票名稱，回傳 type: dict

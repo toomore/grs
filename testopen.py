@@ -6,4 +6,4 @@ from datetime import datetime
 t = twseopen()
 
 print t.Dday(datetime.today())
-print t.Dday(datetime(2012, 12, 22))
+print t.Dday(datetime(2014, 1, 1))
