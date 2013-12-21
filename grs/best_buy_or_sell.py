@@ -30,11 +30,11 @@ class B4P(object):
         """ 判斷乖離 """
         return self.a.ckMAO(self.a.MAO(3, 6)[0], pm=pm)[0]
 
-    def ckPlusGLI(self):
+    def check_plus_GLI(self):
         """ 正乖離扣至最大 """
         return self.GLI(True)
 
-    def ckMinsGLI(self):
+    def check_mins_GLI(self):
         """ 負乖離扣至最大 """
         return self.GLI()
 
@@ -83,7 +83,7 @@ class B4P(object):
     def B4PB(self):
         """ 判斷是否為四大買點 """
         re = []
-        if self.ckMinsGLI() and \
+        if self.check_mins_GLI() and \
             (self.B1() or self.B2() or self.B3() or self.B4()):
             if self.B1():
                 re.append(self.B1.__doc__.strip().decode('utf-8'))
@@ -101,7 +101,7 @@ class B4P(object):
     def B4PS(self):
         """ 判斷是否為四大賣點 """
         re = []
-        if self.ckPlusGLI() and \
+        if self.check_plus_GLI() and \
             (self.S1() or self.S2() or self.S3() or self.S4()):
             if self.S1():
                 re.append(self.S1.__doc__.strip().decode('utf-8'))
@@ -121,6 +121,6 @@ class B4P(object):
         b = self.B4PB()
         s = self.B4PS()
         if b:
-            return True,b
+            return True, b
         if s:
-            return False,s
+            return False, s
