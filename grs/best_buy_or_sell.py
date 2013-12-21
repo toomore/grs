@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+''' Best buy or sell '''
 # Copyright (c) 2012 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,104 +23,107 @@
 
 class B4P(object):
     """ 四大買點組合 """
-    def __init__(self, a):
-        self.a = a
+    def __init__(self, data):
+        self.data = data
 
-    def GLI(self, pm=False):
+    def bias_ratio(self, positive_or_negative=False):
         """ 判斷乖離 """
-        return self.a.ckMAO(self.a.MAO(3, 6)[0], pm=pm)[0]
+        return self.data.ckMAO(self.data.MAO(3, 6)[0],
+                               pm=positive_or_negative)[0]
 
-    def check_plus_GLI(self):
+    def check_plus_bias_ratio(self):
         """ 正乖離扣至最大 """
-        return self.GLI(True)
+        return self.bias_ratio(True)
 
-    def check_mins_GLI(self):
+    def check_mins_bias_ratio(self):
         """ 負乖離扣至最大 """
-        return self.GLI()
+        return self.bias_ratio()
 
     ##### 四大買點 #####
-    def B1(self):
+    def best_buy_1(self):
         """ 量大收紅 """
-        re = self.a.value[-1] > self.a.value[-2] and \
-             self.a.price[-1] > self.a.openprice[-1]
-        return re
+        result = self.data.value[-1] > self.data.value[-2] and \
+                 self.data.price[-1] > self.data.openprice[-1]
+        return result
 
-    def B2(self):
+    def best_buy_2(self):
         """ 量縮價不跌 """
-        re = self.a.value[-1] < self.a.value[-2] and \
-             self.a.price[-1] > self.a.price[-2]
-        return re
+        result = self.data.value[-1] < self.data.value[-2] and \
+                 self.data.price[-1] > self.data.price[-2]
+        return result
 
-    def B3(self):
+    def best_buy_3(self):
         """ 三日均價由下往上 """
-        return self.a.MA(3)[1] == 1
+        return self.data.MA(3)[1] == 1
 
-    def B4(self):
+    def best_buy_4(self):
         """ 三日均價大於六日均價 """
-        return self.a.MA(3)[0][-1] > self.a.MA(6)[0][-1]
+        return self.data.MA(3)[0][-1] > self.data.MA(6)[0][-1]
 
     ##### 四大賣點 #####
-    def S1(self):
+    def best_sell_1(self):
         """ 量大收黑 """
-        re = self.a.value[-1] > self.a.value[-2] and \
-             self.a.price[-1] < self.a.openprice[-1]
-        return re
+        result = self.data.value[-1] > self.data.value[-2] and \
+                 self.data.price[-1] < self.data.openprice[-1]
+        return result
 
-    def S2(self):
+    def best_sell_2(self):
         """ 量縮價跌 """
-        re = self.a.value[-1] < self.a.value[-2] and \
-             self.a.price[-1] < self.a.price[-2]
-        return re
+        result = self.data.value[-1] < self.data.value[-2] and \
+                 self.data.price[-1] < self.data.price[-2]
+        return result
 
-    def S3(self):
+    def best_sell_3(self):
         """ 三日均價由上往下 """
-        return self.a.MA(3)[1] == -1
+        return self.data.MA(3)[1] == -1
 
-    def S4(self):
+    def best_sell_4(self):
         """ 三日均價小於六日均價 """
-        return self.a.MA(3)[0][-1] < self.a.MA(6)[0][-1]
+        return self.data.MA(3)[0][-1] < self.data.MA(6)[0][-1]
 
-    def B4PB(self):
+    def best_four_point_to_buy(self):
         """ 判斷是否為四大買點 """
-        re = []
-        if self.check_mins_GLI() and \
-            (self.B1() or self.B2() or self.B3() or self.B4()):
-            if self.B1():
-                re.append(self.B1.__doc__.strip().decode('utf-8'))
-            if self.B2():
-                re.append(self.B2.__doc__.strip().decode('utf-8'))
-            if self.B3():
-                re.append(self.B3.__doc__.strip().decode('utf-8'))
-            if self.B4():
-                re.append(self.B4.__doc__.strip().decode('utf-8'))
-            re = ', '.join(re)
+        result = []
+        if self.check_mins_bias_ratio() and \
+            (self.best_buy_1() or self.best_buy_2() or self.best_buy_3() or \
+             self.best_buy_4()):
+            if self.best_buy_1():
+                result.append(self.best_buy_1.__doc__.strip().decode('utf-8'))
+            if self.best_buy_2():
+                result.append(self.best_buy_2.__doc__.strip().decode('utf-8'))
+            if self.best_buy_3():
+                result.append(self.best_buy_3.__doc__.strip().decode('utf-8'))
+            if self.best_buy_4():
+                result.append(self.best_buy_4.__doc__.strip().decode('utf-8'))
+            result = ', '.join(result)
         else:
-            re = False
-        return re
+            result = False
+        return result
 
-    def B4PS(self):
+    def best_four_point_to_sell(self):
         """ 判斷是否為四大賣點 """
-        re = []
-        if self.check_plus_GLI() and \
-            (self.S1() or self.S2() or self.S3() or self.S4()):
-            if self.S1():
-                re.append(self.S1.__doc__.strip().decode('utf-8'))
-            if self.S2():
-                re.append(self.S2.__doc__.strip().decode('utf-8'))
-            if self.S3():
-                re.append(self.S3.__doc__.strip().decode('utf-8'))
-            if self.S4():
-                re.append(self.S4.__doc__.strip().decode('utf-8'))
-            re = ', '.join(re)
+        result = []
+        if self.check_plus_bias_ratio() and \
+            (self.best_sell_1() or self.best_sell_2() or self.best_sell_3() or \
+             self.best_sell_4()):
+            if self.best_sell_1():
+                result.append(self.best_sell_1.__doc__.strip().decode('utf-8'))
+            if self.best_sell_2():
+                result.append(self.best_sell_2.__doc__.strip().decode('utf-8'))
+            if self.best_sell_3():
+                result.append(self.best_sell_3.__doc__.strip().decode('utf-8'))
+            if self.best_sell_4():
+                result.append(self.best_sell_4.__doc__.strip().decode('utf-8'))
+            result = ', '.join(result)
         else:
-            re = False
-        return re
+            result = False
+        return result
 
-    def B4Point(self):
+    def best_four_point(self):
         """ 判斷買點或賣點 """
-        b = self.B4PB()
-        s = self.B4PS()
-        if b:
-            return True, b
-        if s:
-            return False, s
+        buy = self.best_four_point_to_buy()
+        sell = self.best_four_point_to_sell()
+        if buy:
+            return True, buy
+        if sell:
+            return False, sell
