@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 
-class B4P(object):
+class BestFourPoint(object):
     """ 四大買點組合 """
     def __init__(self, data):
         self.data = data

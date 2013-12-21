@@ -27,7 +27,7 @@ __license__ = 'MIT'
 __copyright__ = 'Copyright (C) 2012 Toomore Chiang'
 
 
-from .best_buy_or_sell import B4P
+from .best_buy_or_sell import BestFourPoint
 from .fetch_data import stock
 from .realtime import rt_stock
 from .realtime import rt_weight
