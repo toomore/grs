@@ -28,7 +28,8 @@ class BestFourPoint(object):
 
     def bias_ratio(self, positive_or_negative=False):
         """ 判斷乖離 """
-        return self.data.ckMAO(self.data.MAO(3, 6)[0],
+        return self.data.check_moving_average_bias_ratio(
+                               self.data.moving_average_bias_ratio(3, 6)[0],
                                positive_or_negative=positive_or_negative)[0]
 
     def check_plus_bias_ratio(self):
@@ -54,11 +55,12 @@ class BestFourPoint(object):
 
     def best_buy_3(self):
         """ 三日均價由下往上 """
-        return self.data.MA(3)[1] == 1
+        return self.data.moving_average(3)[1] == 1
 
     def best_buy_4(self):
         """ 三日均價大於六日均價 """
-        return self.data.MA(3)[0][-1] > self.data.MA(6)[0][-1]
+        return self.data.moving_average(3)[0][-1] > \
+               self.data.moving_average(6)[0][-1]
 
     ##### 四大賣點 #####
     def best_sell_1(self):
@@ -75,11 +77,12 @@ class BestFourPoint(object):
 
     def best_sell_3(self):
         """ 三日均價由上往下 """
-        return self.data.MA(3)[1] == -1
+        return self.data.moving_average(3)[1] == -1
 
     def best_sell_4(self):
         """ 三日均價小於六日均價 """
-        return self.data.MA(3)[0][-1] < self.data.MA(6)[0][-1]
+        return self.data.moving_average(3)[0][-1] < \
+               self.data.moving_average(6)[0][-1]
 
     def best_four_point_to_buy(self):
         """ 判斷是否為四大買點 """
