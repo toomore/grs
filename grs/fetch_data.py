@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''' Fetch data from TWSE '''
 # Copyright (c) 2012 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,7 +27,7 @@ import logging
 import random
 import urllib2
 
-class stock(object):
+class Stock(object):
     """ 擷取股票股價 """
 
     def __init__(self, stock_no, mons=3):
@@ -35,9 +35,12 @@ class stock(object):
             :stock_no : 股價代碼
             :mons : 擷取近 n 個月的資料
         """
-        self.__url = []
+        self.__get_mons = 0
+        self.__get_no = 0
         self.__info = ()
         self.__raw_data = self.__serial_fetch(stock_no, mons)
+        self.__raw_rows_name = []
+        self.__url = []
 
     @property
     def url(self):
@@ -54,16 +57,16 @@ class stock(object):
         """ [list] 擷取原始檔案 """
         return self.__raw_data
 
-    def getRawRows(self, rows=6):
+    def get_raw_rows(self, rows=6):
         """ [list] 取出某一價格序列 舊→新
             預設序列收盤價 → __serial_price(6)
         """
         return self.__serial_price(rows)
 
     @property
-    def getRawRowsName(self):
+    def get_raw_rows_name(self):
         """ 原始檔案的欄位名稱 """
-        re = [i.decode('cp950') for i in self.__RawRowsName]
+        re = [i.decode('cp950') for i in self.__raw_rows_name]
         return re
 
     def __fetch_data(self, stock_no, nowdatetime=datetime.today()):
@@ -103,7 +106,7 @@ class stock(object):
         if len(tolist):
             self.__info = (tolist[0][0].split(' ')[1],
                            tolist[0][0].split(' ')[2].decode('cp950'))
-            self.__RawRowsName = tolist[1]
+            self.__raw_rows_name = tolist[1]
             return tuple(tolist[2:])
         else:
             return tuple([])
@@ -111,31 +114,31 @@ class stock(object):
     def __serial_fetch(self, no, month):
         """ [tuple] 串接每月資料 舊→新 """
         re = ()
-        self.__getMons = month
-        self.__getNo = no
+        self.__get_mons = month
+        self.__get_no = no
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
             tolist = self.__to_list(self.__fetch_data(no, nowdatetime))
             re = tolist + re
         return tuple(re)
 
-    def __plusMons(self, month):
+    def __plus_mons(self, month):
         re = []
-        existMons = self.__getMons
+        exist_mons = self.__get_mons
         oldraw = self.__raw_data
         for i in range(month):
-            nowdatetime = datetime.today() - relativedelta(months=existMons) - \
+            nowdatetime = datetime.today() - relativedelta(months=exist_mons) -\
                           relativedelta(months=i)
             tolist = self.__to_list(
                                 self.__fetch_data(self.__info[0], nowdatetime))
             re = tolist + re
         re = re + oldraw
-        self.__getMons = existMons + month
+        self.__get_mons = exist_mons + month
         return re
 
-    def plusMons(self, month):
+    def plus_mons(self, month):
         """ 新增擴充月份資料 """
-        self.__raw_data = self.__plusMons(month)
+        self.__raw_data = self.__plus_mons(month)
 
     def out_putfile(self, fpath):
         """ 輸出成 CSV 檔 """
@@ -223,14 +226,14 @@ class stock(object):
         val = (round(i / 1000, 3) for i in self.__serial_price(1))
         return list(val)
 
-    def __cal_MAOPoint(self, data, s=5, pm=False):
+    def __cal_MAOPoint(self, data, s=5, positive_or_negative=False):
         """判斷轉折點位置
            s = 取樣判斷區間
-           pm = True（正）/False（負）轉折
+           positive_or_negative = True（正）/False（負）轉折
            return (T/F, 第幾個轉折日, 轉折點值)
         """
         c = data[-s:]
-        if pm:  # 正
+        if positive_or_negative:  # 正
             ckvalue = max(c)  # 尋找最大值
             preckvalue = max(c) > 0  # 區間最大值必須為正
         else:
@@ -241,10 +244,10 @@ class stock(object):
                 s - c.index(ckvalue) - 1,
                 ckvalue)
 
-    def ckMAO(self, data, s=5, pm=False):
+    def ckMAO(self, data, s=5, positive_or_negative=False):
         """判斷正負乖離轉折點位置
            s = 取樣判斷區間
-           pm = True（正）/False（負）乖離
+           positive_or_negative = True（正）/False（負）乖離
            return (T/F, 第幾轉折日, 乖離轉折點值)
         """
-        return self.__cal_MAOPoint(data, s, pm)
+        return self.__cal_MAOPoint(data, s, positive_or_negative)
