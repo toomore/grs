@@ -8,7 +8,7 @@ import unittest
 class TestGrs(unittest.TestCase):
     def setUp(self):
         self.stock_no = '2618'
-        self.data = grs.stock(self.stock_no)
+        self.data = grs.Stock(self.stock_no)
 
     def test_stock(self):
         assert self.data.info[0] == self.stock_no

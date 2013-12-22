@@ -29,7 +29,7 @@ class BestFourPoint(object):
     def bias_ratio(self, positive_or_negative=False):
         """ 判斷乖離 """
         return self.data.ckMAO(self.data.MAO(3, 6)[0],
-                               pm=positive_or_negative)[0]
+                               positive_or_negative=positive_or_negative)[0]
 
     def check_plus_bias_ratio(self):
         """ 正乖離扣至最大 """

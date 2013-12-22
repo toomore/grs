@@ -38,9 +38,9 @@ class Stock(object):
         self.__get_mons = 0
         self.__get_no = 0
         self.__info = ()
-        self.__raw_data = self.__serial_fetch(stock_no, mons)
         self.__raw_rows_name = []
         self.__url = []
+        self.__raw_data = self.__serial_fetch(stock_no, mons)
 
     @property
     def url(self):
