@@ -123,7 +123,10 @@ class BestFourPoint(object):
         """ 判斷買點或賣點 """
         buy = self.best_four_point_to_buy()
         sell = self.best_four_point_to_sell()
+
         if buy:
             return True, buy
-        if sell:
+        elif sell:
             return False, sell
+
+        return None

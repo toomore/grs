@@ -8,3 +8,4 @@ script:
     - python testopen.py
     - python testtwseno.py
     - python test_realtime.py
+    - python test_unittest.py
