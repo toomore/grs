@@ -202,20 +202,20 @@ Quick Start
     print ck                         # (T/F, 第幾轉折日, 乖離轉折點值) type: tuple
 
 
-四大買賣點判斷：B4P
+四大買賣點判斷：BestFourPoint
 ====================================
 
 判斷是否為技術分析的四大買賣點，條件成立，回傳條件結果，判斷結果僅供參考！
 
 ::
 
-    from grs import B4P, stock
+    from grs import BestFourPoint, stock
 
     s = stock(2618)
-    b = B4P(s)
-    b.B4PB()                    # 判斷是否為四大買點
-    b.B4PS()                    # 判斷是否為四大賣點
-    b.B4Point()                 # 綜合判斷
+    b = BestFourPoint(s)
+    b.best_four_point_to_buy()       # 判斷是否為四大買點
+    b.best_four_point_to_sell()      # 判斷是否為四大賣點
+    b.best_four_point()              # 綜合判斷
 
 全部上市股票檢視
 
