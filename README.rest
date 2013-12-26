@@ -5,6 +5,18 @@ grs 台灣上市股票價格擷取
 .. image:: https://secure.travis-ci.org/toomore/grs.png
    :target: http://travis-ci.org/toomore/grs
 
+.. image:: https://pypip.in/d/grs/badge.png
+   :target: https://pypi.python.org/pypi/grs
+
+.. image:: https://pypip.in/v/grs/badge.png
+   :target: https://pypi.python.org/pypi/grs
+
+.. image:: https://pypip.in/wheel/grs/badge.png
+   :target: https://pypi.python.org/pypi/grs
+
+.. image:: https://pypip.in/license/grs/badge.png
+   :target: https://pypi.python.org/pypi/grs
+
 主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
 
 -----------------------------
