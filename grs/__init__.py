@@ -33,5 +33,5 @@ from .realtime import rt_stock
 from .realtime import rt_weight
 from .tw_time import Countdown
 from .tw_time import TWTime
-from .twseno import twseno
+from .twseno import TWSENo
 from .twseopen import twseopen
