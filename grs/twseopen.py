@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+''' TWSE open date '''
 # Copyright (c) 2012 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,19 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from datetime import datetime
 from .tw_time import TWTime
+from datetime import datetime
 import csv
 import os
 
 
-class twseopen(object):
+class TWSEOpen(object):
     ''' 判斷當日是否開市 '''
     def __init__(self):
         ''' 載入相關檔案 '''
         self.__ocdate = self.__loaddate()
+        self.twtime = ''
 
-    def Dday(self, time):
+    def d_day(self, time):
         ''' 指定日期 '''
         if type(time) == type(TWTime().now):
             self.twtime = TWTime().now
@@ -42,23 +43,25 @@ class twseopen(object):
             pass
         return self.__caldata(time)
 
-    def __loaddate(self):
+    @staticmethod
+    def __loaddate():
         ''' 載入檔案
             檔案依據 http://www.twse.com.tw/ch/trading/trading_days.php
         '''
-        ld = csv.reader(
-                open(os.path.join(os.path.dirname(__file__), 'opendate.csv')))
-        re = {}
-        re['close'] = []
-        re['open'] = []
-        for i in ld:
-            if i[1] == '0':  # 0 = 休市
-                re['close'] += [datetime.strptime(i[0], '%Y/%m/%d').date()]
-            elif i[1] == '1':  # 1 = 開市
-                re['open'] += [datetime.strptime(i[0], '%Y/%m/%d').date()]
-            else:
-                pass
-        return re
+        csv_path = os.path.join(os.path.dirname(__file__), 'opendate.csv')
+        with open(csv_path) as csv_file:
+            csv_data = csv.reader(csv_file)
+            result = {}
+            result['close'] = []
+            result['open'] = []
+            for i in csv_data:
+                if i[1] == '0':  # 0 = 休市
+                    result['close'] += [datetime.strptime(i[0], '%Y/%m/%d').date()]
+                elif i[1] == '1':  # 1 = 開市
+                    result['open'] += [datetime.strptime(i[0], '%Y/%m/%d').date()]
+                else:
+                    pass
+            return result
 
     def __caldata(self, time):
         ''' Market open or not.
