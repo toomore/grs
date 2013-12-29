@@ -124,16 +124,16 @@ class Stock(object):
         """ 增加 n 個月的資料 """
         result = []
         exist_mons = self.__get_mons
-        oldraw = self.__raw_data
+        oldraw = list(self.__raw_data)
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=exist_mons) -\
                           relativedelta(months=i)
             tolist = self.__to_list(
                                 self.__fetch_data(self.__info[0], nowdatetime))
-            result = tolist + result
+            result = list(tolist) + result
         result = result + oldraw
         self.__get_mons = exist_mons + month
-        return result
+        return tuple(result)
 
     def plus_mons(self, month):
         """ 新增擴充月份資料 """

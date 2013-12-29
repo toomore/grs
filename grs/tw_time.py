@@ -34,7 +34,6 @@ class TWTime(object):
         assert isinstance(tz, (int, float))
         self.time_zone = tz
 
-    @property
     def now(self):
         ''' Display Taiwan Time now
             顯示台灣此刻時間
@@ -42,7 +41,6 @@ class TWTime(object):
         utcnow = datetime.utcnow()
         return utcnow + timedelta(hours=self.time_zone)
 
-    @property
     def date(self):
         ''' Display Taiwan date now
             顯示台灣此刻日期

@@ -24,8 +24,8 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.3.0 of 2013/12/18
-:Python Version: Python 2.6-2.7
+:Version: 0.4.0 of 2013/12/30
+:Python Version: Python 2.6-2.7, PyPy
 
 -----------------------------
 Requires
@@ -54,26 +54,26 @@ Quick Start
 
 ::
 
-    from grs import stock
+    from grs import Stock
 
-    g = stock(2618)        # 擷取長榮航股價
-    print g.MA(5)          # 計算五日均價與持續天數
-    print g.MAV(5)         # 計算五日均量與持續天數
-    print g.MAO(5,10)      # 計算五日、十日乖離值與持續天數
+    stock = Stock(2618)                          # 擷取長榮航股價
+    print stock.moving_average(5)                # 計算五日均價與持續天數
+    print stock.moving_average_value(5)          # 計算五日均量與持續天數
+    print stock.moving_average_bias_ratio(5,10)  # 計算五日、十日乖離值與持續天數
 
 
 擷取 12 個月份資料
 
 ::
 
-    g = stock(2618, 12)
+    stock = Stock(2618, 12)
 
 
 輸出 CSV 檔
 
 ::
 
-    g.out_putfile('/dev/shm/2618.csv')
+    stock.out_putfile('/dev/shm/2618.csv')
 
 -----------------------------
 其他功能
@@ -88,35 +88,36 @@ Quick Start
 
     from grs import TWTime
 
-    t = TWTime()
-    t.now                   # 顯示台灣此刻時間
-    t.localtime             # 顯示當地此刻時間
+    what_time = TWTime()
+    what_time.now()                 # 顯示台灣此刻時間
+    what_time.localtime()           # 顯示當地此刻時間
 
 
-判斷台灣股市是否開市：twseopen
+判斷台灣股市是否開市：TWSEOpen
 ====================================
 
 ::
 
-    from grs import twseopen
+    from grs import TWSEOpen
     from datetime import datetime
 
-    t = twseopen()
+    open_or_not = TWSEOpen()
 
-    t.Dday(datetime.today())        # 判斷今天是否開市，回傳 True or False
-    t.Dday(datetime(2012, 12, 22))  # 判斷 2012/12/22 是否開市
+    open_or_not.d_day(datetime.today())        # 判斷今天是否開市
+                                               # 回傳 True or False
+    open_or_not.d_day(datetime(2012, 12, 22))  # 判斷 2012/12/22 是否開市
 
 
-各股即時盤資訊：rt_stock
+各股即時盤資訊：RealtimeStock
 ====================================
 
 ::
 
-    from grs import rt_stock
+    from grs import RealtimeStock 
 
-    rl = rt_stock(2618)       # 擷取長榮航即時股價
-    rl.raw                    # 原始資料
-    rl.real                   # 回傳 type: dict（如下表）
+    realtime_stock = RealtimeStock(2618)  # 擷取長榮航即時股價
+    realtime_stock.raw                    # 原始資料
+    realtime_stock.real                   # 回傳 type: dict（如下表）
 
 
 :name:     股票名稱 Unicode
@@ -139,16 +140,16 @@ Quick Start
 :crosspic: K線圖 by Google Chart
 
 
-大盤即時盤資訊：rt_weight
+大盤即時盤資訊：RealtimeWeight
 ====================================
 
 ::
 
-    from grs import rt_weight
+    from grs import RealtimeWeight
 
-    w = rt_weight()            # 擷取即時大盤資訊
-    w.raw                      # 原始檔案
-    w.real                     # 回傳 type: dict（如下表）
+    realtime_weight = RealtimeWeight()  # 擷取即時大盤資訊
+    realtime_weight.raw                 # 原始檔案
+    realtime_weight.real                # 回傳 type: dict（如下表）
 
 
 原始檔案包含其他資訊請參閱 `對照表 <http://goristock.appspot.com/API#apiweight>`_ 
@@ -162,25 +163,25 @@ Quick Start
 :ud: 回傳漲（True）、跌（False）
 
 
-上市股票代碼列表：twseno
+上市股票代碼列表：TWSENo
 ====================================
 
 回傳上市股票代碼與搜尋
 
 ::
 
-    from grs import twseno
+    from grs import TWSENo
 
 
-    t = twseno()
-    t.AllStock              # 所有股票名稱、代碼 type: dict
-    t.AllStockNo            # 所有股票代碼 type: list
-    t.AllStockName          # 所有股票名稱 type: list
-    t.IndCode               # 回傳類別代碼 type: dict
-    t.IndComps              # 回傳類別所屬股票代碼 type: dict
-    t.search('中')           # 搜尋股票名稱，回傳 type: dict
-    t.searchbyno(23)        # 搜尋股票代碼，回傳 type: dict
-    t.LastUpdate            # 回傳列表最後更新時間（非同步）type: str
+    twse_no = TWSENo()
+    twse_no.all_stock       # 所有股票名稱、代碼 type: dict
+    twse_no.all_stock_no    # 所有股票代碼 type: list
+    twse_no.all_stock_name  # 所有股票名稱 type: list
+    twse_no.industry_code   # 回傳類別代碼 type: dict
+    twse_no.industry_comps  # 回傳類別所屬股票代碼 type: dict
+    twse_no.search(u'中')   # 搜尋股票名稱，回傳 type: dict
+    twse_no.searchbyno(23)  # 搜尋股票代碼，回傳 type: dict
+    twse_no.last_update     # 回傳列表最後更新時間（非同步）type: str
 
 
 單日倒數時間：Countdown
@@ -192,26 +193,29 @@ Quick Start
 
     from grs import Countdown
 
-    c = Countdown(h=14, m=30)  # 預設為 14:30
-    c.nextday                  # 下一個 14:30 日期
-    c.countdown                # 到數秒數
-    c.exptime                  # 下一個 14:30 日期時間（type: datetime）
-    c.lastmod                  # 前一個 14:30 日期時間（type: datetime）
+    countdown = Countdown(hour=14, minutes=30)  # 預設為 14:30
+    countdown.nextday    # 下一個 14:30 日期
+    countdown.countdown  # 到數秒數
+    countdown.exptime    # 下一個 14:30 日期時間（type: datetime）
+    countdown.lastmod    # 前一個 14:30 日期時間（type: datetime）
 
 
-判斷乖離轉折點：stock(no).ckMAO
+判斷乖離轉折點：Stock(no).check_moving_average_bias_ratio
 ====================================
 
 判斷乖離轉折點
 
 ::
 
-    from grs import stock
+    from grs import Stock
 
-    s = stock(2618)
-    ma = s.MAO(3,6)[0]               # 取得 3-6 乖離值 type: list
-    c = s.ckMAO(ma, s=5, pm= False)  # 計算五個區間負乖離轉折點
-    print ck                         # (T/F, 第幾轉折日, 乖離轉折點值) type: tuple
+    stock = Stock(2618)
+    data = stock.moving_average_bias_ratio(3,6)[0]  # 取得 3-6 乖離值 type: list
+
+    # 計算五個區間負乖離轉折點
+    check_data = stock.check_moving_average_bias_ratio(data, sample=5,
+                                                    positive_or_negative= False)
+    print check_data  # (T/F, 第幾轉折日, 乖離轉折點值) type: tuple
 
 
 四大買賣點判斷：BestFourPoint
@@ -221,49 +225,52 @@ Quick Start
 
 ::
 
-    from grs import BestFourPoint, stock
+    from grs import BestFourPoint
+    from grs import Stock
 
-    s = stock(2618)
-    b = BestFourPoint(s)
-    b.best_four_point_to_buy()       # 判斷是否為四大買點
-    b.best_four_point_to_sell()      # 判斷是否為四大賣點
-    b.best_four_point()              # 綜合判斷
+    stock = Stock(2618)
+    result = BestFourPoint(stock)
+    result.best_four_point_to_buy()       # 判斷是否為四大買點
+    result.best_four_point_to_sell()      # 判斷是否為四大賣點
+    result.best_four_point()              # 綜合判斷
 
 全部上市股票檢視
 
 ::
 
-    from grs import B4P, stock, twseno
+    from grs import BestFourPoint
+    from grs import Stock
+    from grs import TWSENo
 
-    l = twseno().AllStockNo
+    stock_no_list = TWSENo().all_stock_no
 
-    for i in l:
+    for i in stock_no_list:
         try:
-            BS, info = B4P(stock(i)).B4Point()
-            if BS:  # 買點
-                print 'B: {0} {1}'.format(i, info)
+            best_point, info = BestFourPoint(Stock(i)).best_four_point()
+            if best_point:  # 買點
+                print 'Buy: {0} {1}'.format(i, info)
             else:   # 賣點
-                print 'S: {0} {1}'.format(i, info)
+                print 'Sell: {0} {1}'.format(i, info)
         except:     # 不作為或資料不足
             print 'X: {0}'.format(i)
 
 
-擴充月份資料：stock(no).plusMons(month)
+擴充月份資料：Stock(no).plus_mons(month)
 ============================================
 
 當原有的月份資料不夠時，不需要從頭抓取，只需要給予增額月份值即可。
 
 ::
 
-    from grs import stock
+    from grs import Stock
 
-    s = stock(2618)                      # 預設為抓取３個月份資料
-    s.MA(60)
+    stock = Stock(2618)                  # 預設為抓取３個月份資料
+    stock.moving_average(60)
     IndexError: list index out of range  # 資料不足
-    len(s.raw)                           # 回傳 51 個值
-    s.plusMons(1)                        # 在抓取一個月資料
-    len(s.raw)                           # 回傳 66 個值
-    s.MA(60)                             # 計算成功
+    len(stock.raw)                       # 回傳 51 個值
+    stock.plus_mons(1)                   # 在抓取一個月資料
+    len(stock.raw)                       # 回傳 66 個值
+    stock.moving_average(60)             # 計算成功
 
 
 -----------------------------
@@ -287,7 +294,7 @@ Change Logs
 - 修正：輸出中文統一使用 Unicode
 - 修正：需要套件 python-dateutil 調整為 1.5
 - 修正：Web Demo 網站網址
-- 新增：stock.plusMons() 擴充月份資料
+- 新增：Stock.plusMons() 擴充月份資料
 
 0.1.4 2012/04/01
 ====================================

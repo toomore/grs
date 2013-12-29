@@ -27,8 +27,8 @@ import re
 class TWSENo(object):
     """ 上市股票代碼與搜尋 """
     def __init__(self):
-        self.__allstockno = self.__importcsv()
         self.last_update = ''
+        self.__allstockno = self.__importcsv()
 
     def __importcsv(self):
         ''' import data from csv '''
@@ -54,7 +54,7 @@ class TWSENo(object):
             csv_data = csv.reader(csv_file)
             result = {}
             for i in csv_data:
-                result[int(i[0])] = i[1].decode('utf-8')
+                result[i[0]] = i[1].decode('utf-8')
             return result
 
     @staticmethod
@@ -64,14 +64,16 @@ class TWSENo(object):
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
+            check_words = re.compile(r'^[\d]{2,}[\w]?')
             for i in csv_data:
-                try:
-                    result[int(i[2])].append(i[0].decode('utf-8'))
-                except ValueError:
+                if check_words.match(i[2]):
                     try:
-                        result[int(i[2])] = [i[0].decode('utf-8')]
-                    except ValueError:
-                        pass
+                        result[i[2]].append(i[0].decode('utf-8'))
+                    except (ValueError, KeyError):
+                        try:
+                            result[i[2]] = [i[0].decode('utf-8')]
+                        except KeyError:
+                            pass
             return result
 
     def search(self, name):
