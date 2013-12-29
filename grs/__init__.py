@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' All grs module '''
-# Copyright (c) 2012 Toomore Chiang, http://toomore.net/
+# Copyright (c) 2012, 2013, 2014 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ __title__ = 'grs'
 __version__ = '0.4.0'
 __author__ = 'Toomore Chiang'
 __license__ = 'MIT'
-__copyright__ = 'Copyright (C) 2012 Toomore Chiang'
+__copyright__ = 'Copyright (C) 2012, 2013, 2014 Toomore Chiang'
 
 
 from .best_buy_or_sell import BestFourPoint
