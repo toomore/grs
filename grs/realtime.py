@@ -129,7 +129,7 @@ class RealtimeStock(object):
             result['top5sell'].sort()
 
             return result
-        except IndexError:
+        except (IndexError, ValueError):
             return False
 
 
