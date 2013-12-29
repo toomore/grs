@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from grs import twseno
+from grs import TWSENo
 
 
-t = twseno()
+t = TWSENo()
 print dir(t)
 
-t.AllStock  # 所有股票代碼 type: dict
+t.all_stock  # 所有股票代碼 type: dict
 
 ''' IndCode
 for i in t.IndComps:  # 回傳類別所屬股票代碼 type: dict
     print i,t.IndComps[i]
 '''
-print t.LastUpdate
+print t.last_update
 '''
 'last_update', 'search', 'searchbyno'
 '''

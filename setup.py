@@ -3,12 +3,12 @@
 
 from setuptools import setup, find_packages
 
-long_description = open('./README.rest', 'r').read()
+long_description = open('./README.rst', 'r').read()
 description = '台灣上市股票價格擷取（Fetch TWSE stock data）' + \
               '含即時盤、台灣時間轉換、開休市判斷。'
 
 setup(name='grs',
-      version='0.3.0',
+      version='0.4.0',
       description=description,
       long_description=long_description,
       author='Toomore Chiang',

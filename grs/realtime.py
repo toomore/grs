@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+''' Get TWSE real time data. '''
 # From http://github.com/toomore/tw-stock
-# Copyright (c) 2012 Toomore Chiang, http://toomore.net/
+# Copyright (c) 2012, 2013, 2014 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,16 @@ import random
 import urllib2
 
 
-def covstr(s):
+def covstr(strings):
     """ convert string to int or float. """
     try:
-        ret = int(s)
+        result = int(strings)
     except ValueError:
-        ret = float(s)
-    return ret
+        result = float(strings)
+    return result
 
 
-class rt_stock(object):
+class RealtimeStock(object):
     """ Real time fetch TW stock data.
         擷取即時盤的股價資訊
         object.real return dict.
@@ -66,13 +66,14 @@ class rt_stock(object):
             'http://mis.tse.com.tw/data/{0}.csv?r={1}'.format(
                                                 no, random.randrange(1, 10000))
         )
-        logging.info('twsk %s' % no)
+        logging.info('twsk no %s', no)
         reader = csv.reader(page)
         for i in reader:
             self.__raw = i
 
     @property
     def raw(self):
+        ''' Return raw data '''
         return self.__raw
 
     @property
@@ -80,7 +81,7 @@ class rt_stock(object):
         """ Real time data """
         try:
             unch = sum([covstr(self.__raw[3]), covstr(self.__raw[4])]) / 2
-            re = {
+            result = {
             'name': unicode(self.__raw[36].replace(' ', ''), 'cp950'),
             'no': self.__raw[0],
             'range': self.__raw[1],    # 漲跌價
@@ -111,23 +112,29 @@ class rt_stock(object):
                             (self.__raw[29], self.__raw[30])
                             ]
             }
+
             if '-' in self.__raw[1]:  # 漲跌判斷 True, False
-                re['ranges'] = False  # price down
+                result['ranges'] = False  # price down
             else:
-                re['ranges'] = True  # price up
-            re['crosspic'] = ("http://chart.apis.google.com/chart?" +
+                result['ranges'] = True  # price up
+
+            result['crosspic'] = ("http://chart.apis.google.com/chart?" +
                 "chf=bg,s,ffffff&chs=20x50&cht=ls" +
                 "&chd=t1:0,0,0|0,{},0|0,{},0|0,{},0|0,{},0" +
                 "&chds={},{}&chm=F,,1,1:4,20").format(
-            re['h'], re['c'], re['o'], re['l'], re['l'], re['h'])
-            re['top5buy'].sort()
-            re['top5sell'].sort()
-            return re
-        except:
+            result['h'], result['c'], result['o'], result['l'], result['l'],
+            result['h'])
+
+            result['top5buy'].sort()
+            result['top5sell'].sort()
+
+            return result
+        except (IndexError, ValueError):
             return False
 
 
-class rt_weight(object):
+class RealtimeWeight(object):
+    ''' 大盤/各類別即時盤資訊 '''
     def __init__(self):
         """ 大盤/各類別即時盤資訊
             代碼可以參考：http://goristock.appspot.com/API#apiweight
@@ -140,27 +147,29 @@ class rt_weight(object):
         for i in reader:
             if len(i):
                 if '-' in i[3]:
-                    ud = False
+                    up_or_down = False
                 else:
-                    ud = True
+                    up_or_down = True
                 self.__raw[i[0]] = {
                                     'no': i[0],
                                     'time': i[1],
                                     'value': i[2],
                                     'range': i[3],
-                                    'ud': ud}
+                                    'up_or_down': up_or_down}
         # 大盤成交量，單位：億。
         self.__raw['200']['v2'] = int(
                     self.__raw['200']['value'].replace(',', '')) / 100000000
 
     @property
     def raw(self):
+        ''' Return raw data '''
         return self.__raw
 
     @property
     def real(self):
-        re = self.__raw['1'].copy()
-        re['c'] = self.__raw['1']['value']
-        re['value'] = self.__raw['200']['v2']
-        re['date'] = self.__raw['0']['time']
-        return re
+        ''' Get realtime data '''
+        result = self.__raw['1'].copy()
+        result['c'] = self.__raw['1']['value']
+        result['value'] = self.__raw['200']['v2']
+        result['date'] = self.__raw['0']['time']
+        return result

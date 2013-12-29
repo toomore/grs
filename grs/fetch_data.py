@@ -1,6 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (c) 2012 Toomore Chiang, http://toomore.net/
+'''' Fetch data from TWSE '''
+# Copyright (c) 2012, 2013, 2014 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ import logging
 import random
 import urllib2
 
-class stock(object):
+class Stock(object):
     """ 擷取股票股價 """
 
     def __init__(self, stock_no, mons=3):
@@ -35,8 +35,11 @@ class stock(object):
             :stock_no : 股價代碼
             :mons : 擷取近 n 個月的資料
         """
-        self.__url = []
+        self.__get_mons = 0
+        self.__get_no = 0
         self.__info = ()
+        self.__raw_rows_name = []
+        self.__url = []
         self.__raw_data = self.__serial_fetch(stock_no, mons)
 
     @property
@@ -54,17 +57,17 @@ class stock(object):
         """ [list] 擷取原始檔案 """
         return self.__raw_data
 
-    def getRawRows(self, rows=6):
+    def get_raw_rows(self, rows=6):
         """ [list] 取出某一價格序列 舊→新
             預設序列收盤價 → __serial_price(6)
         """
         return self.__serial_price(rows)
 
     @property
-    def getRawRowsName(self):
+    def get_raw_rows_name(self):
         """ 原始檔案的欄位名稱 """
-        re = [i.decode('cp950') for i in self.__RawRowsName]
-        return re
+        result = [i.decode('cp950') for i in self.__raw_rows_name]
+        return result
 
     def __fetch_data(self, stock_no, nowdatetime=datetime.today()):
         """ Fetch data from twse.com.tw
@@ -83,9 +86,7 @@ class stock(object):
                                        'stock': stock_no,
                                        'rand': random.randrange(1, 1000000)}
         logging.info(url)
-        cc = urllib2.urlopen(url)
-        cc_read = cc.readlines()
-        csv_read = csv.reader(cc_read)
+        csv_read = csv.reader(urllib2.urlopen(url).readlines())
         self.__url.append(url)
         return csv_read
 
@@ -93,63 +94,64 @@ class stock(object):
         """ [tuple] 串接每日資料 舊→新"""
         tolist = []
         for i in csv_file:
-            i = [v.strip().replace(',', '') for v in i]
+            i = [value.strip().replace(',', '') for value in i]
             try:
-                for v in (1, 2, 3, 4, 5, 6, 8):
-                    i[v] = float(i[v])
-            except:
+                for value in (1, 2, 3, 4, 5, 6, 8):
+                    i[value] = float(i[value])
+            except (IndexError, ValueError):
                 pass
             tolist.append(i)
         if len(tolist):
             self.__info = (tolist[0][0].split(' ')[1],
                            tolist[0][0].split(' ')[2].decode('cp950'))
-            self.__RawRowsName = tolist[1]
+            self.__raw_rows_name = tolist[1]
             return tuple(tolist[2:])
         else:
             return tuple([])
 
-    def __serial_fetch(self, no, month):
+    def __serial_fetch(self, stock_no, month):
         """ [tuple] 串接每月資料 舊→新 """
-        re = ()
-        self.__getMons = month
-        self.__getNo = no
+        result = ()
+        self.__get_mons = month
+        self.__get_no = stock_no
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
-            tolist = self.__to_list(self.__fetch_data(no, nowdatetime))
-            re = tolist + re
-        return tuple(re)
+            tolist = self.__to_list(self.__fetch_data(stock_no, nowdatetime))
+            result = tolist + result
+        return tuple(result)
 
-    def __plusMons(self, month):
-        re = []
-        existMons = self.__getMons
-        oldraw = self.__raw_data
+    def __plus_mons(self, month):
+        """ 增加 n 個月的資料 """
+        result = []
+        exist_mons = self.__get_mons
+        oldraw = list(self.__raw_data)
         for i in range(month):
-            nowdatetime = datetime.today() - relativedelta(months=existMons) - \
+            nowdatetime = datetime.today() - relativedelta(months=exist_mons) -\
                           relativedelta(months=i)
             tolist = self.__to_list(
                                 self.__fetch_data(self.__info[0], nowdatetime))
-            re = tolist + re
-        re = re + oldraw
-        self.__getMons = existMons + month
-        return re
+            result = list(tolist) + result
+        result = result + oldraw
+        self.__get_mons = exist_mons + month
+        return tuple(result)
 
-    def plusMons(self, month):
+    def plus_mons(self, month):
         """ 新增擴充月份資料 """
-        self.__raw_data = self.__plusMons(month)
+        self.__raw_data = self.__plus_mons(month)
 
     def out_putfile(self, fpath):
         """ 輸出成 CSV 檔 """
-        op = csv.writer(open(fpath, 'wt'))
-        op.writerows(self.__raw_data)
+        output = csv.writer(open(fpath, 'w'))
+        output.writerows(self.__raw_data)
 
     def __serial_price(self, rows=6):
         """ [list] 取出某一價格序列 舊→新
             預設序列收盤價 → __serial_price(6)
         """
-        re = (float(i[rows]) for i in self.__raw_data)
-        return list(re)
+        result = (float(i[rows]) for i in self.__raw_data)
+        return list(result)
 
-    def __cal_MA(self, date, row):
+    def __calculate_moving_average(self, date, row):
         """ 計算移動平均數
             row: 收盤價(6)、成交股數(1)
             回傳 tuple:
@@ -157,15 +159,16 @@ class stock(object):
                 2.持續天數
         """
         cal_data = self.__serial_price(row)
-        re = []
-        for i in range(len(cal_data) - int(date) + 1):
-            re.append(round(sum(cal_data[-date:]) / date, 2))
+        result = []
+        for dummy in range(len(cal_data) - int(date) + 1):
+            result.append(round(sum(cal_data[-date:]) / date, 2))
             cal_data.pop()
-        re.reverse()
-        cont = self.__cal_continue(re)
-        return re, cont
+        result.reverse()
+        cont = self.__cal_continue(result)
+        return result, cont
 
-    def __cal_continue(self, list_data):
+    @classmethod
+    def __cal_continue(cls, list_data):
         """ 計算持續天數
             向量數值：正數向上、負數向下。
         """
@@ -176,33 +179,35 @@ class stock(object):
             else:
                 diff_data.append(-1)
         cont = 0
-        for v in diff_data:
-            if v == diff_data[0]:
+        for value in diff_data:
+            if value == diff_data[0]:
                 cont += 1
             else:
                 break
         return cont * diff_data[0]
 
-    def MA(self, date):
+    def moving_average(self, date):
         """ 計算收盤均價與持續天數 """
-        return self.__cal_MA(date, 6)
+        return self.__calculate_moving_average(date, 6)
 
-    def MAV(self, date):
+    def moving_average_value(self, date):
         """ 計算成交股數均量與持續天數 """
-        val, conti = self.__cal_MA(date, 1)
+        val, conti = self.__calculate_moving_average(date, 1)
         val = (round(i / 1000, 3) for i in val)
         return list(val), conti
 
-    def MAO(self, date1, date2):
+    def moving_average_bias_ratio(self, date1, date2):
         """ 計算乖離率（均價）
             date1 - date2
             回傳 tuple:
                 1.序列 舊→新
                 2.持續天數
         """
-        a = self.MA(date1)[0]
-        b = self.MA(date2)[0]
-        cal_list = [a[-i] - b[-i] for i in range(1, min(len(a), len(b)) + 1)]
+        data1 = self.moving_average(date1)[0]
+        data2 = self.moving_average(date2)[0]
+        cal_list = []
+        for i in range(1, min(len(data1), len(data2)) + 1):
+            cal_list.append(data1[-i] - data2[-i])
         cal_list.reverse()
         cont = self.__cal_continue(cal_list)
         return cal_list, cont
@@ -223,28 +228,32 @@ class stock(object):
         val = (round(i / 1000, 3) for i in self.__serial_price(1))
         return list(val)
 
-    def __cal_MAOPoint(self, data, s=5, pm=False):
+    @classmethod
+    def __cal_ma_bias_ratio_point(cls, data, sample=5,
+                                  positive_or_negative=False):
         """判斷轉折點位置
-           s = 取樣判斷區間
-           pm = True（正）/False（負）轉折
+           sample = 取樣判斷區間
+           positive_or_negative = True（正）/False（負）轉折
            return (T/F, 第幾個轉折日, 轉折點值)
         """
-        c = data[-s:]
-        if pm:  # 正
-            ckvalue = max(c)  # 尋找最大值
-            preckvalue = max(c) > 0  # 區間最大值必須為正
+        sample_data = data[-sample:]
+        if positive_or_negative:  # 正
+            ckvalue = max(sample_data)  # 尋找最大值
+            preckvalue = max(sample_data) > 0  # 區間最大值必須為正
         else:
-            ckvalue = min(c)  # 尋找最小值
-            preckvalue = max(c) < 0  # 區間最大值必須為負
-        return (s - c.index(ckvalue) < 4 and c.index(ckvalue) != s - 1 \
-                and preckvalue,
-                s - c.index(ckvalue) - 1,
+            ckvalue = min(sample_data)  # 尋找最小值
+            preckvalue = max(sample_data) < 0  # 區間最大值必須為負
+        return (sample - sample_data.index(ckvalue) < 4 and \
+                sample_data.index(ckvalue) != sample - 1 and preckvalue,
+                sample - sample_data.index(ckvalue) - 1,
                 ckvalue)
 
-    def ckMAO(self, data, s=5, pm=False):
+    def check_moving_average_bias_ratio(self, data, sample=5,
+                                        positive_or_negative=False):
         """判斷正負乖離轉折點位置
-           s = 取樣判斷區間
-           pm = True（正）/False（負）乖離
+           sample = 取樣判斷區間
+           positive_or_negative = True（正）/False（負）乖離
            return (T/F, 第幾轉折日, 乖離轉折點值)
         """
-        return self.__cal_MAOPoint(data, s, pm)
+        return self.__cal_ma_bias_ratio_point(data, sample,
+                                              positive_or_negative)

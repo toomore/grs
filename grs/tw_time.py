@@ -1,6 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (c) 2012 Toomore Chiang, http://toomore.net/
+''' Taiwan time UTF+8  '''
+# Copyright (c) 2012, 2013, 2014 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,37 +29,34 @@ class TWTime(object):
     ''' Transform localtime to Taiwan time in UTF+8
         轉換當地時間到台灣時間 UTF+8
     '''
-    def __init__(self, tz=8):
-        try:
-            self.TimeZone = float(tz)
-        except:
-            self.TimeZone = 8
 
-    @property
+    def __init__(self, tz=8):
+        assert isinstance(tz, (int, float))
+        self.time_zone = tz
+
     def now(self):
         ''' Display Taiwan Time now
             顯示台灣此刻時間
         '''
         utcnow = datetime.utcnow()
-        return utcnow + timedelta(hours=self.TimeZone)
+        return utcnow + timedelta(hours=self.time_zone)
 
-    @property
     def date(self):
         ''' Display Taiwan date now
             顯示台灣此刻日期
         '''
         utcnow = datetime.utcnow()
-        return (utcnow + timedelta(hours=self.TimeZone)).date()
+        return (utcnow + timedelta(hours=self.time_zone)).date()
 
-    @property
-    def localtime(self):
+    @staticmethod
+    def localtime():
         ''' Display localtime now
             顯示當地此刻時間
         '''
         return datetime.now()
 
-    @property
-    def localdate(self):
+    @staticmethod
+    def localdate():
         ''' Display localdate now
             顯示當地此刻日期
         '''
@@ -67,17 +64,32 @@ class TWTime(object):
 
 
 class Countdown(object):
-    """ 倒數
-        nextday: 下一個日期
-        countdown: 到達下一個日期的秒數
-        exptime: 下一個日期時間
-        lastmod: 起點日期時間
-    """
-    def __init__(self, h=14, m=30):
-        self.__back = timedelta(hours=h - 8, minutes=m)
+    ''' 倒數
+    '''
+    def __init__(self, hour=14, minutes=30):
+        self.__back = timedelta(hours=hour - 8, minutes=minutes)
         self.__zero = datetime.utcnow() - self.__back
-        self.nextday = self.__zero.date() + timedelta(days=1)
-        self.nextday = datetime.combine(self.nextday, time())
-        self.countdown = (self.nextday - self.__zero).seconds
-        self.exptime = self.nextday + timedelta(hours=h - 8, minutes=m)
-        self.lastmod = self.exptime - timedelta(days=1)
+        self.__hour = hour
+        self.__minutes = minutes
+
+    @property
+    def nextday(self):
+        ''' nextday: 下一個日期 '''
+        nextday = self.__zero.date() + timedelta(days=1)
+        return datetime.combine(nextday, time())
+
+    @property
+    def countdown(self):
+        ''' countdown: 到達下一個日期的秒數 '''
+        return (self.nextday - self.__zero).seconds
+
+    @property
+    def exptime(self):
+        ''' exptime: 下一個日期時間 '''
+        return self.nextday + timedelta(hours=self.__hour - 8,
+                                        minutes=self.__minutes)
+
+    @property
+    def lastmod(self):
+        ''' lastmod: 起點日期時間 '''
+        return self.exptime - timedelta(days=1)
