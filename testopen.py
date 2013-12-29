@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from grs import twseopen
 from datetime import datetime
+from grs import TWSEOpen
 
-t = twseopen()
+t = TWSEOpen()
 
-print t.Dday(datetime.today())
-print t.Dday(datetime(2014, 1, 1))
+print t.d_day(datetime.today())
+print t.d_day(datetime(2014, 1, 1))
