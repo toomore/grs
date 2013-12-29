@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+''' All grs module '''
 # Copyright (c) 2012 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
