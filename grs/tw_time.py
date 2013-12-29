@@ -67,16 +67,31 @@ class TWTime(object):
 
 class Countdown(object):
     ''' 倒數
-        nextday: 下一個日期
-        countdown: 到達下一個日期的秒數
-        exptime: 下一個日期時間
-        lastmod: 起點日期時間
     '''
-    def __init__(self, h=14, m=30):
-        self.__back = timedelta(hours=h - 8, minutes=m)
+    def __init__(self, hour=14, minutes=30):
+        self.__back = timedelta(hours=hour - 8, minutes=minutes)
         self.__zero = datetime.utcnow() - self.__back
-        self.nextday = self.__zero.date() + timedelta(days=1)
-        self.nextday = datetime.combine(self.nextday, time())
-        self.countdown = (self.nextday - self.__zero).seconds
-        self.exptime = self.nextday + timedelta(hours=h - 8, minutes=m)
-        self.lastmod = self.exptime - timedelta(days=1)
+        self.__hour = hour
+        self.__minutes = minutes
+
+    @property
+    def nextday(self):
+        ''' nextday: 下一個日期 '''
+        nextday = self.__zero.date() + timedelta(days=1)
+        return datetime.combine(nextday, time())
+
+    @property
+    def countdown(self):
+        ''' countdown: 到達下一個日期的秒數 '''
+        return (self.nextday - self.__zero).seconds
+
+    @property
+    def exptime(self):
+        ''' exptime: 下一個日期時間 '''
+        return self.nextday + timedelta(hours=self.__hour - 8,
+                                        minutes=self.__minutes)
+
+    @property
+    def lastmod(self):
+        ''' lastmod: 起點日期時間 '''
+        return self.exptime - timedelta(days=1)
