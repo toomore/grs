@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+''' Taiwan time UTF+8  '''
 # Copyright (c) 2012 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,11 +29,10 @@ class TWTime(object):
     ''' Transform localtime to Taiwan time in UTF+8
         轉換當地時間到台灣時間 UTF+8
     '''
+
     def __init__(self, tz=8):
-        try:
-            self.TimeZone = float(tz)
-        except:
-            self.TimeZone = 8
+        assert isinstance(tz, (int, float))
+        self.time_zone = tz
 
     @property
     def now(self):
@@ -41,7 +40,7 @@ class TWTime(object):
             顯示台灣此刻時間
         '''
         utcnow = datetime.utcnow()
-        return utcnow + timedelta(hours=self.TimeZone)
+        return utcnow + timedelta(hours=self.time_zone)
 
     @property
     def date(self):
@@ -49,17 +48,17 @@ class TWTime(object):
             顯示台灣此刻日期
         '''
         utcnow = datetime.utcnow()
-        return (utcnow + timedelta(hours=self.TimeZone)).date()
+        return (utcnow + timedelta(hours=self.time_zone)).date()
 
-    @property
-    def localtime(self):
+    @staticmethod
+    def localtime():
         ''' Display localtime now
             顯示當地此刻時間
         '''
         return datetime.now()
 
-    @property
-    def localdate(self):
+    @staticmethod
+    def localdate():
         ''' Display localdate now
             顯示當地此刻日期
         '''
@@ -67,12 +66,12 @@ class TWTime(object):
 
 
 class Countdown(object):
-    """ 倒數
+    ''' 倒數
         nextday: 下一個日期
         countdown: 到達下一個日期的秒數
         exptime: 下一個日期時間
         lastmod: 起點日期時間
-    """
+    '''
     def __init__(self, h=14, m=30):
         self.__back = timedelta(hours=h - 8, minutes=m)
         self.__zero = datetime.utcnow() - self.__back
