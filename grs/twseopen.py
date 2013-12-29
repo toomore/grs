@@ -41,7 +41,7 @@ class TWSEOpen(object):
             self.twtime = TWTime().date
         else:
             pass
-        return self.__caldata(time)
+        return self.caldata(time)
 
     @staticmethod
     def __loaddate():
@@ -56,14 +56,16 @@ class TWSEOpen(object):
             result['open'] = []
             for i in csv_data:
                 if i[1] == '0':  # 0 = 休市
-                    result['close'] += [datetime.strptime(i[0], '%Y/%m/%d').date()]
+                    result['close'].append(datetime.strptime(i[0],
+                                                             '%Y/%m/%d').date())
                 elif i[1] == '1':  # 1 = 開市
-                    result['open'] += [datetime.strptime(i[0], '%Y/%m/%d').date()]
+                    result['open'].append(datetime.strptime(i[0],
+                                                            '%Y/%m/%d').date())
                 else:
                     pass
             return result
 
-    def __caldata(self, time):
+    def caldata(self, time):
         ''' Market open or not.
             回傳 True：開市，False：休市。
         '''
