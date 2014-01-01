@@ -24,7 +24,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.4.0 of 2013/12/30
+:Version: 0.4.1 of 2014/01/02
 :Python Version: Python 2.7, PyPy
 
 -----------------------------
@@ -276,6 +276,13 @@ Quick Start
 -----------------------------
 Change Logs
 -----------------------------
+
+0.4.1 2014/01/02
+====================================
+
+- 修正：Countdown().countdown 秒數問題
+- 新增：twse_no, twse_open, twse_realtime, countdown into unittest
+- 移除：Support Python 2.6
 
 0.4.0 2013/12/30
 ====================================
