@@ -52,7 +52,8 @@ class TestGrs(unittest.TestCase):
         assert isinstance(self.data.openprice, list)
         assert isinstance(self.data.value, list)
 
-    def test_twse_no(self):
+    @staticmethod
+    def test_twse_no():
         twse_no = grs.TWSENo()
         assert isinstance(twse_no.all_stock, dict)
         result = twse_no.search(u'中')
@@ -61,12 +62,14 @@ class TestGrs(unittest.TestCase):
         result = twse_no.searchbyno(17)
         assert 1701 in result
 
-    def test_twse_open(self):
+    @staticmethod
+    def test_twse_open():
         is_open = grs.TWSEOpen()
         result = is_open.d_day(datetime(2014, 1, 1))
         assert result is False
 
-    def test_realtime(self):
+    @staticmethod
+    def test_realtime():
         real_time = grs.RealtimeStock('2618')
         assert real_time.real['no'] == '2618'
         real_time = grs.RealtimeWeight()
