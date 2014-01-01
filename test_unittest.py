@@ -72,5 +72,10 @@ class TestGrs(unittest.TestCase):
         real_time = grs.RealtimeWeight()
         assert real_time.real['no'] == '1'
 
+    @staticmethod
+    def test_countdown():
+        result = grs.Countdown().countdown
+        assert isinstance(result, int)
+
 if __name__ == '__main__':
     unittest.main()
