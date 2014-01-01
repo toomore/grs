@@ -8,39 +8,46 @@ import unittest
 
 
 class TestGrs(unittest.TestCase):
-    def setUp(self):
+    def get_data(self):
         self.stock_no = '2618'
         self.data = grs.Stock(self.stock_no)
 
     def test_stock(self):
+        self.get_data()
         assert self.data.info[0] == self.stock_no
 
     def test_best_buy_or_sell(self):
+        self.get_data()
         assert isinstance(grs.BestFourPoint(self.data).best_four_point(),
                           (tuple, NoneType))
 
     def test_moving_average(self):
+        self.get_data()
         result = self.data.moving_average(3)
         assert isinstance(result[0], list)
         assert isinstance(result[1], int)
 
     def test_moving_average_value(self):
+        self.get_data()
         result = self.data.moving_average_value(3)
         assert isinstance(result[0], list)
         assert isinstance(result[1], int)
 
     def test_moving_average_bias_ratio(self):
+        self.get_data()
         result = self.data.moving_average_bias_ratio(6, 3)
         assert isinstance(result[0], list)
         assert isinstance(result[1], int)
 
     def test_check_moving_average_bias_ratio(self):
+        self.get_data()
         result = self.data.check_moving_average_bias_ratio(
                                self.data.moving_average_bias_ratio(3, 6)[0],
                                positive_or_negative=True)[0]
         assert isinstance(result, BooleanType)
 
     def test_stock_value(self):
+        self.get_data()
         assert isinstance(self.data.price, list)
         assert isinstance(self.data.openprice, list)
         assert isinstance(self.data.value, list)
@@ -60,8 +67,8 @@ class TestGrs(unittest.TestCase):
         assert result is False
 
     def test_realtime(self):
-        real_time = grs.RealtimeStock(self.stock_no)
-        assert real_time.real['no'] == self.stock_no
+        real_time = grs.RealtimeStock('2618')
+        assert real_time.real['no'] == '2618'
         real_time = grs.RealtimeWeight()
         assert real_time.real['no'] == '1'
 
