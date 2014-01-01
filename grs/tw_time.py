@@ -68,9 +68,13 @@ class Countdown(object):
     '''
     def __init__(self, hour=14, minutes=30):
         self.__back = timedelta(hours=hour - 8, minutes=minutes)
-        self.__zero = datetime.utcnow() - self.__back
         self.__hour = hour
         self.__minutes = minutes
+
+    @property
+    def __zero(self):
+        ''' 取得現在時間（秒） '''
+        return datetime.utcnow() - self.__back
 
     @property
     def nextday(self):
