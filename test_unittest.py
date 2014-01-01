@@ -59,5 +59,11 @@ class TestGrs(unittest.TestCase):
         result = is_open.d_day(datetime(2014, 1, 1))
         assert result is False
 
+    def test_realtime(self):
+        real_time = grs.RealtimeStock(self.stock_no)
+        assert real_time.real['no']  == self.stock_no
+        real_time = grs.RealtimeWeight()
+        assert real_time.real['no'] == '1'
+
 if __name__ == '__main__':
     unittest.main()
