@@ -61,7 +61,7 @@ class TestGrs(unittest.TestCase):
 
     def test_realtime(self):
         real_time = grs.RealtimeStock(self.stock_no)
-        assert real_time.real['no']  == self.stock_no
+        assert real_time.real['no'] == self.stock_no
         real_time = grs.RealtimeWeight()
         assert real_time.real['no'] == '1'
 
