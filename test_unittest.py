@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' Unittest '''
+from datetime import datetime
 from types import BooleanType
 from types import NoneType
 import grs
@@ -52,6 +53,11 @@ class TestGrs(unittest.TestCase):
         assert 1701 in result
         result = twse_no.searchbyno(17)
         assert 1701 in result
+
+    def test_twse_open(self):
+        is_open = grs.TWSEOpen()
+        result = is_open.d_day(datetime(2014, 1, 1))
+        assert result is False
 
 if __name__ == '__main__':
     unittest.main()

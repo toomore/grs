@@ -6,6 +6,5 @@ python:
 install: python setup.py install
 script:
     - python grsTestAll.py
-    - python testopen.py
     - python test_realtime.py
     - python test_unittest.py
