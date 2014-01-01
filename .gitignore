@@ -1,2 +1,5 @@
 *.pyc
 *.pylint
+build/
+dist/
+grs.egg-info/
