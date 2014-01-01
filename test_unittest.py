@@ -44,5 +44,14 @@ class TestGrs(unittest.TestCase):
         assert isinstance(self.data.openprice, list)
         assert isinstance(self.data.value, list)
 
+    def test_twse_no(self):
+        twse_no = grs.TWSENo()
+        assert isinstance(twse_no.all_stock, dict)
+        result = twse_no.search(u'中')
+        # 1701 中化
+        assert 1701 in result
+        result = twse_no.searchbyno(17)
+        assert 1701 in result
+
 if __name__ == '__main__':
     unittest.main()
