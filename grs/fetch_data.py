@@ -35,6 +35,7 @@ class Stock(object):
             :stock_no : 股價代碼
             :mons : 擷取近 n 個月的資料
         """
+        assert isinstance(stock_no, str), '`stock_no` must be a string'
         self.__get_mons = 0
         self.__get_no = 0
         self.__info = ()
