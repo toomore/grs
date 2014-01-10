@@ -74,6 +74,12 @@ class TestGrs(unittest.TestCase):
         assert real_time.real['no'] == '2618'
         real_time = grs.RealtimeWeight()
         assert real_time.real['no'] == '1'
+        real_time = grs.RealtimeStock('0050')
+        assert real_time.real['no'] == '0050'
+        try:
+            real_time = grs.RealtimeStock(0050)
+        except AssertionError:
+            pass
 
     @staticmethod
     def test_countdown():
