@@ -24,7 +24,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.4.1 of 2014/01/02
+:Version: 0.4.2 of 2014/01/11
 :Python Version: Python 2.7, PyPy
 
 -----------------------------
@@ -276,6 +276,13 @@ Quick Start
 -----------------------------
 Change Logs
 -----------------------------
+
+
+0.4.2 2014/01/11
+====================================
+
+- 修正：Stock 參數 `stock_no`, RealtimeStock 參數 `no` 必須為 string.
+  `Issues #9 <https://github.com/toomore/grs/issues/9>`_
 
 0.4.1 2014/01/02
 ====================================
