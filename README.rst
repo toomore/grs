@@ -281,7 +281,7 @@ Change Logs
 0.4.2 2014/01/11
 ====================================
 
-- 修正：Stock 參數 `stock_no`, RealtimeStock 參數 `no` 必須為 string.
+- 修正：Stock ``stock_no``, RealtimeStock ``no`` 必須為 *string*.
   `Issues #9 <https://github.com/toomore/grs/issues/9>`_
 
 0.4.1 2014/01/02
