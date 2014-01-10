@@ -61,6 +61,7 @@ class RealtimeStock(object):
             crosspic: K線圖 by Google Chart
     """
     def __init__(self, no):
+        assert isinstance(no, str), '`no` must be a string'
         self.__raw = ''
         page = urllib2.urlopen(
             'http://mis.tse.com.tw/data/{0}.csv?r={1}'.format(

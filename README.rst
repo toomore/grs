@@ -24,7 +24,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.4.1 of 2014/01/02
+:Version: 0.4.2 of 2014/01/11
 :Python Version: Python 2.7, PyPy
 
 -----------------------------
@@ -56,7 +56,7 @@ Quick Start
 
     from grs import Stock
 
-    stock = Stock(2618)                          # 擷取長榮航股價
+    stock = Stock('2618')                        # 擷取長榮航股價
     print stock.moving_average(5)                # 計算五日均價與持續天數
     print stock.moving_average_value(5)          # 計算五日均量與持續天數
     print stock.moving_average_bias_ratio(5,10)  # 計算五日、十日乖離值與持續天數
@@ -66,7 +66,7 @@ Quick Start
 
 ::
 
-    stock = Stock(2618, 12)
+    stock = Stock('2618', 12)
 
 
 輸出 CSV 檔
@@ -89,8 +89,8 @@ Quick Start
     from grs import TWTime
 
     what_time = TWTime()
-    what_time.now()                 # 顯示台灣此刻時間
-    what_time.localtime()           # 顯示當地此刻時間
+    what_time.now()        # 顯示台灣此刻時間
+    what_time.localtime()  # 顯示當地此刻時間
 
 
 判斷台灣股市是否開市：TWSEOpen
@@ -115,9 +115,9 @@ Quick Start
 
     from grs import RealtimeStock 
 
-    realtime_stock = RealtimeStock(2618)  # 擷取長榮航即時股價
-    realtime_stock.raw                    # 原始資料
-    realtime_stock.real                   # 回傳 type: dict（如下表）
+    realtime_stock = RealtimeStock('2618')  # 擷取長榮航即時股價
+    realtime_stock.raw                      # 原始資料
+    realtime_stock.real                     # 回傳 type: dict（如下表）
 
 
 :name:     股票名稱 Unicode
@@ -209,7 +209,7 @@ Quick Start
 
     from grs import Stock
 
-    stock = Stock(2618)
+    stock = Stock('2618')
     data = stock.moving_average_bias_ratio(3,6)[0]  # 取得 3-6 乖離值 type: list
 
     # 計算五個區間負乖離轉折點
@@ -228,7 +228,7 @@ Quick Start
     from grs import BestFourPoint
     from grs import Stock
 
-    stock = Stock(2618)
+    stock = Stock('2618')
     result = BestFourPoint(stock)
     result.best_four_point_to_buy()       # 判斷是否為四大買點
     result.best_four_point_to_sell()      # 判斷是否為四大賣點
@@ -264,7 +264,7 @@ Quick Start
 
     from grs import Stock
 
-    stock = Stock(2618)                  # 預設為抓取３個月份資料
+    stock = Stock('2618')                # 預設為抓取３個月份資料
     stock.moving_average(60)
     IndexError: list index out of range  # 資料不足
     len(stock.raw)                       # 回傳 51 個值
@@ -276,6 +276,13 @@ Quick Start
 -----------------------------
 Change Logs
 -----------------------------
+
+
+0.4.2 2014/01/11
+====================================
+
+- 修正：Stock ``stock_no``, RealtimeStock ``no`` 必須為 *string*.
+  `Issues #9 <https://github.com/toomore/grs/issues/9>`_
 
 0.4.1 2014/01/02
 ====================================
