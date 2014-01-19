@@ -102,7 +102,7 @@ class Stock(object):
         result = [i.decode('cp950') for i in self.__raw_rows_name]
         return result
 
-    def __fetch_data(self, stock_no, nowdatetime=datetime.today()):
+    def __fetch_data(self, stock_no, nowdatetime):
         """ Fetch data from twse.com.tw
             return list.
             從 twse.com.tw 下載資料，回傳格式為 csv.reader
@@ -118,9 +118,8 @@ class Stock(object):
             8. 成交筆數
 
             :param str stock_no: 股票代碼
+            :param datetime nowdatetime: 此刻時間
             :rtype: list
-
-            .. todo:: `nowdatetime` default value fail.
         """
         url = (
             'http://www.twse.com.tw/ch/trading/exchange/' +
