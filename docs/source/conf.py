@@ -339,6 +339,7 @@ epub_copyright = u'2014, Toomore Chiang'
 # If false, no index is generated.
 #epub_use_index = True
 
+todo_include_todos = True
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'http://docs.python.org/': None}
