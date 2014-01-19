@@ -34,7 +34,12 @@ class TWSEOpen(object):
         self.twtime = ''
 
     def d_day(self, time):
-        ''' 指定日期 '''
+        ''' 指定日期
+
+            :param datetime time: 欲判斷的日期
+            :rtype: bool
+            :returns: True 為開市、False 為休市
+        '''
         if type(time) == type(TWTime().now):
             self.twtime = TWTime().now
         elif type(time) == type(TWTime().date):
@@ -67,7 +72,10 @@ class TWSEOpen(object):
 
     def caldata(self, time):
         ''' Market open or not.
-            回傳 True：開市，False：休市。
+
+            :param datetime time: 欲判斷的日期
+            :rtype: bool
+            :returns: True 為開市、False 為休市
         '''
         if time.date() in self.__ocdate['close']:  # 判對是否為法定休市
             return False

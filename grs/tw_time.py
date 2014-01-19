@@ -28,6 +28,8 @@ from datetime import timedelta
 class TWTime(object):
     ''' Transform localtime to Taiwan time in UTF+8
         轉換當地時間到台灣時間 UTF+8
+
+        :param int tz: 時區，預設為 8
     '''
 
     def __init__(self, tz=8):
@@ -65,6 +67,9 @@ class TWTime(object):
 
 class Countdown(object):
     ''' 倒數
+
+        :param int hour: 設定倒數的時刻小時，預設為 14
+        :param int minutes: 設定倒數的時刻分鐘，預設為 30
     '''
     def __init__(self, hour=14, minutes=30):
         self.__back = timedelta(hours=hour - 8, minutes=minutes)
@@ -78,22 +83,36 @@ class Countdown(object):
 
     @property
     def nextday(self):
-        ''' nextday: 下一個日期 '''
+        ''' nextday: 下一個日期
+
+            :rtype: datetime
+            :returns: 下一個預設時間日期
+        '''
         nextday = self.__zero.date() + timedelta(days=1)
         return datetime.combine(nextday, time())
 
     @property
     def countdown(self):
-        ''' countdown: 到達下一個日期的秒數 '''
+        ''' countdown: 到達下一個日期的秒數
+
+            :rtype: int
+            :returns: 下一個預設的秒數
+        '''
         return (self.nextday - self.__zero).seconds
 
     @property
     def exptime(self):
-        ''' exptime: 下一個日期時間 '''
+        ''' exptime: 下一個日期時間
+
+            :returns: 下一個預設時間
+        '''
         return self.nextday + timedelta(hours=self.__hour - 8,
                                         minutes=self.__minutes)
 
     @property
     def lastmod(self):
-        ''' lastmod: 起點日期時間 '''
+        ''' lastmod: 起點日期時間
+
+            :returns: 起點日期時間
+        '''
         return self.exptime - timedelta(days=1)

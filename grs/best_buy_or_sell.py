@@ -22,12 +22,18 @@
 
 
 class BestFourPoint(object):
-    """ 四大買點組合 """
+    """ 四大買點組合
+
+        :param grs.Stock data: 個股資料
+    """
     def __init__(self, data):
         self.data = data
 
     def bias_ratio(self, positive_or_negative=False):
-        """ 判斷乖離 """
+        """ 判斷乖離
+
+            :param bool positive_or_negative: 正乖離 為 True，負乖離 為 False
+        """
         return self.data.check_moving_average_bias_ratio(
                                self.data.moving_average_bias_ratio(3, 6)[0],
                                positive_or_negative=positive_or_negative)[0]
