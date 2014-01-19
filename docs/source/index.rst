@@ -12,6 +12,16 @@ Welcome to grs's documentation!
    index
    quick-start
 
+
+All class
+-----------
+
+.. toctree::
+   :maxdepth: 2
+
+   上市股票列表 grs.TWSENo <twseno>
+   判斷是否開市 grs.TWSEOpen <twseopen>
+
 ============================
 grs 台灣上市股票價格擷取
 ============================
