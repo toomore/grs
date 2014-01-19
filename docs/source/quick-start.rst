@@ -27,6 +27,8 @@ Quick Start
 
     stock.out_putfile('/dev/shm/2618.csv')
 
+.. seealso:: :doc:`fetch_data`
+
 -----------------------------
 其他功能
 -----------------------------
@@ -44,6 +46,7 @@ Quick Start
     what_time.now()        # 顯示台灣此刻時間
     what_time.localtime()  # 顯示當地此刻時間
 
+.. seealso:: :doc:`tw_time`
 
 判斷台灣股市是否開市：TWSEOpen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -58,6 +61,8 @@ Quick Start
     open_or_not.d_day(datetime.today())        # 判斷今天是否開市
                                                # 回傳 True or False
     open_or_not.d_day(datetime(2012, 12, 22))  # 判斷 2012/12/22 是否開市
+
+.. seealso:: :doc:`twseopen`
 
 
 各股即時盤資訊：RealtimeStock
@@ -135,6 +140,7 @@ Quick Start
     twse_no.searchbyno(23)  # 搜尋股票代碼，回傳 type: dict
     twse_no.last_update     # 回傳列表最後更新時間（非同步）type: str
 
+.. seealso:: :doc:`twseno`
 
 單日倒數時間：Countdown
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -151,6 +157,7 @@ Quick Start
     countdown.exptime    # 下一個 14:30 日期時間（type: datetime）
     countdown.lastmod    # 前一個 14:30 日期時間（type: datetime）
 
+.. seealso:: :doc:`tw_time`
 
 判斷乖離轉折點：Stock(no).check_moving_average_bias_ratio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -169,6 +176,7 @@ Quick Start
                                                     positive_or_negative= False)
     print check_data  # (T/F, 第幾轉折日, 乖離轉折點值) type: tuple
 
+.. seealso:: :doc:`fetch_data`
 
 四大買賣點判斷：BestFourPoint
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -206,6 +214,7 @@ Quick Start
         except:     # 不作為或資料不足
             print 'X: {0}'.format(i)
 
+.. seealso:: :doc:`best_buy_or_sell`
 
 擴充月份資料：Stock(no).plus_mons(month)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -224,3 +233,4 @@ Quick Start
     len(stock.raw)                       # 回傳 66 個值
     stock.moving_average(60)             # 計算成功
 
+.. seealso:: :doc:`fetch_data`
