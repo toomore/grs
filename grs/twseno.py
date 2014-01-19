@@ -79,7 +79,7 @@ class TWSENo(object):
     def search(self, name):
         """ 搜尋股票名稱 by unicode
 
-            :parma str name: 欲搜尋的字串
+            :param str name: 欲搜尋的字串
             :rtype: list
         """
         pattern = re.compile(name)
@@ -94,7 +94,7 @@ class TWSENo(object):
     def searchbyno(self, name):
         """ 搜尋股票代碼
 
-            :parma str name: 欲搜尋的字串
+            :param str name: 欲搜尋的字串
             :rtype: list
         """
         pattern = re.compile(str(name))
