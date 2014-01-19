@@ -77,7 +77,11 @@ class TWSENo(object):
             return result
 
     def search(self, name):
-        """ 搜尋股票名稱 by unicode """
+        """ 搜尋股票名稱 by unicode
+
+            :parma str name: 欲搜尋的字串
+            :rtype: list
+        """
         pattern = re.compile(name)
         result = {}
         for i in self.__allstockno:
@@ -88,7 +92,11 @@ class TWSENo(object):
         return result
 
     def searchbyno(self, name):
-        """ 搜尋股票代碼 """
+        """ 搜尋股票代碼
+
+            :parma str name: 欲搜尋的字串
+            :rtype: list
+        """
         pattern = re.compile(str(name))
         result = {}
         for i in self.__allstockno:
@@ -100,25 +108,40 @@ class TWSENo(object):
 
     @property
     def all_stock(self):
-        """ 回傳上市股票代碼與名稱 type: dict """
+        """ 回傳上市股票代碼與名稱
+
+            :rtype: dict
+        """
         return self.__allstockno
 
     @property
     def all_stock_no(self):
-        """ 回傳上市股票代碼 type: list """
+        """ 回傳上市股票代碼
+
+            :rtype: list
+        """
         return self.__allstockno.keys()
 
     @property
     def all_stock_name(self):
-        """ 回傳上市股票名稱 type: list """
+        """ 回傳上市股票名稱
+
+            :rtype: list
+        """
         return self.__allstockno.values()
 
     @property
     def industry_code(self):
-        """ 回傳類別代碼 by dict """
+        """ 回傳類別代碼
+
+            :rtype: dict
+        """
         return self.__industry_code()
 
     @property
     def industry_comps(self):
-        """ 回傳分類的股票 by dict """
+        """ 回傳分類的股票
+
+            :rtype: dict
+        """
         return self.__loadindcomps()
