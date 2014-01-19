@@ -206,8 +206,9 @@ class Stock(object):
 
             .. todo:: files output using `with` syntax.
         """
-        output = csv.writer(open(fpath, 'w'))
-        output.writerows(self.__raw_data)
+        with open(fpath, 'w') as csv_file:
+            output = csv.writer(csv_file)
+            output.writerows(self.__raw_data)
 
     def __serial_price(self, rows=6):
         """ 取出某一價格序列 *(舊→新)*
