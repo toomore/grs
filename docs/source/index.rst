@@ -6,24 +6,6 @@
 Welcome to grs's documentation!
 ===============================
 
-.. toctree::
-   :maxdepth: 2
-
-   index
-   quick-start
-
-
-All class
------------
-
-.. toctree::
-   :maxdepth: 2
-
-   上市股票列表 grs.TWSENo <twseno>
-   判斷是否開市 grs.TWSEOpen <twseopen>
-   時間、倒數處理 grs.TWTime/Countdown <tw_time>
-   四大買賣點判斷 grs.BestFourPoint <best_buy_or_sell>
-
 ============================
 grs 台灣上市股票價格擷取
 ============================
@@ -45,7 +27,6 @@ grs 台灣上市股票價格擷取
 
 主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
 
------------------------------
 版本資訊
 -----------------------------
 
@@ -53,26 +34,43 @@ grs 台灣上市股票價格擷取
 :Version: 0.4.2 of 2014/01/11
 :Python Version: Python 2.7, PyPy
 
------------------------------
 Requires
 -----------------------------
 
 - python-dateutil==1.5
 
------------------------------
 Report Issue or get involved
 -----------------------------
 
 - Github → https://github.com/toomore/grs
 - Issues → https://github.com/toomore/grs/issues
 
------------------------------
 Web Demo
 -----------------------------
 
 - grs Online → http://grs.toomore.net/
 
------------------------------
+Quick start
+------------
+
+.. toctree::
+   :maxdepth: 2
+
+   quick-start
+
+Feature
+-----------
+
+.. toctree::
+   :maxdepth: 2
+
+   擷取股票資訊 grs.Stock <fetch_data>
+   上市股票列表 grs.TWSENo <twseno>
+   判斷是否開市 grs.TWSEOpen <twseopen>
+   時間、倒數處理 grs.TWTime/Countdown <tw_time>
+   四大買賣點判斷 grs.BestFourPoint <best_buy_or_sell>
+
+
 Change Logs
 -----------------------------
 
