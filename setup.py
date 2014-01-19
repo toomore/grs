@@ -4,11 +4,11 @@
 from setuptools import setup, find_packages
 
 long_description = open('./README.rst', 'r').read()
-description = '台灣上市股票價格擷取（Fetch TWSE stock data）' + \
+description = '台灣上市股票價格擷取（Fetch Taiwan Stock Exchange data）' + \
               '含即時盤、台灣時間轉換、開休市判斷。'
 
 setup(name='grs',
-      version='0.4.2',
+      version='0.4.3',
       description=description,
       long_description=long_description,
       author='Toomore Chiang',
@@ -17,7 +17,7 @@ setup(name='grs',
       packages=['grs'],
       include_package_data=True,
       license='MIT',
-      keywords="stock taiwan taipei twse 台灣 股市 台北 即時",
+      keywords="Taiwan Stock Exchange taipei twse 台灣 股市 台北 即時",
       install_requires=['python-dateutil==1.5'],
       classifiers=[
           'Development Status :: 5 - Production/Stable',
