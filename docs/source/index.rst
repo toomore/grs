@@ -21,6 +21,7 @@ All class
 
    上市股票列表 grs.TWSENo <twseno>
    判斷是否開市 grs.TWSEOpen <twseopen>
+   時間、倒數處理 grs.TWTime/Countdown <tw_time>
 
 ============================
 grs 台灣上市股票價格擷取
