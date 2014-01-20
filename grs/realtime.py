@@ -39,26 +39,9 @@ def covstr(strings):
 class RealtimeStock(object):
     """ Real time fetch TW stock data.
         擷取即時盤的股價資訊
-        object.real return dict.
-        keys:
-            name:     股票名稱 Unicode
-            no:       股票代碼
-            range:    漲跌價
-            ranges:   漲跌判斷 True, False
-            time:     取得時間
-            max:      漲停價
-            min:      跌停價
-            unch:     昨日收盤價
-            pp:       漲跌幅 %
-            o:        開盤價
-            h:        當日最高價
-            l:        當日最低價
-            c:        成交價/收盤價
-            value:    累計成交量
-            pvalue:   該盤成交量
-            top5buy:  最佳五檔買進價量資訊
-            top5sell: 最佳五檔賣出價量資訊
-            crosspic: K線圖 by Google Chart
+
+        :param str no: 股票代碼
+        :rtype: dict
     """
     def __init__(self, no):
         assert isinstance(no, str), '`no` must be a string'
@@ -74,12 +57,39 @@ class RealtimeStock(object):
 
     @property
     def raw(self):
-        ''' Return raw data '''
+        ''' Return raw data
+
+            :rtype: list
+            :returns: raw data list
+        '''
         return self.__raw
 
     @property
     def real(self):
-        """ Real time data """
+        """ Real time data
+
+            :rtype: dict
+            :returns:
+
+                :name:     股票名稱 Unicode
+                :no:       股票代碼
+                :range:    漲跌價
+                :ranges:   漲跌判斷 True, False
+                :time:     取得時間
+                :max:      漲停價
+                :min:      跌停價
+                :unch:     昨日收盤價
+                :pp:       漲跌幅 %
+                :o:        開盤價
+                :h:        當日最高價
+                :l:        當日最低價
+                :c:        成交價/收盤價
+                :value:    累計成交量
+                :pvalue:   該盤成交量
+                :top5buy:  最佳五檔買進價量資訊
+                :top5sell: 最佳五檔賣出價量資訊
+                :crosspic: K線圖 by Google Chart
+        """
         try:
             unch = sum([covstr(self.__raw[3]), covstr(self.__raw[4])]) / 2
             result = {
@@ -135,7 +145,10 @@ class RealtimeStock(object):
 
 
 class RealtimeWeight(object):
-    ''' 大盤/各類別即時盤資訊 '''
+    """ 大盤/各類別即時盤資訊
+
+        代碼可以參考：http://goristock.appspot.com/API#apiweight
+    """
     def __init__(self):
         """ 大盤/各類別即時盤資訊
             代碼可以參考：http://goristock.appspot.com/API#apiweight
@@ -163,12 +176,20 @@ class RealtimeWeight(object):
 
     @property
     def raw(self):
-        ''' Return raw data '''
+        ''' Return raw data
+
+            :rtype: list
+            :returns: raw data list
+        '''
         return self.__raw
 
     @property
     def real(self):
-        ''' Get realtime data '''
+        ''' Get realtime data
+
+            :rtype: dict
+            :returns: 代碼可以參考：http://goristock.appspot.com/API#apiweight
+        '''
         result = self.__raw['1'].copy()
         result['c'] = self.__raw['1']['value']
         result['value'] = self.__raw['200']['v2']

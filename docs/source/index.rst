@@ -69,6 +69,7 @@ Feature
    上市股票列表 grs.TWSENo <twseno>
    判斷是否開市 grs.TWSEOpen <twseopen>
    時間、倒數處理 grs.TWTime/Countdown <tw_time>
+   盤中即時資訊擷取 grs.RealtimeStock/RealtimeWeight <realtime>
    四大買賣點判斷 grs.BestFourPoint <best_buy_or_sell>
 
 
