@@ -2,7 +2,7 @@
 grs 台灣上市股票價格擷取
 ============================
 
-.. image:: https://secure.travis-ci.org/toomore/grs.png
+.. image:: https://secure.travis-ci.org/toomore/grs.png?branch=master
    :target: http://travis-ci.org/toomore/grs
 
 .. image:: https://pypip.in/d/grs/badge.png
