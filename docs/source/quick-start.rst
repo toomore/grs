@@ -2,19 +2,21 @@
 Quick Start
 ===========
 
-簡單計算
+擷取上市股價資訊
+-----------------------------
 
 ::
 
     from grs import Stock
 
-    stock = Stock('2618')                        # 擷取長榮航股價
-    print stock.moving_average(5)                # 計算五日均價與持續天數
-    print stock.moving_average_value(5)          # 計算五日均量與持續天數
-    print stock.moving_average_bias_ratio(5,10)  # 計算五日、十日乖離值與持續天數
+    stock = Stock('2618')                         # 擷取長榮航股價
+    print stock.moving_average(5)                 # 計算五日均價與持續天數
+    print stock.moving_average_value(5)           # 計算五日均量與持續天數
+    print stock.moving_average_bias_ratio(5, 10)  # 計算五日、十日乖離值與持續天數
 
 
 擷取 12 個月份資料
+-----------------------------
 
 ::
 
@@ -22,6 +24,7 @@ Quick Start
 
 
 輸出 CSV 檔
+-----------------------------
 
 ::
 
@@ -29,12 +32,9 @@ Quick Start
 
 .. seealso:: :doc:`fetch_data`
 
------------------------------
-其他功能
------------------------------
 
 顯示台灣時間：TWTime
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
 
 適用於其他時區查詢台灣當地時間。
 
@@ -49,7 +49,7 @@ Quick Start
 .. seealso:: :doc:`tw_time`
 
 判斷台灣股市是否開市：TWSEOpen
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 ::
 
@@ -66,7 +66,7 @@ Quick Start
 
 
 各股即時盤資訊：RealtimeStock
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 ::
 
@@ -98,7 +98,7 @@ Quick Start
 
 
 大盤即時盤資訊：RealtimeWeight
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 ::
 
@@ -121,7 +121,7 @@ Quick Start
 
 
 上市股票代碼列表：TWSENo
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
 
 回傳上市股票代碼與搜尋
 
@@ -143,7 +143,7 @@ Quick Start
 .. seealso:: :doc:`twseno`
 
 單日倒數時間：Countdown
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
 
 適用於設定 cache 時間。
 
@@ -160,7 +160,7 @@ Quick Start
 .. seealso:: :doc:`tw_time`
 
 判斷乖離轉折點：Stock(no).check_moving_average_bias_ratio
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------------------------------------
 
 判斷乖離轉折點
 
@@ -169,7 +169,7 @@ Quick Start
     from grs import Stock
 
     stock = Stock('2618')
-    data = stock.moving_average_bias_ratio(3,6)[0]  # 取得 3-6 乖離值 type: list
+    data = stock.moving_average_bias_ratio(3, 6)[0]  # 取得 3-6 乖離值 type: list
 
     # 計算五個區間負乖離轉折點
     check_data = stock.check_moving_average_bias_ratio(data, sample=5,
@@ -179,7 +179,7 @@ Quick Start
 .. seealso:: :doc:`fetch_data`
 
 四大買賣點判斷：BestFourPoint
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 判斷是否為技術分析的四大買賣點，條件成立，回傳條件結果，判斷結果僅供參考！
 
@@ -217,7 +217,7 @@ Quick Start
 .. seealso:: :doc:`best_buy_or_sell`
 
 擴充月份資料：Stock(no).plus_mons(month)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------------------
 
 當原有的月份資料不夠時，不需要從頭抓取，只需要給予增額月份值即可。
 

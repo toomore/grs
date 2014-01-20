@@ -31,7 +31,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.4.2 of 2014/01/11
+:Version: 0.4.3 of 2014/01/22
 :Python Version: Python 2.7, PyPy
 
 Requires
@@ -42,13 +42,14 @@ Requires
 Report Issue or get involved
 -----------------------------
 
-- Github → https://github.com/toomore/grs
-- Issues → https://github.com/toomore/grs/issues
+- Github: https://github.com/toomore/grs
+- Issues: https://github.com/toomore/grs/issues
+- Docs: http://grs-docs.toomore.net/
 
 Web Demo
 -----------------------------
 
-- grs Online → http://grs.toomore.net/
+- grs Online: http://grs.toomore.net/
 
 Quick start
 ------------
@@ -73,6 +74,9 @@ Feature
 
 Change Logs
 -----------------------------
+
+* 0.4.3 2014/01/22
+    - 新增：`grs 文件 <http://grs-docs.toomore.net>`_.
 
 * 0.4.2 2014/01/11
     - 修正：Stock ``stock_no``, RealtimeStock ``no`` 必須為 *string*.
