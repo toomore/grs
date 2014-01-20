@@ -96,6 +96,8 @@ Quick Start
 :top5sell: 最佳五檔賣出價量資訊
 :crosspic: K線圖 by Google Chart
 
+.. seealso:: :doc:`realtime`
+
 
 大盤即時盤資訊：RealtimeWeight
 ---------------------------------
@@ -119,6 +121,7 @@ Quick Start
 :range: 漲跌指數
 :ud: 回傳漲（True）、跌（False）
 
+.. seealso:: :doc:`realtime`
 
 上市股票代碼列表：TWSENo
 -----------------------------
