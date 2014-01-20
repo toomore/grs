@@ -1,57 +1,9 @@
-============================
-grs 台灣上市股票價格擷取
-============================
 
-.. image:: https://secure.travis-ci.org/toomore/grs.png?branch=master
-   :target: http://travis-ci.org/toomore/grs
-
-.. image:: https://pypip.in/d/grs/badge.png
-   :target: https://pypi.python.org/pypi/grs
-
-.. image:: https://pypip.in/v/grs/badge.png
-   :target: https://pypi.python.org/pypi/grs
-
-.. image:: https://pypip.in/wheel/grs/badge.png
-   :target: https://pypi.python.org/pypi/grs
-
-.. image:: https://pypip.in/license/grs/badge.png
-   :target: https://pypi.python.org/pypi/grs
-
-主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
-
------------------------------
-版本資訊
------------------------------
-
-:Authors: Toomore Chiang
-:Version: 0.4.3 of 2014/01/22
-:Python Version: Python 2.7, PyPy
-:Docs: http://grs-docs.toomore.net/
-
------------------------------
-Requires
------------------------------
-
-- python-dateutil==1.5
-
------------------------------
-Report Issue or get involved
------------------------------
-
-- Github: https://github.com/toomore/grs
-- Issues: https://github.com/toomore/grs/issues
-
------------------------------
-Web Demo
------------------------------
-
-- grs Online: http://grs.toomore.net/
-
------------------------------
 Quick Start
------------------------------
+===========
 
-簡單計算
+擷取上市股價資訊
+-----------------------------
 
 ::
 
@@ -64,6 +16,7 @@ Quick Start
 
 
 擷取 12 個月份資料
+-----------------------------
 
 ::
 
@@ -71,17 +24,17 @@ Quick Start
 
 
 輸出 CSV 檔
+-----------------------------
 
 ::
 
     stock.out_putfile('/dev/shm/2618.csv')
 
------------------------------
-其他功能
------------------------------
+.. seealso:: :doc:`fetch_data`
+
 
 顯示台灣時間：TWTime
-=============================
+-----------------------------
 
 適用於其他時區查詢台灣當地時間。
 
@@ -93,9 +46,10 @@ Quick Start
     what_time.now()        # 顯示台灣此刻時間
     what_time.localtime()  # 顯示當地此刻時間
 
+.. seealso:: :doc:`tw_time`
 
 判斷台灣股市是否開市：TWSEOpen
-====================================
+----------------------------------
 
 ::
 
@@ -108,13 +62,15 @@ Quick Start
                                                # 回傳 True or False
     open_or_not.d_day(datetime(2012, 12, 22))  # 判斷 2012/12/22 是否開市
 
+.. seealso:: :doc:`twseopen`
+
 
 各股即時盤資訊：RealtimeStock
-====================================
+----------------------------------
 
 ::
 
-    from grs import RealtimeStock 
+    from grs import RealtimeStock
 
     realtime_stock = RealtimeStock('2618')  # 擷取長榮航即時股價
     realtime_stock.raw                      # 原始資料
@@ -140,9 +96,11 @@ Quick Start
 :top5sell: 最佳五檔賣出價量資訊
 :crosspic: K線圖 by Google Chart
 
+.. seealso:: :doc:`realtime`
+
 
 大盤即時盤資訊：RealtimeWeight
-====================================
+---------------------------------
 
 ::
 
@@ -153,7 +111,7 @@ Quick Start
     realtime_weight.real                # 回傳 type: dict（如下表）
 
 
-原始檔案包含其他資訊請參閱 `對照表 <http://goristock.appspot.com/API#apiweight>`_ 
+原始檔案包含其他資訊請參閱 `對照表 <http://goristock.appspot.com/API#apiweight>`_
 
 :no: 編號
 :date: 日期
@@ -163,9 +121,10 @@ Quick Start
 :range: 漲跌指數
 :ud: 回傳漲（True）、跌（False）
 
+.. seealso:: :doc:`realtime`
 
 上市股票代碼列表：TWSENo
-====================================
+-----------------------------
 
 回傳上市股票代碼與搜尋
 
@@ -184,9 +143,10 @@ Quick Start
     twse_no.searchbyno(23)  # 搜尋股票代碼，回傳 type: dict
     twse_no.last_update     # 回傳列表最後更新時間（非同步）type: str
 
+.. seealso:: :doc:`twseno`
 
 單日倒數時間：Countdown
-====================================
+-----------------------------
 
 適用於設定 cache 時間。
 
@@ -200,9 +160,10 @@ Quick Start
     countdown.exptime    # 下一個 14:30 日期時間（type: datetime）
     countdown.lastmod    # 前一個 14:30 日期時間（type: datetime）
 
+.. seealso:: :doc:`tw_time`
 
 判斷乖離轉折點：Stock(no).check_moving_average_bias_ratio
-================================================================
+------------------------------------------------------------------
 
 判斷乖離轉折點
 
@@ -218,9 +179,10 @@ Quick Start
                                                     positive_or_negative= False)
     print check_data  # (T/F, 第幾轉折日, 乖離轉折點值) type: tuple
 
+.. seealso:: :doc:`fetch_data`
 
 四大買賣點判斷：BestFourPoint
-====================================
+----------------------------------
 
 判斷是否為技術分析的四大買賣點，條件成立，回傳條件結果，判斷結果僅供參考！
 
@@ -255,9 +217,10 @@ Quick Start
         except:     # 不作為或資料不足
             print 'X: {0}'.format(i)
 
+.. seealso:: :doc:`best_buy_or_sell`
 
 擴充月份資料：Stock(no).plus_mons(month)
-============================================
+-----------------------------------------------
 
 當原有的月份資料不夠時，不需要從頭抓取，只需要給予增額月份值即可。
 
@@ -273,66 +236,4 @@ Quick Start
     len(stock.raw)                       # 回傳 66 個值
     stock.moving_average(60)             # 計算成功
 
-
------------------------------
-Change Logs
------------------------------
-
-0.4.3 2014/01/22
-====================================
-
-- 新增：`grs 文件 <http://grs-docs.toomore.net>`_.
-
-0.4.2 2014/01/11
-====================================
-
-- 修正：Stock ``stock_no``, RealtimeStock ``no`` 必須為 *string*.
-  `Issues #9 <https://github.com/toomore/grs/issues/9>`_
-
-0.4.1 2014/01/02
-====================================
-
-- 修正：Countdown().countdown 秒數問題
-- 新增：twse_no, twse_open, twse_realtime, countdown into unittest
-- 移除：Support Python 2.6
-
-0.4.0 2013/12/30
-====================================
-
-- 修正：Naming Convention
-- 修正：Coding style to fit PEP8
-- 新增：For PyPy
-
-0.3.0 2013/12/18
-====================================
-
-- 更新：股票代碼列表
-- 更新：2014 年集中交易市場開（休）市日期表
-
-0.2.1 2013/12/16
-====================================
-
-- 修正：部分資料改用 tuple
-
-0.2.0 2012/04/13
-====================================
-
-- 修正：輸出中文統一使用 Unicode
-- 修正：需要套件 python-dateutil 調整為 1.5
-- 修正：Web Demo 網站網址
-- 新增：Stock.plusMons() 擴充月份資料
-
-0.1.4 2012/04/01
-====================================
-
-- 修正：每月首日無資料抓取問題
-
-0.1.3 2012/03/31
-====================================
-
-- 修正：Countdown 倒數時間計算錯誤（dateutil.relativedelta）
-
-0.1.2 2012/03/31
-====================================
-
-- 修正：grs 倒數時間計算錯誤（dateutil.relativedelta）
+.. seealso:: :doc:`fetch_data`

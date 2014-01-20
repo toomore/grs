@@ -32,8 +32,10 @@ class Stock(object):
 
     def __init__(self, stock_no, mons=3):
         """ 擷取股票股價
-            :stock_no : 股價代碼
-            :mons : 擷取近 n 個月的資料
+
+            :param str stock_no: 股價代碼
+            :param int mons: 擷取近 n 個月的資料
+            :return: grs.Stock
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         self.__get_mons = 0
@@ -45,38 +47,79 @@ class Stock(object):
 
     @property
     def url(self):
-        """ [list] 擷取資料網址 """
+        """ 擷取資料網址
+
+            :rtype: list
+            :returns: url in list
+        """
+
         return self.__url
 
     @property
     def info(self):
-        """ [tuple] (股票代碼, 股票名稱) """
+        """ (股票代碼, 股票名稱)
+
+            :rtype: tuple
+            :returns: (股票代碼, 股票名稱)
+        """
         return self.__info
 
     @property
     def raw(self):
-        """ [list] 擷取原始檔案 """
+        """ 擷取原始檔案
+
+            :rtype: list
+            :returns: data in list
+        """
         return self.__raw_data
 
     def get_raw_rows(self, rows=6):
-        """ [list] 取出某一價格序列 舊→新
-            預設序列收盤價 → __serial_price(6)
+        """ 取出某一價格序列 *(舊→新)*
+
+            預設序列收盤價 *(self.__serial_price(6))*
+
+            :rtype: list
+            :returns: 預設序列收盤價 *(self.__serial_price(6))*
         """
         return self.__serial_price(rows)
 
     @property
     def get_raw_rows_name(self):
-        """ 原始檔案的欄位名稱 """
+        """ 原始檔案的欄位名稱
+
+            0. 日期
+            1. 成交股數
+            2. 成交金額
+            3. 開盤價
+            4. 最高價（續）
+            5. 最低價
+            6. 收盤價
+            7. 漲跌價差
+            8. 成交筆數
+
+            :rtype: list
+        """
         result = [i.decode('cp950') for i in self.__raw_rows_name]
         return result
 
-    def __fetch_data(self, stock_no, nowdatetime=datetime.today()):
+    def __fetch_data(self, stock_no, nowdatetime):
         """ Fetch data from twse.com.tw
             return list.
             從 twse.com.tw 下載資料，回傳格式為 csv.reader
-            欄位：
-                日期 成交股數 成交金額 開盤價 最高價 （續）
-                最低價 收盤價 漲跌價差 成交筆數
+
+            0. 日期
+            1. 成交股數
+            2. 成交金額
+            3. 開盤價
+            4. 最高價（續）
+            5. 最低價
+            6. 收盤價
+            7. 漲跌價差
+            8. 成交筆數
+
+            :param str stock_no: 股票代碼
+            :param datetime nowdatetime: 此刻時間
+            :rtype: list
         """
         url = (
             'http://www.twse.com.tw/ch/trading/exchange/' +
@@ -92,7 +135,11 @@ class Stock(object):
         return csv_read
 
     def __to_list(self, csv_file):
-        """ [tuple] 串接每日資料 舊→新"""
+        """ 串接每日資料 舊→新
+
+            :param csv csv_file: csv files
+            :rtype: list
+        """
         tolist = []
         for i in csv_file:
             i = [value.strip().replace(',', '') for value in i]
@@ -111,7 +158,12 @@ class Stock(object):
             return tuple([])
 
     def __serial_fetch(self, stock_no, month):
-        """ [tuple] 串接每月資料 舊→新 """
+        """ 串接每月資料 舊→新
+
+            :param str stock_no: 股票代碼
+            :param int month: 擷取 n 個月的資料
+            :rtype: tuple
+        """
         result = ()
         self.__get_mons = month
         self.__get_no = stock_no
@@ -122,7 +174,11 @@ class Stock(object):
         return tuple(result)
 
     def __plus_mons(self, month):
-        """ 增加 n 個月的資料 """
+        """ 增加 n 個月的資料
+
+            :param int month: 增加 n 個月的資料
+            :rtype: tuple
+        """
         result = []
         exist_mons = self.__get_mons
         oldraw = list(self.__raw_data)
@@ -137,27 +193,39 @@ class Stock(object):
         return tuple(result)
 
     def plus_mons(self, month):
-        """ 新增擴充月份資料 """
+        """ 新增擴充月份資料
+
+            :param int month: 增加 n 個月的資料
+        """
         self.__raw_data = self.__plus_mons(month)
 
     def out_putfile(self, fpath):
-        """ 輸出成 CSV 檔 """
-        output = csv.writer(open(fpath, 'w'))
-        output.writerows(self.__raw_data)
+        """ 輸出成 CSV 檔
+
+            :param path fpath: 檔案輸出位置
+
+            .. todo:: files output using `with` syntax.
+        """
+        with open(fpath, 'w') as csv_file:
+            output = csv.writer(csv_file)
+            output.writerows(self.__raw_data)
 
     def __serial_price(self, rows=6):
-        """ [list] 取出某一價格序列 舊→新
-            預設序列收盤價 → __serial_price(6)
+        """ 取出某一價格序列 *(舊→新)*
+
+            預設序列收盤價 *(self.__serial_price(6))*
+
+            :rtype: list
+            :returns: 預設序列收盤價 *(self.__serial_price(6))*
         """
         result = (float(i[rows]) for i in self.__raw_data)
         return list(result)
 
     def __calculate_moving_average(self, date, row):
         """ 計算移動平均數
-            row: 收盤價(6)、成交股數(1)
-            回傳 tuple:
-                1.序列 舊→新
-                2.持續天數
+
+            :param int row: 收盤價(6)、成交股數(1)
+            :rtype: tuple (序列 舊→新, 持續天數)
         """
         cal_data = self.__serial_price(row)
         result = []
@@ -171,7 +239,9 @@ class Stock(object):
     @classmethod
     def __cal_continue(cls, list_data):
         """ 計算持續天數
-            向量數值：正數向上、負數向下。
+
+            :rtype: int
+            :returns: 向量數值：正數向上、負數向下。
         """
         diff_data = []
         for i in range(1, len(list_data)):
@@ -188,11 +258,19 @@ class Stock(object):
         return cont * diff_data[0]
 
     def moving_average(self, date):
-        """ 計算收盤均價與持續天數 """
+        """ 計算 n 日收盤均價與持續天數
+
+            :param int date: n 日
+            :rtype: tuple (序列 舊→新, 持續天數)
+        """
         return self.__calculate_moving_average(date, 6)
 
     def moving_average_value(self, date):
-        """ 計算成交股數均量與持續天數 """
+        """ 計算 n 日成交股數均量與持續天數
+
+            :param int date: n 日
+            :rtype: tuple (序列 舊→新, 持續天數)
+        """
         val, conti = self.__calculate_moving_average(date, 1)
         val = (round(i / 1000, 3) for i in val)
         return list(val), conti
@@ -200,9 +278,10 @@ class Stock(object):
     def moving_average_bias_ratio(self, date1, date2):
         """ 計算乖離率（均價）
             date1 - date2
-            回傳 tuple:
-                1.序列 舊→新
-                2.持續天數
+
+            :param int data1: n 日
+            :param int data2: m 日
+            :rtype: tuple (序列 舊→新, 持續天數)
         """
         data1 = self.moving_average(date1)[0]
         data2 = self.moving_average(date2)[0]
@@ -215,17 +294,26 @@ class Stock(object):
 
     @property
     def price(self):
-        """ 收盤價股價序列 """
+        """ 收盤價股價序列
+
+            :rtype: list
+        """
         return self.__serial_price()
 
     @property
     def openprice(self):
-        """ 開盤價股價序列 """
+        """ 開盤價股價序列
+
+            :rtype: list
+        """
         return self.__serial_price(3)
 
     @property
     def value(self):
-        """ 成交量序列 """
+        """ 成交量序列
+
+            :rtype: list
+        """
         val = (round(i / 1000, 3) for i in self.__serial_price(1))
         return list(val)
 
@@ -233,9 +321,12 @@ class Stock(object):
     def __cal_ma_bias_ratio_point(cls, data, sample=5,
                                   positive_or_negative=False):
         """判斷轉折點位置
-           sample = 取樣判斷區間
-           positive_or_negative = True（正）/False（負）轉折
-           return (T/F, 第幾個轉折日, 轉折點值)
+
+           :param list data: 計算資料
+           :param int sample: 計算的區間樣本數量
+           :param bool positive_or_negative: 正乖離 為 True，負乖離 為 False
+           :rtype: tuple
+           :returns: (True or False, 第幾個轉折日, 轉折點值)
         """
         sample_data = data[-sample:]
         if positive_or_negative:  # 正
@@ -252,9 +343,12 @@ class Stock(object):
     def check_moving_average_bias_ratio(self, data, sample=5,
                                         positive_or_negative=False):
         """判斷正負乖離轉折點位置
-           sample = 取樣判斷區間
-           positive_or_negative = True（正）/False（負）乖離
-           return (T/F, 第幾轉折日, 乖離轉折點值)
+
+           :param list data: 計算資料
+           :param int sample: 計算的區間樣本數量
+           :param bool positive_or_negative: 正乖離 為 True，負乖離 為 False
+           :rtype: tuple
+           :returns: (True or False, 第幾個轉折日, 轉折點值)
         """
         return self.__cal_ma_bias_ratio_point(data, sample,
                                               positive_or_negative)
