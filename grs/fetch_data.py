@@ -29,6 +29,10 @@ import urllib2
 
 
 class TWSEFetch(object):
+    def __init__(self):
+        self.__info = ()
+        self.__url = []
+
     def __serial_fetch(self, stock_no, month):
         """ 串接每月資料 舊→新
 
@@ -39,8 +43,6 @@ class TWSEFetch(object):
         result = ()
         self.__get_mons = month
         self.__get_no = stock_no
-        self.__info = ()
-        self.__url = []
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
             tolist = self.__to_list(self.__fetch_data(stock_no, nowdatetime))
@@ -133,6 +135,7 @@ class Stock(TWSEFetch):
             :return: grs.Stock
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
+        super(Stock, self).__init__()
         self.__get_mons = 0
         self.__get_no = 0
         self.__info = ()
@@ -160,7 +163,8 @@ class Stock(TWSEFetch):
             :rtype: tuple
             :returns: (股票代碼, 股票名稱)
         """
-        return self.__info
+        #return self.__info
+        return self._TWSEFetch__info
 
     @property
     def raw(self):
