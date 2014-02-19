@@ -33,7 +33,7 @@ class TWSEFetch(object):
         self.__info = ()
         self.__url = []
 
-    def __serial_fetch(self, stock_no, month):
+    def serial_fetch(self, stock_no, month):
         """ 串接每月資料 舊→新
 
             :param str stock_no: 股票代碼
@@ -45,11 +45,11 @@ class TWSEFetch(object):
         self.__get_no = stock_no
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
-            tolist = self.__to_list(self.__fetch_data(stock_no, nowdatetime))
+            tolist = self.to_list(self.fetch_data(stock_no, nowdatetime))
             result = tolist + result
         return tuple(result)
 
-    def __fetch_data(self, stock_no, nowdatetime):
+    def fetch_data(self, stock_no, nowdatetime):
         """ Fetch data from twse.com.tw
             return list.
             從 twse.com.tw 下載資料，回傳格式為 csv.reader
@@ -81,7 +81,7 @@ class TWSEFetch(object):
         self.__url.append(url)
         return csv_read
 
-    def __to_list(self, csv_file):
+    def to_list(self, csv_file):
         """ 串接每日資料 舊→新
 
             :param csv csv_file: csv files
@@ -104,7 +104,7 @@ class TWSEFetch(object):
         else:
             return tuple([])
 
-    def __plus_mons(self, month):
+    def plus_mons(self, month):
         """ 增加 n 個月的資料
 
             :param int month: 增加 n 個月的資料
@@ -116,8 +116,7 @@ class TWSEFetch(object):
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=exist_mons) -\
                           relativedelta(months=i)
-            tolist = self.__to_list(
-                                self.__fetch_data(self.__info[0], nowdatetime))
+            tolist = self.to_list(self.fetch_data(self.__info[0], nowdatetime))
             result = list(tolist) + result
         result = result + oldraw
         self.__get_mons = exist_mons + month
@@ -140,7 +139,7 @@ class Stock(TWSEFetch):
         self.__get_no = 0
         self.__info = ()
         self.__raw_rows_name = []
-        self.__raw_data = self._TWSEFetch__serial_fetch(stock_no, mons)
+        self.__raw_data = self.serial_fetch(stock_no, mons)
 
     @property
     def url(self):
@@ -205,7 +204,7 @@ class Stock(TWSEFetch):
 
             :param int month: 增加 n 個月的資料
         """
-        self.__raw_data = self.__plus_mons(month)
+        self.__raw_data = self.plus_mons(month)
 
     def out_putfile(self, fpath):
         """ 輸出成 CSV 檔
