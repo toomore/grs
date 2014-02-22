@@ -29,9 +29,14 @@ import urllib2
 
 
 class TWSEFetch(object):
+    ''' TWSEFetch '''
     def __init__(self):
+        self.__get_mons = 0
+        self.__get_no = 0
         self.__info = ()
+        self.__raw_rows_name = []
         self.__url = []
+        self.__raw_data = ()
 
     def serial_fetch(self, stock_no, month):
         """ 串接每月資料 舊→新
@@ -81,6 +86,15 @@ class TWSEFetch(object):
         self.__url.append(url)
         return csv_read
 
+    @property
+    def info(self):
+        """ (股票代碼, 股票名稱)
+
+            :rtype: tuple
+            :returns: (股票代碼, 股票名稱)
+        """
+        return self.__info
+
     def to_list(self, csv_file):
         """ 串接每日資料 舊→新
 
@@ -122,7 +136,6 @@ class TWSEFetch(object):
         self.__get_mons = exist_mons + month
         return tuple(result)
 
-#class Stock(object):
 class Stock(TWSEFetch):
     """ 擷取股票股價 """
 
@@ -135,31 +148,8 @@ class Stock(TWSEFetch):
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         super(Stock, self).__init__()
-        self.__get_mons = 0
-        self.__get_no = 0
-        self.__info = ()
-        self.__raw_rows_name = []
+        #self.__info = ()
         self.__raw_data = self.serial_fetch(stock_no, mons)
-
-    @property
-    def url(self):
-        """ 擷取資料網址
-
-            :rtype: list
-            :returns: url in list
-        """
-
-        return self.__url
-
-    @property
-    def info(self):
-        """ (股票代碼, 股票名稱)
-
-            :rtype: tuple
-            :returns: (股票代碼, 股票名稱)
-        """
-        #return self.__info
-        return self._TWSEFetch__info
 
     @property
     def raw(self):
