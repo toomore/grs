@@ -104,9 +104,44 @@ class FetchData(object):
         return tuple(result)
 
 
-class GRETAIFetch(object):
+class GRETAIFetch(FetchData):
     ''' GRETAIFetch '''
-    pass
+    def __init__(self):
+        self.__url = []
+
+    def fetch_data(self, stock_no, nowdatetime):
+        """ Fetch data from twse.com.tw
+            return list.
+            從 twse.com.tw 下載資料，回傳格式為 csv.reader
+
+            0. 日期
+            1. 成交股數
+            2. 成交金額
+            3. 開盤價
+            4. 最高價（續）
+            5. 最低價
+            6. 收盤價
+            7. 漲跌價差
+            8. 成交筆數
+
+            :param str stock_no: 股票代碼
+            :param datetime nowdatetime: 此刻時間
+            :rtype: list
+        """
+        url = (
+            'http://www.gretai.org.tw/ch/stock/aftertrading/' +
+            'daily_trading_info/st43_download.php?d=%(year)d/%(mon)02d&' +
+            'stkno=%(stock)s&r=%(rand)s') % {
+                    'year': nowdatetime.year - 1911,
+                    'mon': nowdatetime.month,
+                    'stock': stock_no,
+                    'rand': random.randrange(1, 1000000)}
+
+        logging.info(url)
+        print url
+        csv_read = csv.reader(urllib2.urlopen(url).readlines())
+        self.__url.append(url)
+        return csv_read
 
 
 class TWSEFetch(FetchData):
@@ -361,3 +396,8 @@ class Stock(TWSEFetch):
         """
         return self.__cal_ma_bias_ratio_point(data, sample,
                                               positive_or_negative)
+
+if __name__ == '__main__':
+    otc = GRETAIFetch()
+    result = otc.fetch_data('8446', datetime.now())
+    print list(result)
