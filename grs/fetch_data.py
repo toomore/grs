@@ -136,6 +136,12 @@ class TWSEFetch(object):
         self.__get_mons = exist_mons + month
         return tuple(result)
 
+
+class GRETAIFetch(object):
+    ''' GRETAIFetch '''
+    pass
+
+
 class Stock(TWSEFetch):
     """ 擷取股票股價 """
 
