@@ -28,14 +28,13 @@ import random
 import urllib2
 
 
-class TWSEFetch(object):
-    ''' TWSEFetch '''
+class FetchData(object):
+    ''' FetchData '''
     def __init__(self):
         self.__get_mons = 0
         self.__get_no = 0
         self.__info = ()
         self.__raw_rows_name = []
-        self.__url = []
         self.__raw_data = ()
 
     def serial_fetch(self, stock_no, month):
@@ -53,38 +52,6 @@ class TWSEFetch(object):
             tolist = self.to_list(self.fetch_data(stock_no, nowdatetime))
             result = tolist + result
         return tuple(result)
-
-    def fetch_data(self, stock_no, nowdatetime):
-        """ Fetch data from twse.com.tw
-            return list.
-            從 twse.com.tw 下載資料，回傳格式為 csv.reader
-
-            0. 日期
-            1. 成交股數
-            2. 成交金額
-            3. 開盤價
-            4. 最高價（續）
-            5. 最低價
-            6. 收盤價
-            7. 漲跌價差
-            8. 成交筆數
-
-            :param str stock_no: 股票代碼
-            :param datetime nowdatetime: 此刻時間
-            :rtype: list
-        """
-        url = (
-            'http://www.twse.com.tw/ch/trading/exchange/' +
-            'STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/' +
-            'Report%(year)d%(mon)02d/%(year)d%(mon)02d_F3_1_8_%(stock)s.php' +
-            '&type=csv&r=%(rand)s') % {'year': nowdatetime.year,
-                                       'mon': nowdatetime.month,
-                                       'stock': stock_no,
-                                       'rand': random.randrange(1, 1000000)}
-        logging.info(url)
-        csv_read = csv.reader(urllib2.urlopen(url).readlines())
-        self.__url.append(url)
-        return csv_read
 
     @property
     def info(self):
@@ -140,6 +107,45 @@ class TWSEFetch(object):
 class GRETAIFetch(object):
     ''' GRETAIFetch '''
     pass
+
+
+class TWSEFetch(FetchData):
+    ''' TWSEFetch '''
+
+    def __init__(self):
+        self.__url = []
+
+    def fetch_data(self, stock_no, nowdatetime):
+        """ Fetch data from twse.com.tw
+            return list.
+            從 twse.com.tw 下載資料，回傳格式為 csv.reader
+
+            0. 日期
+            1. 成交股數
+            2. 成交金額
+            3. 開盤價
+            4. 最高價（續）
+            5. 最低價
+            6. 收盤價
+            7. 漲跌價差
+            8. 成交筆數
+
+            :param str stock_no: 股票代碼
+            :param datetime nowdatetime: 此刻時間
+            :rtype: list
+        """
+        url = (
+            'http://www.twse.com.tw/ch/trading/exchange/' +
+            'STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/' +
+            'Report%(year)d%(mon)02d/%(year)d%(mon)02d_F3_1_8_%(stock)s.php' +
+            '&type=csv&r=%(rand)s') % {'year': nowdatetime.year,
+                                       'mon': nowdatetime.month,
+                                       'stock': stock_no,
+                                       'rand': random.randrange(1, 1000000)}
+        logging.info(url)
+        csv_read = csv.reader(urllib2.urlopen(url).readlines())
+        self.__url.append(url)
+        return csv_read
 
 
 class Stock(TWSEFetch):
