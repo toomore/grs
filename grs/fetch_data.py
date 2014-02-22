@@ -27,7 +27,116 @@ import logging
 import random
 import urllib2
 
-class Stock(object):
+
+class TWSEFetch(object):
+    ''' TWSEFetch '''
+    def __init__(self):
+        self.__get_mons = 0
+        self.__get_no = 0
+        self.__info = ()
+        self.__raw_rows_name = []
+        self.__url = []
+        self.__raw_data = ()
+
+    def serial_fetch(self, stock_no, month):
+        """ 串接每月資料 舊→新
+
+            :param str stock_no: 股票代碼
+            :param int month: 擷取 n 個月的資料
+            :rtype: tuple
+        """
+        result = ()
+        self.__get_mons = month
+        self.__get_no = stock_no
+        for i in range(month):
+            nowdatetime = datetime.today() - relativedelta(months=i)
+            tolist = self.to_list(self.fetch_data(stock_no, nowdatetime))
+            result = tolist + result
+        return tuple(result)
+
+    def fetch_data(self, stock_no, nowdatetime):
+        """ Fetch data from twse.com.tw
+            return list.
+            從 twse.com.tw 下載資料，回傳格式為 csv.reader
+
+            0. 日期
+            1. 成交股數
+            2. 成交金額
+            3. 開盤價
+            4. 最高價（續）
+            5. 最低價
+            6. 收盤價
+            7. 漲跌價差
+            8. 成交筆數
+
+            :param str stock_no: 股票代碼
+            :param datetime nowdatetime: 此刻時間
+            :rtype: list
+        """
+        url = (
+            'http://www.twse.com.tw/ch/trading/exchange/' +
+            'STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/' +
+            'Report%(year)d%(mon)02d/%(year)d%(mon)02d_F3_1_8_%(stock)s.php' +
+            '&type=csv&r=%(rand)s') % {'year': nowdatetime.year,
+                                       'mon': nowdatetime.month,
+                                       'stock': stock_no,
+                                       'rand': random.randrange(1, 1000000)}
+        logging.info(url)
+        csv_read = csv.reader(urllib2.urlopen(url).readlines())
+        self.__url.append(url)
+        return csv_read
+
+    @property
+    def info(self):
+        """ (股票代碼, 股票名稱)
+
+            :rtype: tuple
+            :returns: (股票代碼, 股票名稱)
+        """
+        return self.__info
+
+    def to_list(self, csv_file):
+        """ 串接每日資料 舊→新
+
+            :param csv csv_file: csv files
+            :rtype: list
+        """
+        tolist = []
+        for i in csv_file:
+            i = [value.strip().replace(',', '') for value in i]
+            try:
+                for value in (1, 2, 3, 4, 5, 6, 8):
+                    i[value] = float(i[value])
+            except (IndexError, ValueError):
+                pass
+            tolist.append(i)
+        if len(tolist):
+            self.__info = (tolist[0][0].split(' ')[1],
+                           tolist[0][0].split(' ')[2].decode('cp950'))
+            self.__raw_rows_name = tolist[1]
+            return tuple(tolist[2:])
+        else:
+            return tuple([])
+
+    def plus_mons(self, month):
+        """ 增加 n 個月的資料
+
+            :param int month: 增加 n 個月的資料
+            :rtype: tuple
+        """
+        result = []
+        exist_mons = self.__get_mons
+        oldraw = list(self.__raw_data)
+        for i in range(month):
+            nowdatetime = datetime.today() - relativedelta(months=exist_mons) -\
+                          relativedelta(months=i)
+            tolist = self.to_list(self.fetch_data(self.__info[0], nowdatetime))
+            result = list(tolist) + result
+        result = result + oldraw
+        self.__get_mons = exist_mons + month
+        return tuple(result)
+
+class Stock(TWSEFetch):
     """ 擷取股票股價 """
 
     def __init__(self, stock_no, mons=3):
@@ -38,31 +147,9 @@ class Stock(object):
             :return: grs.Stock
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
-        self.__get_mons = 0
-        self.__get_no = 0
-        self.__info = ()
-        self.__raw_rows_name = []
-        self.__url = []
-        self.__raw_data = self.__serial_fetch(stock_no, mons)
-
-    @property
-    def url(self):
-        """ 擷取資料網址
-
-            :rtype: list
-            :returns: url in list
-        """
-
-        return self.__url
-
-    @property
-    def info(self):
-        """ (股票代碼, 股票名稱)
-
-            :rtype: tuple
-            :returns: (股票代碼, 股票名稱)
-        """
-        return self.__info
+        super(Stock, self).__init__()
+        #self.__info = ()
+        self.__raw_data = self.serial_fetch(stock_no, mons)
 
     @property
     def raw(self):
@@ -102,102 +189,12 @@ class Stock(object):
         result = [i.decode('cp950') for i in self.__raw_rows_name]
         return result
 
-    def __fetch_data(self, stock_no, nowdatetime):
-        """ Fetch data from twse.com.tw
-            return list.
-            從 twse.com.tw 下載資料，回傳格式為 csv.reader
-
-            0. 日期
-            1. 成交股數
-            2. 成交金額
-            3. 開盤價
-            4. 最高價（續）
-            5. 最低價
-            6. 收盤價
-            7. 漲跌價差
-            8. 成交筆數
-
-            :param str stock_no: 股票代碼
-            :param datetime nowdatetime: 此刻時間
-            :rtype: list
-        """
-        url = (
-            'http://www.twse.com.tw/ch/trading/exchange/' +
-            'STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/' +
-            'Report%(year)d%(mon)02d/%(year)d%(mon)02d_F3_1_8_%(stock)s.php' +
-            '&type=csv&r=%(rand)s') % {'year': nowdatetime.year,
-                                       'mon': nowdatetime.month,
-                                       'stock': stock_no,
-                                       'rand': random.randrange(1, 1000000)}
-        logging.info(url)
-        csv_read = csv.reader(urllib2.urlopen(url).readlines())
-        self.__url.append(url)
-        return csv_read
-
-    def __to_list(self, csv_file):
-        """ 串接每日資料 舊→新
-
-            :param csv csv_file: csv files
-            :rtype: list
-        """
-        tolist = []
-        for i in csv_file:
-            i = [value.strip().replace(',', '') for value in i]
-            try:
-                for value in (1, 2, 3, 4, 5, 6, 8):
-                    i[value] = float(i[value])
-            except (IndexError, ValueError):
-                pass
-            tolist.append(i)
-        if len(tolist):
-            self.__info = (tolist[0][0].split(' ')[1],
-                           tolist[0][0].split(' ')[2].decode('cp950'))
-            self.__raw_rows_name = tolist[1]
-            return tuple(tolist[2:])
-        else:
-            return tuple([])
-
-    def __serial_fetch(self, stock_no, month):
-        """ 串接每月資料 舊→新
-
-            :param str stock_no: 股票代碼
-            :param int month: 擷取 n 個月的資料
-            :rtype: tuple
-        """
-        result = ()
-        self.__get_mons = month
-        self.__get_no = stock_no
-        for i in range(month):
-            nowdatetime = datetime.today() - relativedelta(months=i)
-            tolist = self.__to_list(self.__fetch_data(stock_no, nowdatetime))
-            result = tolist + result
-        return tuple(result)
-
-    def __plus_mons(self, month):
-        """ 增加 n 個月的資料
-
-            :param int month: 增加 n 個月的資料
-            :rtype: tuple
-        """
-        result = []
-        exist_mons = self.__get_mons
-        oldraw = list(self.__raw_data)
-        for i in range(month):
-            nowdatetime = datetime.today() - relativedelta(months=exist_mons) -\
-                          relativedelta(months=i)
-            tolist = self.__to_list(
-                                self.__fetch_data(self.__info[0], nowdatetime))
-            result = list(tolist) + result
-        result = result + oldraw
-        self.__get_mons = exist_mons + month
-        return tuple(result)
-
     def plus_mons(self, month):
         """ 新增擴充月份資料
 
             :param int month: 增加 n 個月的資料
         """
-        self.__raw_data = self.__plus_mons(month)
+        self.__raw_data = self.plus_mons(month)
 
     def out_putfile(self, fpath):
         """ 輸出成 CSV 檔
