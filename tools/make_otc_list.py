@@ -5,13 +5,13 @@ import urllib2
 from datetime import datetime
 
 
-NOW = datetime(2013, 12, 17)
+NOW = datetime(2014, 2, 21)
 SAVEPATH = './otc_list.csv'
 
-TWSEURL = 'http://www.gretai.org.tw/ch/stock/aftertrading/otc_quotes_no1430/stk_wn1430_download.php?d=%(year)s/%(mon)s/%(day)s&se=%%s' % {
+OTCURL = 'http://www.gretai.org.tw/ch/stock/aftertrading/otc_quotes_no1430/stk_wn1430_download.php?d=%(year)s/%(mon)02d/%(day)02d&se=%%s&s=0,asc,0' % {
         'year': NOW.year - 1911,
         'mon': NOW.month,
-        'day': NOW.day}
+        'day': NOW.day,}
 
 OTCCLS = {
            '01': u'水泥工業',
@@ -65,7 +65,7 @@ def fetch_otc_list():
         re_sub = re.compile(r'[^\w\d]')
 
         for no in OTCCLS:
-            for i in csv.reader(urllib2.urlopen(TWSEURL % no).readlines()):
+            for i in csv.reader(urllib2.urlopen(OTCURL % no).readlines()):
                 if len(i) >= 3 and re_pattern.match(i[0]):
                     pass
                 else:
