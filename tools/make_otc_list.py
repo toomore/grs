@@ -7,6 +7,7 @@ from datetime import datetime
 
 NOW = datetime(2014, 2, 21)
 SAVEPATH = './otc_list.csv'
+INDUSTRYCODE = './industry_code_otc.csv'
 
 OTCURL = 'http://www.gretai.org.tw/ch/stock/aftertrading/otc_quotes_no1430/stk_wn1430_download.php?d=%(year)s/%(mon)02d/%(day)02d&se=%%s&s=0,asc,0' % {
         'year': NOW.year - 1911,
@@ -90,11 +91,11 @@ def fetch_otc_list():
             csv_file.writerow(all_items[i])
 
 def output_industry_code():
-    with open('./industry_code.csv', 'w') as files:
+    with open(INDUSTRYCODE, 'w') as files:
         csv_file = csv.writer(files)
         for i in sorted(OTCCLS):
             csv_file.writerow([i, OTCCLS[i].encode('utf-8')])
 
 if __name__ == '__main__':
     fetch_otc_list()
-    #output_industry_code()
+    output_industry_code()
