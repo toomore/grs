@@ -183,7 +183,12 @@ class TWSEFetch(FetchData):
 
 
 class Stock(TWSEFetch):
-    """ 擷取股票股價 """
+    """ 擷取股票股價
+
+        :param str stock_no: 股價代碼
+        :param int mons: 擷取近 n 個月的資料
+        :return: grs.Stock
+    """
 
     def __init__(self, stock_no, mons=3):
         """ 擷取股票股價
