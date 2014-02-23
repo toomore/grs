@@ -110,9 +110,9 @@ class GRETAIFetch(FetchData):
         self.__url = []
 
     def fetch_data(self, stock_no, nowdatetime):
-        """ Fetch data from twse.com.tw
+        """ Fetch data from gretai.org.tw(OTC)
             return list.
-            從 twse.com.tw 下載資料，回傳格式為 csv.reader
+            從 gretai.org.tw 下載資料，回傳格式為 csv.reader
 
             0. 日期
             1. 成交股數
@@ -138,7 +138,6 @@ class GRETAIFetch(FetchData):
                     'rand': random.randrange(1, 1000000)}
 
         logging.info(url)
-        print url
         csv_read = csv.reader(urllib2.urlopen(url).readlines())
         self.__url.append(url)
         return csv_read
