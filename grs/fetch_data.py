@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 import csv
 import logging
 import random
 import urllib2
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class FetchData(object):
@@ -199,7 +199,6 @@ class Stock(TWSEFetch):
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         super(Stock, self).__init__()
-        #self.__info = ()
         self.__raw_data = self.serial_fetch(stock_no, mons)
 
     @property
