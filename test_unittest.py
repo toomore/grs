@@ -63,6 +63,16 @@ class TestGrs(unittest.TestCase):
         assert '1701' in result
 
     @staticmethod
+    def test_otc_no():
+        otc_no = grs.OTCNo()
+        assert isinstance(otc_no.all_stock, dict)
+        result = otc_no.search(u'華')
+        # 8446 華研
+        assert '8446' in result
+        result = otc_no.searchbyno(46)
+        assert '8446' in result
+
+    @staticmethod
     def test_twse_open():
         is_open = grs.TWSEOpen()
         result = is_open.d_day(datetime(2014, 1, 1))
