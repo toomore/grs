@@ -30,6 +30,7 @@ class ImportCSV(object):
         self.industry_code_files = industry_code_files
         self.last_update = ''
         self.stock_no_files = stock_no_files
+        self.__allstockno = self.importcsv()
 
     def importcsv(self):
         ''' import data from csv '''
@@ -77,13 +78,6 @@ class ImportCSV(object):
                         except KeyError:
                             pass
             return result
-
-
-class TWSENo(ImportCSV):
-    """ 上市股票代碼與搜尋 """
-    def __init__(self):
-        super(TWSENo, self).__init__('stock_no.csv', 'industry_code.csv')
-        self.__allstockno = super(TWSENo, self).importcsv()
 
     def search(self, name):
         """ 搜尋股票名稱 by unicode
@@ -154,3 +148,9 @@ class TWSENo(ImportCSV):
             :rtype: dict
         """
         return self.__loadindcomps()
+
+
+class TWSENo(ImportCSV):
+    """ 上市股票代碼與搜尋 """
+    def __init__(self):
+        super(TWSENo, self).__init__('stock_no.csv', 'industry_code.csv')
