@@ -42,7 +42,7 @@ class FetchData(object):
         self.__raw_rows_name = []
         self.__raw_data = ()
 
-    def serial_fetch(self, stock_no, month):
+    def serial_fetch(self, stock_no, month, twse=None):
         """ 串接每月資料 舊→新
 
             :param str stock_no: 股票代碼
@@ -52,6 +52,7 @@ class FetchData(object):
         result = ()
         self.__get_mons = month
         self.__get_no = stock_no
+        self._twse = twse
         for i in range(month):
             nowdatetime = datetime.today() - relativedelta(months=i)
             tolist = self.to_list(self.fetch_data(stock_no, nowdatetime))
@@ -82,12 +83,19 @@ class FetchData(object):
             except (IndexError, ValueError):
                 pass
             tolist.append(i)
-        if len(tolist):
-            self.__info = (tolist[0][0].split(' ')[1],
-                           tolist[0][0].split(' ')[2].decode('cp950'))
-            self.__raw_rows_name = tolist[1]
-            return tuple(tolist[2:])
+        if self._twse:
+            if tolist:
+                self.__info = (tolist[0][0].split(' ')[1],
+                               tolist[0][0].split(' ')[2].decode('cp950'))
+                self.__raw_rows_name = tolist[1]
+                return tuple(tolist[2:])
+            return tuple([])
         else:
+            if len(tolist) > 6:
+                self.__raw_rows_name = tolist[4]
+                self.__info = (self.__get_no, OTCNo().all_stock[self.__get_no])
+                if len(tolist[5:]) > 1:
+                    return tuple(tolist[5:-1])
             return tuple([])
 
     def plus_mons(self, month):
@@ -415,13 +423,15 @@ class Stock(object):
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         if stock_no in TWSENo().all_stock_no:
             stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
+            twse = True
         elif stock_no in OTCNo().all_stock_no:
             stock_proxy = type('Stock', (GRETAIFetch, SimpleAnalytics), {})()
+            twse = False
         else:
             raise StockNoError
 
         stock_proxy.__init__()
-        self.__raw_data = stock_proxy.serial_fetch(stock_no, mons)
+        self.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
         stock_proxy._load_data(self.__raw_data)
 
         return stock_proxy
