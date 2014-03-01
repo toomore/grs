@@ -24,9 +24,14 @@ import csv
 import logging
 import random
 import urllib2
+from .twseno import OTCNo
+from .twseno import TWSENo
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+
+class StockNoError(Exception):
+    pass
 
 class FetchData(object):
     ''' FetchData '''
@@ -408,10 +413,14 @@ class Stock(object):
             :return: grs.Stock
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
-        if True:
+        if stock_no in TWSENo().all_stock_no:
             stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
-            stock_proxy.__init__()
+        elif stock_no in OTCNo().all_stock_no:
+            stock_proxy = type('Stock', (GRETAIFetch, SimpleAnalytics), {})()
+        else:
+            raise StockNoError
 
+        stock_proxy.__init__()
         self.__raw_data = stock_proxy.serial_fetch(stock_no, mons)
         stock_proxy._load_data(self.__raw_data)
 
