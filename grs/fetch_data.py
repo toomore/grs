@@ -186,8 +186,11 @@ class SimpleAnalytics(object):
     def __init__(self):
         self.__raw_data = None
 
-    def load_data(self, data):
-        """ Load stock raw data. """
+    def _load_data(self, data):
+        """ Load stock raw data.
+
+            :param tuple data: from serial_fetch data.
+        """
         self.__raw_data = data
 
     @property
@@ -407,7 +410,7 @@ class Stock(TWSEFetch, SimpleAnalytics):
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         super(Stock, self).__init__()
         self.__raw_data = self.serial_fetch(stock_no, mons)
-        super(Stock, self).load_data(self.__raw_data)
+        super(Stock, self)._load_data(self.__raw_data)
 
 
 if __name__ == '__main__':
