@@ -23,14 +23,12 @@ import csv
 import os
 import re
 
-
-class TWSENo(object):
-    """ 上市股票代碼與搜尋 """
+class ImportCSV(object):
+    """ Import CSV """
     def __init__(self):
         self.last_update = ''
-        self.__allstockno = self.__importcsv()
 
-    def __importcsv(self):
+    def importcsv(self):
         ''' import data from csv '''
         csv_path = os.path.join(os.path.dirname(__file__), 'stock_no.csv')
         with open(csv_path) as csv_file:
@@ -75,6 +73,12 @@ class TWSENo(object):
                         except KeyError:
                             pass
             return result
+
+
+class TWSENo(ImportCSV):
+    """ 上市股票代碼與搜尋 """
+    def __init__(self):
+        self.__allstockno = super(TWSENo, self).importcsv()
 
     def search(self, name):
         """ 搜尋股票名稱 by unicode
