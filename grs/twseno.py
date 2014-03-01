@@ -24,21 +24,23 @@ import os
 import re
 
 
-class TWSENo(object):
-    """ 上市股票代碼與搜尋 """
-    def __init__(self):
+class ImportCSV(object):
+    """ Import CSV """
+    def __init__(self, stock_no_files, industry_code_files):
+        self.industry_code_files = industry_code_files
         self.last_update = ''
-        self.__allstockno = self.__importcsv()
+        self.stock_no_files = stock_no_files
+        self.__allstockno = self.importcsv()
 
-    def __importcsv(self):
+    def importcsv(self):
         ''' import data from csv '''
-        csv_path = os.path.join(os.path.dirname(__file__), 'stock_no.csv')
+        csv_path = os.path.join(os.path.dirname(__file__), self.stock_no_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
             for i in csv_data:
                 try:
-                    result[int(i[0])] = str(i[1]).decode('utf-8')
+                    result[i[0]] = str(i[1]).decode('utf-8')
                 except ValueError:
                     if i[0] == 'UPDATE':
                         self.last_update = str(i[1]).decode('utf-8')
@@ -49,7 +51,8 @@ class TWSENo(object):
     @staticmethod
     def __industry_code():
         ''' import industry_code '''
-        csv_path = os.path.join(os.path.dirname(__file__), 'industry_code.csv')
+        csv_path = os.path.join(os.path.dirname(__file__),
+                self.industry_code_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
@@ -60,7 +63,7 @@ class TWSENo(object):
     @staticmethod
     def __loadindcomps():
         ''' import industry comps '''
-        csv_path = os.path.join(os.path.dirname(__file__), 'stock_no.csv')
+        csv_path = os.path.join(os.path.dirname(__file__), self.stock_no_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
@@ -80,7 +83,7 @@ class TWSENo(object):
         """ 搜尋股票名稱 by unicode
 
             :param str name: 欲搜尋的字串
-            :rtype: list
+            :rtype: dict
         """
         pattern = re.compile(name)
         result = {}
@@ -91,13 +94,13 @@ class TWSENo(object):
                 result[i] = self.__allstockno[i]
         return result
 
-    def searchbyno(self, name):
+    def searchbyno(self, no):
         """ 搜尋股票代碼
 
-            :param str name: 欲搜尋的字串
-            :rtype: list
+            :param str no: 欲搜尋的字串
+            :rtype: dict
         """
-        pattern = re.compile(str(name))
+        pattern = re.compile(str(no))
         result = {}
         for i in self.__allstockno:
             query = re.search(pattern, str(i))
@@ -145,3 +148,9 @@ class TWSENo(object):
             :rtype: dict
         """
         return self.__loadindcomps()
+
+
+class TWSENo(ImportCSV):
+    """ 上市股票代碼與搜尋 """
+    def __init__(self):
+        super(TWSENo, self).__init__('stock_no.csv', 'industry_code.csv')

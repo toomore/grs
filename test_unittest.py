@@ -58,9 +58,9 @@ class TestGrs(unittest.TestCase):
         assert isinstance(twse_no.all_stock, dict)
         result = twse_no.search(u'中')
         # 1701 中化
-        assert 1701 in result
+        assert '1701' in result
         result = twse_no.searchbyno(17)
-        assert 1701 in result
+        assert '1701' in result
 
     @staticmethod
     def test_twse_open():
