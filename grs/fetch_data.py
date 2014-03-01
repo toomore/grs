@@ -393,14 +393,14 @@ class SimpleAnalytics(object):
                                               positive_or_negative)
 
 
-class Stock(TWSEFetch, SimpleAnalytics):
+class Stock(object):
     """ 擷取股票股價
 
         :param str stock_no: 股價代碼
         :param int mons: 擷取近 n 個月的資料
         :return: grs.Stock
     """
-    def __init__(self, stock_no, mons=3):
+    def __new__(self, stock_no, mons=3):
         """ 擷取股票股價
 
             :param str stock_no: 股價代碼
@@ -408,9 +408,26 @@ class Stock(TWSEFetch, SimpleAnalytics):
             :return: grs.Stock
         """
         assert isinstance(stock_no, str), '`stock_no` must be a string'
-        super(Stock, self).__init__()
-        self.__raw_data = self.serial_fetch(stock_no, mons)
-        super(Stock, self)._load_data(self.__raw_data)
+        if True:
+            stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
+            stock_proxy.__init__()
+
+        self.__raw_data = stock_proxy.serial_fetch(stock_no, mons)
+        stock_proxy._load_data(self.__raw_data)
+
+        return stock_proxy
+
+    #def __init__(self, stock_no, mons=3):
+    #    """ 擷取股票股價
+
+    #        :param str stock_no: 股價代碼
+    #        :param int mons: 擷取近 n 個月的資料
+    #        :return: grs.Stock
+    #    """
+    #    assert isinstance(stock_no, str), '`stock_no` must be a string'
+    #    super(Stock, self).__init__()
+    #    self.__raw_data = self.serial_fetch(stock_no, mons)
+    #    super(Stock, self)._load_data(self.__raw_data)
 
 
 if __name__ == '__main__':
