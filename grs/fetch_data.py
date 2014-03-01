@@ -182,24 +182,16 @@ class TWSEFetch(FetchData):
         return csv_read
 
 
-class Stock(TWSEFetch):
-    """ 擷取股票股價
+class SimpleAnalytics(object):
+    def __init__(self):
+        self.__raw_data = None
 
-        :param str stock_no: 股價代碼
-        :param int mons: 擷取近 n 個月的資料
-        :return: grs.Stock
-    """
+    def _load_data(self, data):
+        """ Load stock raw data.
 
-    def __init__(self, stock_no, mons=3):
-        """ 擷取股票股價
-
-            :param str stock_no: 股價代碼
-            :param int mons: 擷取近 n 個月的資料
-            :return: grs.Stock
+            :param tuple data: from serial_fetch data.
         """
-        assert isinstance(stock_no, str), '`stock_no` must be a string'
-        super(Stock, self).__init__()
-        self.__raw_data = self.serial_fetch(stock_no, mons)
+        self.__raw_data = data
 
     @property
     def raw(self):
@@ -399,6 +391,27 @@ class Stock(TWSEFetch):
         """
         return self.__cal_ma_bias_ratio_point(data, sample,
                                               positive_or_negative)
+
+
+class Stock(TWSEFetch, SimpleAnalytics):
+    """ 擷取股票股價
+
+        :param str stock_no: 股價代碼
+        :param int mons: 擷取近 n 個月的資料
+        :return: grs.Stock
+    """
+    def __init__(self, stock_no, mons=3):
+        """ 擷取股票股價
+
+            :param str stock_no: 股價代碼
+            :param int mons: 擷取近 n 個月的資料
+            :return: grs.Stock
+        """
+        assert isinstance(stock_no, str), '`stock_no` must be a string'
+        super(Stock, self).__init__()
+        self.__raw_data = self.serial_fetch(stock_no, mons)
+        super(Stock, self)._load_data(self.__raw_data)
+
 
 if __name__ == '__main__':
     otc = GRETAIFetch()
