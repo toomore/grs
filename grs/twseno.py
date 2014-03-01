@@ -97,7 +97,7 @@ class TWSENo(object):
             :param str no: 欲搜尋的字串
             :rtype: dict
         """
-        pattern = re.compile(str(name))
+        pattern = re.compile(str(no))
         result = {}
         for i in self.__allstockno:
             query = re.search(pattern, str(i))
