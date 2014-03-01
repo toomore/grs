@@ -33,5 +33,6 @@ from .realtime import RealtimeStock
 from .realtime import RealtimeWeight
 from .tw_time import Countdown
 from .tw_time import TWTime
+from .twseno import OTCNo
 from .twseno import TWSENo
 from .twseopen import TWSEOpen
