@@ -38,7 +38,7 @@ class TWSENo(object):
             result = {}
             for i in csv_data:
                 try:
-                    result[int(i[0])] = str(i[1]).decode('utf-8')
+                    result[i[0]] = str(i[1]).decode('utf-8')
                 except ValueError:
                     if i[0] == 'UPDATE':
                         self.last_update = str(i[1]).decode('utf-8')
