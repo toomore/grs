@@ -47,6 +47,7 @@ class FetchData(object):
 
             :param str stock_no: 股票代碼
             :param int month: 擷取 n 個月的資料
+            :param bool twse: 指定是否為上市資料
             :rtype: tuple
         """
         result = ()
