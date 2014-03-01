@@ -38,7 +38,7 @@ class TWSENo(object):
             result = {}
             for i in csv_data:
                 try:
-                    result[int(i[0])] = str(i[1]).decode('utf-8')
+                    result[i[0]] = str(i[1]).decode('utf-8')
                 except ValueError:
                     if i[0] == 'UPDATE':
                         self.last_update = str(i[1]).decode('utf-8')
@@ -80,7 +80,7 @@ class TWSENo(object):
         """ 搜尋股票名稱 by unicode
 
             :param str name: 欲搜尋的字串
-            :rtype: list
+            :rtype: dict
         """
         pattern = re.compile(name)
         result = {}
@@ -91,13 +91,13 @@ class TWSENo(object):
                 result[i] = self.__allstockno[i]
         return result
 
-    def searchbyno(self, name):
+    def searchbyno(self, no):
         """ 搜尋股票代碼
 
-            :param str name: 欲搜尋的字串
-            :rtype: list
+            :param str no: 欲搜尋的字串
+            :rtype: dict
         """
-        pattern = re.compile(str(name))
+        pattern = re.compile(str(no))
         result = {}
         for i in self.__allstockno:
             query = re.search(pattern, str(i))
