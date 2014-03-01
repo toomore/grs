@@ -412,15 +412,19 @@ class Stock(object):
 
         :param str stock_no: 股價代碼
         :param int mons: 擷取近 n 個月的資料
-        :return: grs.Stock
-    """
-    def __new__(self, stock_no, mons=3):
-        """ 擷取股票股價
+        :rtype: :class:`grs.fetch_data.TWSEFetch` or
+                :class:`grs.fetch_data.GRETAIFetch` 並且繼承
+                :class:`grs.fetch_data.SimpleAnalytics`
 
-            :param str stock_no: 股價代碼
-            :param int mons: 擷取近 n 個月的資料
-            :return: grs.Stock
-        """
+            :class: Stock(TWSEFetch, SimpleAnalytics)
+            :class: Stock(GRETAIFetch, SimpleAnalytics)
+
+        :returns: 依 `stock_no` 判斷上市或上櫃股票回傳資料
+    """
+    def __init__(self, stock_no, mons=3):
+        pass
+
+    def __new__(self, stock_no, mons=3):
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         if stock_no in TWSENo().all_stock_no:
             stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
