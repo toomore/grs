@@ -23,14 +23,17 @@ import csv
 import os
 import re
 
+
 class ImportCSV(object):
     """ Import CSV """
-    def __init__(self):
+    def __init__(self, stock_no_files, industry_code_files):
+        self.industry_code_files = industry_code_files
         self.last_update = ''
+        self.stock_no_files = stock_no_files
 
     def importcsv(self):
         ''' import data from csv '''
-        csv_path = os.path.join(os.path.dirname(__file__), 'stock_no.csv')
+        csv_path = os.path.join(os.path.dirname(__file__), self.stock_no_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
@@ -47,7 +50,8 @@ class ImportCSV(object):
     @staticmethod
     def __industry_code():
         ''' import industry_code '''
-        csv_path = os.path.join(os.path.dirname(__file__), 'industry_code.csv')
+        csv_path = os.path.join(os.path.dirname(__file__),
+                self.industry_code_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
@@ -58,7 +62,7 @@ class ImportCSV(object):
     @staticmethod
     def __loadindcomps():
         ''' import industry comps '''
-        csv_path = os.path.join(os.path.dirname(__file__), 'stock_no.csv')
+        csv_path = os.path.join(os.path.dirname(__file__), self.stock_no_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}
@@ -78,6 +82,7 @@ class ImportCSV(object):
 class TWSENo(ImportCSV):
     """ 上市股票代碼與搜尋 """
     def __init__(self):
+        super(TWSENo, self).__init__('stock_no.csv', 'industry_code.csv')
         self.__allstockno = super(TWSENo, self).importcsv()
 
     def search(self, name):
