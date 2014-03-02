@@ -31,6 +31,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class StockNoError(Exception):
+    """ Exception for stock_no not in TWSE or OTC list. """
     pass
 
 
@@ -42,6 +43,13 @@ class FetchData(object):
         self.__info = ()
         self.__raw_rows_name = []
         self.__raw_data = ()
+        self._twse = None
+
+    def fetch_data(self, *args, **kwargs):
+        """ Inherit :py:func:`grs.fetch_data.TWSEFetch.fetch_data` or
+                    :py:func:`grs.fetch_data.OTCFetch.fetch_data`
+        """
+        return self.fetch_data(*args, **kwargs)
 
     def serial_fetch(self, stock_no, month, twse=None):
         """ 串接每月資料 舊→新
@@ -198,8 +206,11 @@ class TWSEFetch(FetchData):
 
 
 class SimpleAnalytics(object):
+    """ 簡單計算 """
+
     def __init__(self):
         self.__raw_data = None
+        self.__raw_rows_name = self.__raw_rows_name
 
     def _load_data(self, data):
         """ Load stock raw data.
@@ -428,7 +439,7 @@ class Stock(object):
     def __init__(self, stock_no, mons=3, twse=False, otc=False):
         pass
 
-    def __new__(self, stock_no, mons=3, twse=False, otc=False):
+    def __new__(cls, stock_no, mons=3, twse=False, otc=False):
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         assert not twse == otc == True, 'Only `twse` or `otc` to be True'
 
@@ -448,7 +459,7 @@ class Stock(object):
             raise StockNoError
 
         stock_proxy.__init__()
-        self.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
-        stock_proxy._load_data(self.__raw_data)
+        cls.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
+        stock_proxy._load_data(cls.__raw_data)
 
         return stock_proxy
