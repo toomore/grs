@@ -33,6 +33,7 @@ from dateutil.relativedelta import relativedelta
 class StockNoError(Exception):
     pass
 
+
 class FetchData(object):
     ''' FetchData '''
     def __init__(self):
@@ -420,6 +421,7 @@ class Stock(object):
             :class: Stock(GRETAIFetch, SimpleAnalytics)
 
         :returns: 依 `stock_no` 判斷上市或上櫃股票回傳資料
+        :raises StockNoError: 查無股票代碼
     """
     def __init__(self, stock_no, mons=3):
         pass
