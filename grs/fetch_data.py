@@ -413,25 +413,29 @@ class Stock(object):
 
         :param str stock_no: 股價代碼
         :param int mons: 擷取近 n 個月的資料
+        :param bool twse: 直接指定 `stock_no` 為上市股票，否則會進行查表動作
+        :param bool otc: 直接指定 `stock_no` 為上櫃股票，否則會進行查表動作
         :rtype: :class:`grs.fetch_data.TWSEFetch` or
                 :class:`grs.fetch_data.GRETAIFetch` 並且繼承
                 :class:`grs.fetch_data.SimpleAnalytics`
 
-            :class: Stock(TWSEFetch, SimpleAnalytics)
-            :class: Stock(GRETAIFetch, SimpleAnalytics)
+                :class: Stock(TWSEFetch, SimpleAnalytics)
+                :class: Stock(GRETAIFetch, SimpleAnalytics)
 
         :returns: 依 `stock_no` 判斷上市或上櫃股票回傳資料
         :raises StockNoError: 查無股票代碼
     """
-    def __init__(self, stock_no, mons=3):
+    def __init__(self, stock_no, mons=3, twse=False, otc=False):
         pass
 
-    def __new__(self, stock_no, mons=3):
+    def __new__(self, stock_no, mons=3, twse=False, otc=False):
         assert isinstance(stock_no, str), '`stock_no` must be a string'
-        if stock_no in TWSENo().all_stock_no:
+        assert not twse == otc == True, 'Only `twse` or `otc` to be True'
+
+        if twse or stock_no in TWSENo().all_stock_no:
             stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
             twse = True
-        elif stock_no in OTCNo().all_stock_no:
+        elif otc or stock_no in OTCNo().all_stock_no:
             stock_proxy = type('Stock', (GRETAIFetch, SimpleAnalytics), {})()
             twse = False
         else:
