@@ -81,11 +81,11 @@ Change Logs
 -----------------------------
 
 * 0.5.0 2014/03/04
-    - 新增：上櫃資訊（`櫃台買賣中心 <http://gretai.org.tw>`_）
+    - 新增：上櫃資訊（ `櫃台買賣中心 <http://gretai.org.tw>`_ ）
     - 修正：股票代碼列表回傳（TWSENo）代碼值改為 *string*.
 
 * 0.4.3 2014/01/22
-    - 新增：`grs 文件 <http://grs-docs.toomore.net>`_.
+    - 新增： `grs 文件 <http://grs-docs.toomore.net>`_.
 
 * 0.4.2 2014/01/11
     - 修正：Stock ``stock_no``, RealtimeStock ``no`` 必須為 *string*.

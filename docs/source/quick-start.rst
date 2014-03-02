@@ -22,12 +22,14 @@ Quick Start
 
     stock = Stock('2618', 12)
 
+
 輸出 CSV 檔
 -----------------------------
 
 ::
 
     stock.out_putfile('/dev/shm/2618.csv')
+
 
 擷取上櫃股價資訊
 -----------------------------
@@ -41,12 +43,14 @@ Quick Start
     print stock.moving_average_value(5)           # 計算五日均量與持續天數
     print stock.moving_average_bias_ratio(5, 10)  # 計算五日、十日乖離值與持續天數
 
+
 如果已確定該代碼為上市或上櫃股票，可以直接指定參數跳過查表動作。
 
 ::
 
     stock = Stock('2618', twse=True) # 擷取長榮航股價
     stock = Stock('8446', otc=True)  # 擷取華研股價
+
 
 .. seealso:: :doc:`fetch_data`
 
