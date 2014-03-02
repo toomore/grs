@@ -446,21 +446,3 @@ class Stock(object):
         stock_proxy._load_data(self.__raw_data)
 
         return stock_proxy
-
-    #def __init__(self, stock_no, mons=3):
-    #    """ 擷取股票股價
-
-    #        :param str stock_no: 股價代碼
-    #        :param int mons: 擷取近 n 個月的資料
-    #        :return: grs.Stock
-    #    """
-    #    assert isinstance(stock_no, str), '`stock_no` must be a string'
-    #    super(Stock, self).__init__()
-    #    self.__raw_data = self.serial_fetch(stock_no, mons)
-    #    super(Stock, self)._load_data(self.__raw_data)
-
-
-if __name__ == '__main__':
-    otc = GRETAIFetch()
-    result = otc.fetch_data('8446', datetime.now())
-    print list(result)
