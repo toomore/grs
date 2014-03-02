@@ -66,7 +66,7 @@ Feature
    :maxdepth: 2
 
    擷取股票資訊 grs.Stock <fetch_data>
-   上市股票列表 grs.TWSENo <twseno>
+   股票列表 grs.TWSENo / grs.OTCNo <twseno>
    判斷是否開市 grs.TWSEOpen <twseopen>
    時間、倒數處理 grs.TWTime/Countdown <tw_time>
    盤中即時資訊擷取 grs.RealtimeStock/RealtimeWeight <realtime>
