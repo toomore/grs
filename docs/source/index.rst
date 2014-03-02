@@ -6,9 +6,9 @@
 Welcome to grs's documentation!
 ===============================
 
-============================
-grs 台灣上市股票價格擷取
-============================
+=================================
+grs 台灣上市上櫃股票價格擷取
+=================================
 
 .. image:: https://secure.travis-ci.org/toomore/grs.png?branch=master
    :target: http://travis-ci.org/toomore/grs
@@ -25,7 +25,11 @@ grs 台灣上市股票價格擷取
 .. image:: https://pypip.in/license/grs/badge.png
    :target: https://pypi.python.org/pypi/grs
 
-主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
+主要開發擷取台灣股市（TWSE）股價資料
+
+- 資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
+- 資料來源 `證券櫃檯買賣中心 <http://www.otc.org.tw/>`_ 。
+
 
 版本資訊
 -----------------------------
@@ -78,7 +82,7 @@ Change Logs
 
 * 0.5.0 2014/03/04
     - 新增：上櫃資訊（`櫃台買賣中心 <http://gretai.org.tw>`_）
-    - 修正：股票代碼列表回傳（TWSENo）代碼值改為 string.
+    - 修正：股票代碼列表回傳（TWSENo）代碼值改為 *string*.
 
 * 0.4.3 2014/01/22
     - 新增：`grs 文件 <http://grs-docs.toomore.net>`_.
