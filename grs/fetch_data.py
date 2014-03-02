@@ -119,8 +119,8 @@ class FetchData(object):
         return tuple(result)
 
 
-class GRETAIFetch(FetchData):
-    ''' GRETAIFetch '''
+class OTCFetch(FetchData):
+    ''' OTCFetch '''
     def __init__(self):
         self.__url = []
 
@@ -416,11 +416,11 @@ class Stock(object):
         :param bool twse: 直接指定 `stock_no` 為上市股票，否則會進行查表動作
         :param bool otc: 直接指定 `stock_no` 為上櫃股票，否則會進行查表動作
         :rtype: :class:`grs.fetch_data.TWSEFetch` or
-                :class:`grs.fetch_data.GRETAIFetch` 並且繼承
+                :class:`grs.fetch_data.OTCFetch` 並且繼承
                 :class:`grs.fetch_data.SimpleAnalytics`
 
                 :class: Stock(TWSEFetch, SimpleAnalytics)
-                :class: Stock(GRETAIFetch, SimpleAnalytics)
+                :class: Stock(OTCFetch, SimpleAnalytics)
 
         :returns: 依 `stock_no` 判斷上市或上櫃股票回傳資料
         :raises StockNoError: 查無股票代碼
@@ -436,7 +436,7 @@ class Stock(object):
             stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
             twse = True
         elif otc or stock_no in OTCNo().all_stock_no:
-            stock_proxy = type('Stock', (GRETAIFetch, SimpleAnalytics), {})()
+            stock_proxy = type('Stock', (OTCFetch, SimpleAnalytics), {})()
             twse = False
         else:
             raise StockNoError

@@ -15,7 +15,7 @@ Stock 擷取股票資訊
 
 擷取上櫃股票股價
 ---------------------------
-.. autoclass:: grs.fetch_data.GRETAIFetch
+.. autoclass:: grs.fetch_data.OTCFetch
    :show-inheritance:
    :inherited-members:
 
