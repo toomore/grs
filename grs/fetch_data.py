@@ -432,10 +432,16 @@ class Stock(object):
         assert isinstance(stock_no, str), '`stock_no` must be a string'
         assert not twse == otc == True, 'Only `twse` or `otc` to be True'
 
-        if twse or stock_no in TWSENo().all_stock_no:
+        if twse and not otc:
             stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
             twse = True
-        elif otc or stock_no in OTCNo().all_stock_no:
+        elif not twse and otc:
+            stock_proxy = type('Stock', (OTCFetch, SimpleAnalytics), {})()
+            twse = False
+        elif stock_no in TWSENo().all_stock_no:
+            stock_proxy = type('Stock', (TWSEFetch, SimpleAnalytics), {})()
+            twse = True
+        elif stock_no in OTCNo().all_stock_no:
             stock_proxy = type('Stock', (OTCFetch, SimpleAnalytics), {})()
             twse = False
         else:
