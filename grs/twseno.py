@@ -25,7 +25,11 @@ import re
 
 
 class ImportCSV(object):
-    """ Import CSV """
+    """ Import CSV
+
+        :param path stock_no_files: 個股檔案列表
+        :param path industry_code_files: 個股分類表
+    """
     def __init__(self, stock_no_files, industry_code_files):
         self.industry_code_files = industry_code_files
         self.last_update = ''
@@ -111,7 +115,7 @@ class ImportCSV(object):
 
     @property
     def all_stock(self):
-        """ 回傳上市股票代碼與名稱
+        """ 回傳股票代碼與名稱
 
             :rtype: dict
         """
@@ -119,7 +123,7 @@ class ImportCSV(object):
 
     @property
     def all_stock_no(self):
-        """ 回傳上市股票代碼
+        """ 回傳股票代碼
 
             :rtype: list
         """
@@ -127,7 +131,7 @@ class ImportCSV(object):
 
     @property
     def all_stock_name(self):
-        """ 回傳上市股票名稱
+        """ 回傳股票名稱
 
             :rtype: list
         """

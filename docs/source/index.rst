@@ -31,7 +31,7 @@ grs 台灣上市股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.5.0 of 2014/01/22
+:Version: 0.5.0 of 2014/03/04
 :Python Version: Python 2.7, PyPy
 :Docs: http://grs-docs.toomore.net/
 
@@ -75,6 +75,10 @@ Feature
 
 Change Logs
 -----------------------------
+
+* 0.5.0 2014/03/04
+    - 新增：上櫃資訊（`櫃台買賣中心 <http://gretai.org.tw>`_）
+    - 修正：股票代碼列表回傳（TWSENo）代碼值改為 string.
 
 * 0.4.3 2014/01/22
     - 新增：`grs 文件 <http://grs-docs.toomore.net>`_.
