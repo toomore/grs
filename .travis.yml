@@ -5,7 +5,7 @@ python:
 before_install: pip freeze
 install:
     - pip install -U "pip>=1.4" "setuptools>=0.9" "wheel>=0.21"
-    - python setup.py sdist bdist_egg bdist_wheel
+    - python setup.py sdist bdist bdist_egg bdist_wheel
     - python setup.py install
 script:
     - python test_unittest.py

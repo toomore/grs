@@ -1,6 +1,6 @@
-============================
-grs 台灣上市股票價格擷取
-============================
+===============================
+grs 台灣上市上櫃股票價格擷取
+===============================
 
 .. image:: https://secure.travis-ci.org/toomore/grs.png?branch=master
    :target: http://travis-ci.org/toomore/grs
@@ -17,14 +17,17 @@ grs 台灣上市股票價格擷取
 .. image:: https://pypip.in/license/grs/badge.png
    :target: https://pypi.python.org/pypi/grs
 
-主要開發擷取台灣股市（TWSE）股價資料，資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
+主要開發擷取台灣股市（TWSE）股價資料
+
+- 資料來源 `證券交易所網站 <http://www.twse.com.tw/>`_ 。
+- 資料來源 `證券櫃檯買賣中心 <http://www.otc.org.tw/>`_ 。
 
 -----------------------------
 版本資訊
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.4.3 of 2014/01/22
+:Version: 0.5.0 of 2014/03/04
 :Python Version: Python 2.7, PyPy
 :Docs: http://grs-docs.toomore.net/
 
@@ -75,6 +78,27 @@ Quick Start
 ::
 
     stock.out_putfile('/dev/shm/2618.csv')
+
+
+擷取上櫃股價資訊
+
+::
+
+    from grs import Stock
+
+    stock = Stock('8446')                         # 擷取華研股價
+    print stock.moving_average(5)                 # 計算五日均價與持續天數
+    print stock.moving_average_value(5)           # 計算五日均量與持續天數
+    print stock.moving_average_bias_ratio(5, 10)  # 計算五日、十日乖離值與持續天數
+
+
+如果已確定該代碼為上市或上櫃股票，可以直接指定參數跳過查表動作。
+
+::
+
+    stock = Stock('2618', twse=True) # 擷取長榮航股價
+    stock = Stock('8446', otc=True)  # 擷取華研股價
+
 
 -----------------------------
 其他功能
@@ -278,10 +302,16 @@ Quick Start
 Change Logs
 -----------------------------
 
+0.5.0 2014/03/04
+====================================
+
+- 新增：上櫃資訊（ `櫃台買賣中心 <http://gretai.org.tw>`_ ）
+- 修正：股票代碼列表回傳（TWSENo）代碼值改為 *string*.
+
 0.4.3 2014/01/22
 ====================================
 
-- 新增：`grs 文件 <http://grs-docs.toomore.net>`_.
+- 新增： `grs 文件 <http://grs-docs.toomore.net>`_.
 
 0.4.2 2014/01/11
 ====================================

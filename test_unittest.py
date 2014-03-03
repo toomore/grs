@@ -58,9 +58,19 @@ class TestGrs(unittest.TestCase):
         assert isinstance(twse_no.all_stock, dict)
         result = twse_no.search(u'中')
         # 1701 中化
-        assert 1701 in result
+        assert '1701' in result
         result = twse_no.searchbyno(17)
-        assert 1701 in result
+        assert '1701' in result
+
+    @staticmethod
+    def test_otc_no():
+        otc_no = grs.OTCNo()
+        assert isinstance(otc_no.all_stock, dict)
+        result = otc_no.search(u'華')
+        # 8446 華研
+        assert '8446' in result
+        result = otc_no.searchbyno(46)
+        assert '8446' in result
 
     @staticmethod
     def test_twse_open():
@@ -94,6 +104,51 @@ class TestGrs(unittest.TestCase):
             stock = grs.Stock(0050)
         except AssertionError:
             pass
+
+class TestGrsOTC(unittest.TestCase):
+    def get_data(self):
+        self.stock_no = '8446'
+        self.data = grs.Stock(self.stock_no)
+
+    def test_stock(self):
+        self.get_data()
+        assert self.data.info[0] == self.stock_no
+
+    def test_best_buy_or_sell(self):
+        self.get_data()
+        assert isinstance(grs.BestFourPoint(self.data).best_four_point(),
+                          (tuple, NoneType))
+
+    def test_moving_average(self):
+        self.get_data()
+        result = self.data.moving_average(3)
+        assert isinstance(result[0], list)
+        assert isinstance(result[1], int)
+
+    def test_moving_average_value(self):
+        self.get_data()
+        result = self.data.moving_average_value(3)
+        assert isinstance(result[0], list)
+        assert isinstance(result[1], int)
+
+    def test_moving_average_bias_ratio(self):
+        self.get_data()
+        result = self.data.moving_average_bias_ratio(6, 3)
+        assert isinstance(result[0], list)
+        assert isinstance(result[1], int)
+
+    def test_check_moving_average_bias_ratio(self):
+        self.get_data()
+        result = self.data.check_moving_average_bias_ratio(
+                               self.data.moving_average_bias_ratio(3, 6)[0],
+                               positive_or_negative=True)[0]
+        assert isinstance(result, BooleanType)
+
+    def test_stock_value(self):
+        self.get_data()
+        assert isinstance(self.data.price, list)
+        assert isinstance(self.data.openprice, list)
+        assert isinstance(self.data.value, list)
 
 if __name__ == '__main__':
     unittest.main()
