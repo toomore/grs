@@ -8,7 +8,7 @@ description = '台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchang
               '含即時盤、台灣時間轉換、開休市判斷。'
 
 setup(name='grs',
-      version='0.5.0',
+      version='0.5.1',
       description=description,
       long_description=long_description,
       author='Toomore Chiang',
