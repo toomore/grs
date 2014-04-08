@@ -15,6 +15,7 @@ setup(name='grs',
       author_email='toomore0929@gmail.com',
       url='https://github.com/toomore/grs',
       packages=['grs'],
+      package_data={'grs': ['*.csv']},
       include_package_data=True,
       license='MIT',
       keywords="Taiwan Stock Exchange taipei twse otc gretai " + \
