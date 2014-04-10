@@ -27,7 +27,7 @@ grs 台灣上市上櫃股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.5.2 of 2014/04/xx
+:Version: 0.5.2 of 2014/04/12
 :Python Version: Python 2.7, PyPy
 :Docs: http://grs-docs.toomore.net/
 
@@ -302,7 +302,7 @@ Quick Start
 Change Logs
 -----------------------------
 
-0.5.2 2014/04/xx
+0.5.2 2014/04/12
 ====================================
 
 - 修正：字串判斷使用 `basestring`.
