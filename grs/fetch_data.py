@@ -440,7 +440,7 @@ class Stock(object):
         pass
 
     def __new__(cls, stock_no, mons=3, twse=False, otc=False):
-        assert isinstance(stock_no, str), '`stock_no` must be a string'
+        assert isinstance(stock_no, basestring), '`stock_no` must be a string'
         assert not twse == otc == True, 'Only `twse` or `otc` to be True'
 
         if twse and not otc:
