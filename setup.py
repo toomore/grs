@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import grs
 from setuptools import setup, find_packages
 
 long_description = open('./README.rst', 'r').read()
@@ -8,16 +9,16 @@ description = '台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchang
               '含即時盤、台灣時間轉換、開休市判斷。'
 
 setup(name='grs',
-      version='0.5.1',
+      version=grs.__version__,
       description=description,
       long_description=long_description,
-      author='Toomore Chiang',
+      author=grs.__author__,
       author_email='toomore0929@gmail.com',
       url='https://github.com/toomore/grs',
       packages=['grs'],
       package_data={'grs': ['*.csv']},
       include_package_data=True,
-      license='MIT',
+      license=grs.__license__,
       keywords="Taiwan Stock Exchange taipei twse otc gretai " + \
                "台灣 台北 股市 即時 上市 上櫃",
       install_requires=['python-dateutil==1.5'],
