@@ -1,0 +1,7 @@
+Sphinx
+pip-tools
+pip>=1.4
+pylint
+python-dateutil==1.5
+setuptools>=0.9
+wheel>=0.21
