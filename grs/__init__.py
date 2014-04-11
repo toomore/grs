@@ -28,7 +28,10 @@ __copyright__ = 'Copyright (C) 2012, 2013, 2014 Toomore Chiang'
 
 
 from .best_buy_or_sell import BestFourPoint
-from .fetch_data import Stock
+try:
+    from .fetch_data import Stock
+except ImportError:
+    pass
 from .realtime import RealtimeStock
 from .realtime import RealtimeWeight
 from .tw_time import Countdown
