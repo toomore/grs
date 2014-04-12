@@ -29,6 +29,6 @@ class StockNoError(Error):
     """ Exception for stock_no not in TWSE or OTC list. """
 
 
-class OfflineConnection(Error):
+class ConnectionError(Error):
     """ Exception for no connection. """
 
