@@ -29,14 +29,16 @@ from .twseno import TWSENo
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+class Error(Exception):
+    ''' Exception base '''
 
-class StockNoError(Exception):
+
+class StockNoError(Error):
     """ Exception for stock_no not in TWSE or OTC list. """
-    pass
 
-class OfflineConnection(Exception):
+
+class OfflineConnection(Error):
     """ Exception for no connection. """
-    pass
 
 
 class FetchData(object):
@@ -460,13 +462,13 @@ class Stock(object):
             stock_proxy = type('Stock', (OTCFetch, SimpleAnalytics), {})()
             twse = False
         else:
-            raise StockNoError
+            raise StockNoError()
 
         stock_proxy.__init__()
         try:
             cls.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
             stock_proxy._load_data(cls.__raw_data)
         except urllib2.URLError:
-            raise OfflineConnection, u'IN OFFLINE, NO DATA FETCH.'
+            raise OfflineConnection(), u'IN OFFLINE, NO DATA FETCH.'
 
         return stock_proxy
