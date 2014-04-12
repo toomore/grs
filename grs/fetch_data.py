@@ -34,6 +34,10 @@ class StockNoError(Exception):
     """ Exception for stock_no not in TWSE or OTC list. """
     pass
 
+class OfflineConnection(Exception):
+    """ Exception for no connection. """
+    pass
+
 
 class FetchData(object):
     ''' FetchData '''
@@ -459,7 +463,10 @@ class Stock(object):
             raise StockNoError
 
         stock_proxy.__init__()
-        cls.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
-        stock_proxy._load_data(cls.__raw_data)
+        try:
+            cls.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
+            stock_proxy._load_data(cls.__raw_data)
+        except urllib2.URLError:
+            raise OfflineConnection, u'IN OFFLINE, NO DATA FETCH.'
 
         return stock_proxy
