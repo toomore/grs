@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''' grs Exception '''
+''' grs Exception '''
 # Copyright (c) 2012, 2013, 2014 Toomore Chiang, http://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
