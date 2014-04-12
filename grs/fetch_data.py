@@ -24,21 +24,12 @@ import csv
 import logging
 import random
 import urllib2
+from .error import OfflineConnection
+from .error import StockNoError
 from .twseno import OTCNo
 from .twseno import TWSENo
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
-class Error(Exception):
-    ''' Exception base '''
-
-
-class StockNoError(Error):
-    """ Exception for stock_no not in TWSE or OTC list. """
-
-
-class OfflineConnection(Error):
-    """ Exception for no connection. """
 
 
 class FetchData(object):
