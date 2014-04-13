@@ -25,6 +25,7 @@ import csv
 import logging
 import random
 import urllib2
+from .error import ConnectionError
 
 
 def covstr(strings):
@@ -46,10 +47,14 @@ class RealtimeStock(object):
     def __init__(self, no):
         assert isinstance(no, basestring), '`no` must be a string'
         self.__raw = ''
-        page = urllib2.urlopen(
-            'http://mis.tse.com.tw/data/{0}.csv?r={1}'.format(
+        try:
+            page = urllib2.urlopen(
+                'http://mis.tse.com.tw/data/{0}.csv?r={1}'.format(
                                                 no, random.randrange(1, 10000))
-        )
+            )
+        except urllib2.URLError:
+            raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
+
         logging.info('twsk no %s', no)
         reader = csv.reader(page)
         for i in reader:
@@ -154,9 +159,13 @@ class RealtimeWeight(object):
             代碼可以參考：http://goristock.appspot.com/API#apiweight
         """
         self.__raw = {}
-        page = urllib2.urlopen(
-            'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s'.format(
+        try:
+            page = urllib2.urlopen(
+                'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s'.format(
                                             random.randrange(1, 10000)))
+        except urllib2.URLError:
+            raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
+
         reader = csv.reader(page)
         for i in reader:
             if len(i):
