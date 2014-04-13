@@ -47,9 +47,8 @@ class RealtimeStock(object):
         assert isinstance(no, basestring), '`no` must be a string'
         self.__raw = ''
         page = urllib2.urlopen(
-            'http://mis.tse.com.tw/data/{0}.csv?r={1}'.format(
-                                                no, random.randrange(1, 10000))
-        )
+            'http://mis.tse.com.tw/data/%s.csv?r=%s' % (no,
+                    random.randrange(1, 10000)))
         logging.info('twsk no %s', no)
         reader = csv.reader(page)
         for i in reader:
@@ -155,8 +154,8 @@ class RealtimeWeight(object):
         """
         self.__raw = {}
         page = urllib2.urlopen(
-            'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s'.format(
-                                            random.randrange(1, 10000)))
+            'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s' % random.randrange(
+                    1, 10000))
         reader = csv.reader(page)
         for i in reader:
             if len(i):
