@@ -25,6 +25,7 @@ import csv
 import logging
 import random
 import urllib2
+from .error import ConnectionError
 
 
 def covstr(strings):
@@ -46,10 +47,13 @@ class RealtimeStock(object):
     def __init__(self, no):
         assert isinstance(no, basestring), '`no` must be a string'
         self.__raw = ''
-        page = urllib2.urlopen(
-            'http://mis.tse.com.tw/data/{0}.csv?r={1}'.format(
-                                                no, random.randrange(1, 10000))
-        )
+        try:
+            page = urllib2.urlopen(
+                'http://mis.tse.com.tw/data/%s.csv?r=%s' % (no,
+                        random.randrange(1, 10000)))
+        except urllib2.URLError:
+            raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
+
         logging.info('twsk no %s', no)
         reader = csv.reader(page)
         for i in reader:
@@ -99,8 +103,8 @@ class RealtimeStock(object):
             'time': self.__raw[2],     # 取得時間
             'max': self.__raw[3],      # 漲停價
             'min': self.__raw[4],      # 跌停價
-            'unch': '{:.2f}'.format(unch),  # 昨日收盤價
-            'pp': '{:.2f}'.format((covstr(self.__raw[8]) - unch) / unch * 100),
+            'unch': '%.2f' % unch,  # 昨日收盤價
+            'pp': '%.2f' % ((covstr(self.__raw[8]) - unch) / unch * 100),
                                        # 漲跌幅 %
             'o': self.__raw[5],        # 開盤價
             'h': self.__raw[6],        # 當日最高價
@@ -131,10 +135,8 @@ class RealtimeStock(object):
 
             result['crosspic'] = ("http://chart.apis.google.com/chart?" +
                 "chf=bg,s,ffffff&chs=20x50&cht=ls" +
-                "&chd=t1:0,0,0|0,{},0|0,{},0|0,{},0|0,{},0" +
-                "&chds={},{}&chm=F,,1,1:4,20").format(
-            result['h'], result['c'], result['o'], result['l'], result['l'],
-            result['h'])
+                "&chd=t1:0,0,0|0,%(h)s,0|0,%(c)s,0|0,%(o)s,0|0,%(l)s,0" +
+                "&chds=%(l)s,%(h)s&chm=F,,1,1:4,20") % result
 
             result['top5buy'].sort()
             result['top5sell'].sort()
@@ -154,9 +156,13 @@ class RealtimeWeight(object):
             代碼可以參考：http://goristock.appspot.com/API#apiweight
         """
         self.__raw = {}
-        page = urllib2.urlopen(
-            'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s'.format(
-                                            random.randrange(1, 10000)))
+        try:
+            page = urllib2.urlopen(
+                'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s' % random.randrange(
+                        1, 10000))
+        except urllib2.URLError:
+            raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
+
         reader = csv.reader(page)
         for i in reader:
             if len(i):
