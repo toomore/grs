@@ -75,6 +75,7 @@ Feature
    時間、倒數處理 grs.TWTime/Countdown <tw_time>
    盤中即時資訊擷取 grs.RealtimeStock/RealtimeWeight <realtime>
    四大買賣點判斷 grs.BestFourPoint <best_buy_or_sell>
+   其他錯誤訊息處理 grs.error <error>
 
 
 Change Logs
