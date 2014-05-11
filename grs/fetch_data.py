@@ -327,6 +327,10 @@ class SimpleAnalytics(object):
         """
         return self.__calculate_moving_average(date, 6)
 
+    def MA(self, *args, **kwargs):
+        """ alias SimpleAnalytics.moving_average """
+        return self.moving_average(*args, **kwargs)
+
     def moving_average_value(self, date):
         """ 計算 n 日成交股數均量與持續天數
 
