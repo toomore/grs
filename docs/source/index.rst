@@ -82,7 +82,7 @@ Change Logs
 -----------------------------
 
 * 0.5.4 2014/05/12
-    - 修正：離線時的錯誤訊息
+    - 新增：MA, MAO, MAV, CKMAO into :class:`grs.fetch_data.SimpleAnalytics`.
 
 * 0.5.3 2014/04/17
     - 修正：離線時的錯誤訊息
