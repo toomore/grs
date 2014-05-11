@@ -341,6 +341,10 @@ class SimpleAnalytics(object):
         val = (round(i / 1000, 3) for i in val)
         return list(val), conti
 
+    def MAV(self, *args, **kwargs):
+        """ alias SimpleAnalytics.moving_average_value """
+        return self.moving_average_value(*args, **kwargs)
+
     def moving_average_bias_ratio(self, date1, date2):
         """ 計算乖離率（均價）
             date1 - date2
