@@ -362,6 +362,10 @@ class SimpleAnalytics(object):
         cont = self.__cal_continue(cal_list)
         return cal_list, cont
 
+    def MAO(self, *args, **kwargs):
+        """ alias SimpleAnalytics.moving_average_bias_ratio """
+        return self.moving_average_bias_ratio(*args, **kwargs)
+
     @property
     def price(self):
         """ 收盤價股價序列
