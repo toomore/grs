@@ -427,6 +427,10 @@ class SimpleAnalytics(object):
         return self.__cal_ma_bias_ratio_point(data, sample,
                                               positive_or_negative)
 
+    def CKMAO(self, *args, **kwargs):
+        """ alias SimpleAnalytics.check_moving_average_bias_ratio """
+        return self.check_moving_average_bias_ratio(*args, **kwargs)
+
 
 class Stock(object):
     """ 擷取股票股價
