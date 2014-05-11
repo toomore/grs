@@ -327,6 +327,10 @@ class SimpleAnalytics(object):
         """
         return self.__calculate_moving_average(date, 6)
 
+    def MA(self, *args, **kwargs):
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average()` """
+        return self.moving_average(*args, **kwargs)
+
     def moving_average_value(self, date):
         """ 計算 n 日成交股數均量與持續天數
 
@@ -336,6 +340,10 @@ class SimpleAnalytics(object):
         val, conti = self.__calculate_moving_average(date, 1)
         val = (round(i / 1000, 3) for i in val)
         return list(val), conti
+
+    def MAV(self, *args, **kwargs):
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average_value()` """
+        return self.moving_average_value(*args, **kwargs)
 
     def moving_average_bias_ratio(self, date1, date2):
         """ 計算乖離率（均價）
@@ -353,6 +361,10 @@ class SimpleAnalytics(object):
         cal_list.reverse()
         cont = self.__cal_continue(cal_list)
         return cal_list, cont
+
+    def MAO(self, *args, **kwargs):
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average_bias_ratio()` """
+        return self.moving_average_bias_ratio(*args, **kwargs)
 
     @property
     def price(self):
@@ -414,6 +426,10 @@ class SimpleAnalytics(object):
         """
         return self.__cal_ma_bias_ratio_point(data, sample,
                                               positive_or_negative)
+
+    def CKMAO(self, *args, **kwargs):
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.check_moving_average_bias_ratio()` """
+        return self.check_moving_average_bias_ratio(*args, **kwargs)
 
 
 class Stock(object):

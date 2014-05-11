@@ -26,25 +26,28 @@ class TestGrs(unittest.TestCase):
         result = self.data.moving_average(3)
         assert isinstance(result[0], list)
         assert isinstance(result[1], int)
+        assert result == self.data.MA(3)
 
     def test_moving_average_value(self):
         self.get_data()
         result = self.data.moving_average_value(3)
         assert isinstance(result[0], list)
         assert isinstance(result[1], int)
+        assert result == self.data.MAV(3)
 
     def test_moving_average_bias_ratio(self):
         self.get_data()
         result = self.data.moving_average_bias_ratio(6, 3)
         assert isinstance(result[0], list)
         assert isinstance(result[1], int)
+        assert result == self.data.MAO(6, 3)
 
     def test_check_moving_average_bias_ratio(self):
         self.get_data()
-        result = self.data.check_moving_average_bias_ratio(
-                               self.data.moving_average_bias_ratio(3, 6)[0],
-                               positive_or_negative=True)[0]
+        param = (self.data.moving_average_bias_ratio(6, 3)[0], True)
+        result = self.data.check_moving_average_bias_ratio(*param)[0]
         assert isinstance(result, BooleanType)
+        assert result == self.data.CKMAO(*param)[0]
 
     def test_stock_value(self):
         self.get_data()
