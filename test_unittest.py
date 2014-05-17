@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 ''' Unittest '''
+import grs
+import unittest
 from datetime import datetime
 from types import BooleanType
 from types import NoneType
-import grs
-import unittest
 
 
 class TestGrs(unittest.TestCase):
@@ -48,6 +48,12 @@ class TestGrs(unittest.TestCase):
         result = self.data.check_moving_average_bias_ratio(*param)[0]
         assert isinstance(result, BooleanType)
         assert result == self.data.CKMAO(*param)[0]
+
+    def test_CKMAO_classmethod(self):
+        self.get_data()
+        result = grs.fetch_data.SimpleAnalytics.CKMAO(self.data.MAO(3, 6)[0])
+        assert isinstance(result, tuple)
+        assert len(result) == 3
 
     def test_stock_value(self):
         self.get_data()
