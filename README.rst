@@ -305,7 +305,7 @@ Change Logs
 0.5.5 2014/05/18
 ====================================
 
-- 修正： xxx.
+- 修正： `grs.fetch_data.SimpleAnalytics.CKMAO` to be classmethod.
 
 0.5.4 2014/05/12
 ====================================
