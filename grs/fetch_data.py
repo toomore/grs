@@ -414,7 +414,8 @@ class SimpleAnalytics(object):
                 sample - sample_data.index(ckvalue) - 1,
                 ckvalue)
 
-    def check_moving_average_bias_ratio(self, data, sample=5,
+    @classmethod
+    def check_moving_average_bias_ratio(cls, data, sample=5,
                                         positive_or_negative=False):
         """判斷正負乖離轉折點位置
 
@@ -424,9 +425,10 @@ class SimpleAnalytics(object):
            :rtype: tuple
            :returns: (True or False, 第幾個轉折日, 轉折點值)
         """
-        return self.__cal_ma_bias_ratio_point(data, sample,
+        return cls.__cal_ma_bias_ratio_point(data, sample,
                                               positive_or_negative)
 
+    @classmethod
     def CKMAO(self, *args, **kwargs):
         """ alias :func:`grs.fetch_data.SimpleAnalytics.check_moving_average_bias_ratio()` """
         return self.check_moving_average_bias_ratio(*args, **kwargs)
