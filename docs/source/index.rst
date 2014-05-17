@@ -35,7 +35,7 @@ grs 台灣上市上櫃股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.5.4 of 2014/05/12
+:Version: 0.5.5 of 2014/05/18
 :Python Version: Python 2.7, PyPy
 :Docs: http://grs-docs.toomore.net/
 
@@ -80,6 +80,9 @@ Feature
 
 Change Logs
 -----------------------------
+
+* 0.5.5 2014/05/18
+    - 修正： xxx.
 
 * 0.5.4 2014/05/12
     - 新增：MA, MAO, MAV, CKMAO into :class:`grs.fetch_data.SimpleAnalytics`.
