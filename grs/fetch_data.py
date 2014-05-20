@@ -384,7 +384,7 @@ class SimpleAnalytics(object):
 
     @property
     def value(self):
-        """ 成交量序列
+        """ 成交量序列（張）
 
             :rtype: list
         """
