@@ -48,50 +48,77 @@ class BestFourPoint(object):
 
     ##### 四大買點 #####
     def best_buy_1(self):
-        """ 量大收紅 """
+        """ 量大收紅
+
+            :rtype: bool
+        """
         result = self.data.value[-1] > self.data.value[-2] and \
                  self.data.price[-1] > self.data.openprice[-1]
         return result
 
     def best_buy_2(self):
-        """ 量縮價不跌 """
+        """ 量縮價不跌
+
+            :rtype: bool
+        """
         result = self.data.value[-1] < self.data.value[-2] and \
                  self.data.price[-1] > self.data.price[-2]
         return result
 
     def best_buy_3(self):
-        """ 三日均價由下往上 """
+        """ 三日均價由下往上
+
+            :rtype: bool
+        """
         return self.data.moving_average(3)[1] == 1
 
     def best_buy_4(self):
-        """ 三日均價大於六日均價 """
+        """ 三日均價大於六日均價
+
+            :rtype: bool
+        """
         return self.data.moving_average(3)[0][-1] > \
                self.data.moving_average(6)[0][-1]
 
     ##### 四大賣點 #####
     def best_sell_1(self):
-        """ 量大收黑 """
+        """ 量大收黑
+
+            :rtype: bool
+        """
         result = self.data.value[-1] > self.data.value[-2] and \
                  self.data.price[-1] < self.data.openprice[-1]
         return result
 
     def best_sell_2(self):
-        """ 量縮價跌 """
+        """ 量縮價跌
+
+            :rtype: bool
+        """
         result = self.data.value[-1] < self.data.value[-2] and \
                  self.data.price[-1] < self.data.price[-2]
         return result
 
     def best_sell_3(self):
-        """ 三日均價由上往下 """
+        """ 三日均價由上往下
+
+            :rtype: bool
+        """
         return self.data.moving_average(3)[1] == -1
 
     def best_sell_4(self):
-        """ 三日均價小於六日均價 """
+        """ 三日均價小於六日均價
+
+            :rtype: bool
+        """
         return self.data.moving_average(3)[0][-1] < \
                self.data.moving_average(6)[0][-1]
 
     def best_four_point_to_buy(self):
-        """ 判斷是否為四大買點 """
+        """ 判斷是否為四大買點
+
+            :rtype: str or False
+        """
         result = []
         if self.check_mins_bias_ratio() and \
             (self.best_buy_1() or self.best_buy_2() or self.best_buy_3() or \
@@ -110,7 +137,10 @@ class BestFourPoint(object):
         return result
 
     def best_four_point_to_sell(self):
-        """ 判斷是否為四大賣點 """
+        """ 判斷是否為四大賣點
+
+            :rtype: str or False
+        """
         result = []
         if self.check_plus_bias_ratio() and \
             (self.best_sell_1() or self.best_sell_2() or self.best_sell_3() or \
@@ -129,7 +159,11 @@ class BestFourPoint(object):
         return result
 
     def best_four_point(self):
-        """ 判斷買點或賣點 """
+        """ 判斷買點或賣點
+
+            :rtype: tuple
+            :returns: (bool, str)
+        """
         buy = self.best_four_point_to_buy()
         sell = self.best_four_point_to_sell()
 
