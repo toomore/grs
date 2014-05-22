@@ -52,8 +52,7 @@ class ImportCSV(object):
                         pass
         return result
 
-    @staticmethod
-    def __industry_code():
+    def __industry_code(self):
         ''' import industry_code '''
         csv_path = os.path.join(os.path.dirname(__file__),
                 self.industry_code_files)
@@ -64,8 +63,7 @@ class ImportCSV(object):
                 result[i[0]] = i[1].decode('utf-8')
             return result
 
-    @staticmethod
-    def __loadindcomps():
+    def __loadindcomps(self):
         ''' import industry comps '''
         csv_path = os.path.join(os.path.dirname(__file__), self.stock_no_files)
         with open(csv_path) as csv_file:
