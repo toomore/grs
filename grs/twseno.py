@@ -157,7 +157,7 @@ class ImportCSV(object):
 class TWSENo(ImportCSV):
     """ 上市股票代碼與搜尋 """
     def __init__(self):
-        super(TWSENo, self).__init__('stock_no.csv', 'industry_code.csv')
+        super(TWSENo, self).__init__('twse_list.csv', 'industry_code.csv')
 
 
 class OTCNo(ImportCSV):
