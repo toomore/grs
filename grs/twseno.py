@@ -151,6 +151,16 @@ class ImportCSV(object):
         """
         return self.__loadindcomps()
 
+    def get_stock_comps_list(self):
+        code_list = self.industry_code
+        stock_comps_list = {}
+
+        for i in code_list:
+            if len(i) == 2 and i.isdigit():
+                stock_comps_list.update({i: code_list[i]})
+
+        return stock_comps_list
+
 
 class TWSENo(ImportCSV):
     """ 上市股票代碼與搜尋 """
@@ -162,3 +172,7 @@ class OTCNo(ImportCSV):
     """ 上櫃股票(OTC, Over-the-counter) 代碼與搜尋"""
     def __init__(self):
         super(OTCNo, self).__init__('otc_list.csv', 'industry_code_otc.csv')
+
+if __name__ == '__main__':
+    t = TWSENo().get_stock_comps_list()
+    print t
