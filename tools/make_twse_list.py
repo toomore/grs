@@ -9,7 +9,7 @@ NOW = datetime(2013, 12, 17)
 SAVEPATH = '../grs/twse_list.csv'
 INDUSTRYCODE = '../grs/industry_code.csv'
 
-TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report%(year-m)s/A112%(year-m)s%(day)s%%s.php&type=csv' % {'year-m': '%s%s' % (NOW.year, NOW.month), 'day': NOW.day}
+TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report%(year)s%(mon)02d/A112%(year)s%(mon)02d%(day)02d%%s.php&type=csv' % {'year': NOW.year, 'mon': NOW.month, 'day': NOW.day}
 TWSECLS = {'0049': u'封閉式基金',
            '0099P': u'ETF',
            '019919T': u'受益證券',
