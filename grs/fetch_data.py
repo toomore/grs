@@ -163,7 +163,7 @@ class OTCFetch(FetchData):
 
         logging.info(url)
 
-        _lines = _gretai_connections.urlopen(url).data.split('\n')
+        _lines = _gretai_connections.urlopen('GET', url).data.split('\n')
         lines = []
         for l in _lines:
             ls = l.strip()
@@ -209,7 +209,7 @@ class TWSEFetch(FetchData):
                                        'stock': stock_no,
                                        'rand': random.randrange(1, 1000000)}
         logging.info(url)
-        _lines = _twse_connections.urlopen('GET',url ).data.split('\n')
+        _lines = _twse_connections.urlopen('GET', url).data.split('\n')
         lines = []
         for l in _lines:
             ls = l.strip()
