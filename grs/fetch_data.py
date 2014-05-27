@@ -31,10 +31,10 @@ from .twseno import TWSENo
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-_twse_host = 'http://www.twse.com.tw/'
-_twse_connections = urllib3.connection_from_url( _twse_host )
-_gretai_host =  'http://www.gretai.org.tw/'
-_gretai_connections = urllib3.connection_from_url( _gretai_host )
+TWSE_HOST = 'http://www.twse.com.tw/'
+TWSE_CONNECTIONS = urllib3.connection_from_url(TWSE_HOST)
+GRETAI_HOST = 'http://www.gretai.org.tw/'
+GRETAI_CONNECTIONS = urllib3.connection_from_url(GRETAI_HOST)
 
 class FetchData(object):
     ''' FetchData '''
@@ -163,15 +163,15 @@ class OTCFetch(FetchData):
 
         logging.info(url)
 
-        _lines = _gretai_connections.urlopen('GET', url).data.split('\n')
-        lines = []
-        for l in _lines:
-            ls = l.strip()
-            if len(ls):
-                lines.append(ls)
-        csv_read = csv.reader(lines)
+        data_list = GRETAI_CONNECTIONS.urlopen('GET', url).data.split('\n')
+        csv_lines = []
+        for data in data_list:
+            data_strip = data.strip()
+            if data_strip:
+                csv_lines.append(data_strip)
+        csv_read = csv.reader(csv_lines)
 
-        self.__url.append(_gretai_host + url)
+        self.__url.append(GRETAI_HOST + url)
         return csv_read
 
 
@@ -209,14 +209,14 @@ class TWSEFetch(FetchData):
                                        'stock': stock_no,
                                        'rand': random.randrange(1, 1000000)}
         logging.info(url)
-        _lines = _twse_connections.urlopen('GET', url).data.split('\n')
-        lines = []
-        for l in _lines:
-            ls = l.strip()
-            if len(ls):
-                lines.append(ls)
-        csv_read = csv.reader(lines)
-        self.__url.append(_twse_host + url)
+        data_list = TWSE_CONNECTIONS.urlopen('GET', url).data.split('\n')
+        csv_lines = []
+        for data in data_list:
+            data_strip = data.strip()
+            if data_strip:
+                csv_lines.append(data_strip)
+        csv_read = csv.reader(csv_lines)
+        self.__url.append(TWSE_HOST + url)
         return csv_read
 
 
