@@ -171,7 +171,7 @@ class OTCFetch(FetchData):
                 lines.append(ls)
         csv_read = csv.reader(lines)
 
-        self.__url.append( _gretai_url + url)
+        self.__url.append(_gretai_host + url)
         return csv_read
 
 
@@ -216,7 +216,7 @@ class TWSEFetch(FetchData):
             if len(ls):
                 lines.append(ls)
         csv_read = csv.reader(lines)
-        self.__url.append(url)
+        self.__url.append(_twse_host + url)
         return csv_read
 
 
