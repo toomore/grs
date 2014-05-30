@@ -311,6 +311,8 @@ Change Logs
 ====================================
 
 - 修正： `grs.fetch_data.SimpleAnalytics.CKMAO` to be classmethod.
+- 新增：日常交易的代碼與名稱（`grs.twseno.ImportCSV.get_stock_list`）
+- 新增：日常交易的類別代碼與名稱（`grs.twseno.ImportCSV.get_stock_comps_list`）
 
 0.5.4 2014/05/12
 ====================================
