@@ -82,7 +82,7 @@ Change Logs
 -----------------------------
 
 * 0.5.6 2014/05/xx
-    - 修正： ...
+    - 修正：tools 儲存路徑
 
 * 0.5.5 2014/05/18
     - 修正： :func:`grs.fetch_data.SimpleAnalytics.CKMAO` to be classmethod.
