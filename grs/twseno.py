@@ -52,8 +52,7 @@ class ImportCSV(object):
                         pass
         return result
 
-    @staticmethod
-    def __industry_code():
+    def __industry_code(self):
         ''' import industry_code '''
         csv_path = os.path.join(os.path.dirname(__file__),
                 self.industry_code_files)
@@ -64,8 +63,7 @@ class ImportCSV(object):
                 result[i[0]] = i[1].decode('utf-8')
             return result
 
-    @staticmethod
-    def __loadindcomps():
+    def __loadindcomps(self):
         ''' import industry comps '''
         csv_path = os.path.join(os.path.dirname(__file__), self.stock_no_files)
         with open(csv_path) as csv_file:
@@ -153,6 +151,38 @@ class ImportCSV(object):
         """
         return self.__loadindcomps()
 
+    def get_stock_comps_list(self):
+        """ 回傳日常交易的類別代碼與名稱
+
+            :rtype: dict
+
+            .. versionadded:: 0.5.6
+        """
+        code_list = self.industry_code
+        stock_comps_list = {}
+
+        for i in code_list:
+            if len(i) == 2 and i.isdigit():
+                stock_comps_list.update({i: code_list[i]})
+
+        return stock_comps_list
+
+    def get_stock_list(self):
+        """ 回傳日常交易的代碼與名稱
+
+            :rtype: dict
+
+            .. versionadded:: 0.5.6
+        """
+        all_stock = self.all_stock
+        industry_comps = self.industry_comps
+        result = {}
+
+        for comps_no in self.get_stock_comps_list():
+            if comps_no in industry_comps:
+                for stock_no in industry_comps[comps_no]:
+                    result.update({stock_no: all_stock[stock_no]})
+        return result
 
 class TWSENo(ImportCSV):
     """ 上市股票代碼與搜尋 """
@@ -164,3 +194,10 @@ class OTCNo(ImportCSV):
     """ 上櫃股票(OTC, Over-the-counter) 代碼與搜尋"""
     def __init__(self):
         super(OTCNo, self).__init__('otc_list.csv', 'industry_code_otc.csv')
+
+
+if __name__ == '__main__':
+    t = TWSENo()
+    #t = OTCNo()
+    t_list = t.get_stock_list()
+    print t_list
