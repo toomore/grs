@@ -85,6 +85,7 @@ Change Logs
     - 修正：tools 儲存路徑
     - 新增：日常交易的代碼與名稱（:func:`grs.twseno.ImportCSV.get_stock_list` ）
     - 新增：日常交易的類別代碼與名稱（:func:`grs.twseno.ImportCSV.get_stock_comps_list` ）
+    - 已知問題：盤中即時資訊擷取無法使用 grs.RealtimeStock/RealtimeWeight
 
 * 0.5.5 2014/05/18
     - 修正： :func:`grs.fetch_data.SimpleAnalytics.CKMAO` to be classmethod.
