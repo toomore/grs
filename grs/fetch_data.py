@@ -328,7 +328,10 @@ class SimpleAnalytics(object):
         return self.__calculate_moving_average(date, 6)
 
     def MA(self, *args, **kwargs):
-        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average()` """
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average()`
+
+             .. versionadded:: 0.5.4
+        """
         return self.moving_average(*args, **kwargs)
 
     def moving_average_value(self, date):
@@ -342,7 +345,10 @@ class SimpleAnalytics(object):
         return list(val), conti
 
     def MAV(self, *args, **kwargs):
-        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average_value()` """
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average_value()`
+
+             .. versionadded:: 0.5.4
+        """
         return self.moving_average_value(*args, **kwargs)
 
     def moving_average_bias_ratio(self, date1, date2):
@@ -363,7 +369,10 @@ class SimpleAnalytics(object):
         return cal_list, cont
 
     def MAO(self, *args, **kwargs):
-        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average_bias_ratio()` """
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.moving_average_bias_ratio()`
+
+             .. versionadded:: 0.5.4
+        """
         return self.moving_average_bias_ratio(*args, **kwargs)
 
     @property
@@ -384,7 +393,7 @@ class SimpleAnalytics(object):
 
     @property
     def value(self):
-        """ 成交量序列
+        """ 成交量序列（張）
 
             :rtype: list
         """
@@ -430,7 +439,10 @@ class SimpleAnalytics(object):
 
     @classmethod
     def CKMAO(self, *args, **kwargs):
-        """ alias :func:`grs.fetch_data.SimpleAnalytics.check_moving_average_bias_ratio()` """
+        """ alias :func:`grs.fetch_data.SimpleAnalytics.check_moving_average_bias_ratio()`
+
+             .. versionadded:: 0.5.4
+        """
         return self.check_moving_average_bias_ratio(*args, **kwargs)
 
 

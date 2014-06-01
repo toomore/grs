@@ -6,7 +6,10 @@ from datetime import datetime
 
 
 NOW = datetime(2013, 12, 17)
-TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report%(year-m)s/A112%(year-m)s%(day)s%%s.php&type=csv' % {'year-m': '%s%s' % (NOW.year, NOW.month), 'day': NOW.day}
+SAVEPATH = '../grs/twse_list.csv'
+INDUSTRYCODE = '../grs/industry_code.csv'
+
+TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX2_print.php?genpage=genpage/Report%(year)s%(mon)02d/A112%(year)s%(mon)02d%(day)02d%%s.php&type=csv' % {'year': NOW.year, 'mon': NOW.month, 'day': NOW.day}
 TWSECLS = {'0049': u'封閉式基金',
            '0099P': u'ETF',
            '019919T': u'受益證券',
@@ -53,7 +56,7 @@ TWSECLS = {'0049': u'封閉式基金',
            #'ALL_1': u'全部'}
 
 def fetch_twse_list():
-    with open('./twse_list.csv', 'w') as files:
+    with open(SAVEPATH, 'w') as files:
         csv_file = csv.writer(files)
         re_pattern = re.compile(r'(=")?[\d\w]{4,6}(=)?')
         re_sub = re.compile(r'[^\w\d]')
@@ -70,21 +73,22 @@ def fetch_twse_list():
                                        i[1].decode('cp950').encode('utf-8'),
                                        no, TWSECLS[no].encode('utf-8')])
 
-    with open('./twse_list.csv', 'r') as files:
+    with open(SAVEPATH, 'r') as files:
         csv_file = csv.reader(files)
         all_items = {}
         for i in csv_file:
             all_items.update({i[0]: i})
 
-    with open('./twse_list.csv', 'w') as files:
+    with open(SAVEPATH, 'w') as files:
         csv_file = csv.writer(files)
-        csv_file.writerow(['文件更新', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'x', 'x'])
+        #csv_file.writerow(['文件更新', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'x', 'x'])
+        csv_file.writerow(['UPDATE', datetime.now().strftime('%Y/%m/%d'), 'x', 'x'])
         csv_file.writerow(['證期會代碼', '公司簡稱', '分類代碼', '分類名稱'])
         for i in sorted(all_items):
             csv_file.writerow(all_items[i])
 
 def output_industry_code():
-    with open('./industry_code.csv', 'w') as files:
+    with open(INDUSTRYCODE, 'w') as files:
         csv_file = csv.writer(files)
         for i in sorted(TWSECLS):
             csv_file.writerow([i, TWSECLS[i].encode('utf-8')])
