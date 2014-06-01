@@ -35,7 +35,7 @@ grs 台灣上市上櫃股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.5.6 of 2014/05/xx
+:Version: 0.5.6 of 2014/06/01
 :Python Version: Python 2.7, PyPy
 :Docs: http://grs-docs.toomore.net/
 
@@ -81,7 +81,7 @@ Feature
 Change Logs
 -----------------------------
 
-* 0.5.6 2014/05/xx
+* 0.5.6 2014/06/01
     - 修正：tools 儲存路徑
     - 新增：日常交易的代碼與名稱（:func:`grs.twseno.ImportCSV.get_stock_list` ）
     - 新增：日常交易的類別代碼與名稱（:func:`grs.twseno.ImportCSV.get_stock_comps_list` ）
