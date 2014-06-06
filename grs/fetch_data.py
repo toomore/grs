@@ -28,6 +28,7 @@ from .error import ConnectionError
 from .error import StockNoError
 from .twseno import OTCNo
 from .twseno import TWSENo
+from cStringIO import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -162,17 +163,10 @@ class OTCFetch(FetchData):
                     'rand': random.randrange(1, 1000000)}
 
         logging.info(url)
-
-        data_list = GRETAI_CONNECTIONS.urlopen('GET', url).data.split('\n')
-        csv_lines = []
-        for data in data_list:
-            data_strip = data.strip()
-            if data_strip:
-                csv_lines.append(data_strip)
-        csv_read = csv.reader(csv_lines)
-
+        result = GRETAI_CONNECTIONS.urlopen('GET', url)
+        csv_files = csv.reader(StringIO(result.data))
         self.__url.append(GRETAI_HOST + url)
-        return csv_read
+        return csv_files
 
 
 class TWSEFetch(FetchData):
@@ -209,15 +203,10 @@ class TWSEFetch(FetchData):
                                        'stock': stock_no,
                                        'rand': random.randrange(1, 1000000)}
         logging.info(url)
-        data_list = TWSE_CONNECTIONS.urlopen('GET', url).data.split('\n')
-        csv_lines = []
-        for data in data_list:
-            data_strip = data.strip()
-            if data_strip:
-                csv_lines.append(data_strip)
-        csv_read = csv.reader(csv_lines)
+        result = TWSE_CONNECTIONS.urlopen('GET', url)
+        csv_files = csv.reader(StringIO(result.data))
         self.__url.append(TWSE_HOST + url)
-        return csv_read
+        return csv_files
 
 
 class SimpleAnalytics(object):
