@@ -72,14 +72,12 @@ class TestGrs(unittest.TestCase):
         assert '1701' in result
 
     @staticmethod
-    def test_otc_no():
-        otc_no = grs.OTCNo()
-        assert isinstance(otc_no.all_stock, dict)
-        result = otc_no.search(u'華')
-        # 8446 華研
-        assert '8446' in result
-        result = otc_no.searchbyno(46)
-        assert '8446' in result
+    def test_twse_code_comps():
+        twseno = grs.TWSENo()
+        industry_code = twseno.industry_code
+        industry_comps = twseno.industry_comps
+        for i in industry_comps:
+            assert i in industry_code
 
     @staticmethod
     def test_twse_open():
@@ -88,6 +86,7 @@ class TestGrs(unittest.TestCase):
         assert result is False
 
     @staticmethod
+    @unittest.skip('Known issues.')
     def test_realtime():
         real_time = grs.RealtimeStock('2618')
         assert real_time.real['no'] == '2618'
@@ -158,6 +157,25 @@ class TestGrsOTC(unittest.TestCase):
         assert isinstance(self.data.price, list)
         assert isinstance(self.data.openprice, list)
         assert isinstance(self.data.value, list)
+
+    @staticmethod
+    def test_otc_no():
+        otc_no = grs.OTCNo()
+        assert isinstance(otc_no.all_stock, dict)
+        result = otc_no.search(u'華')
+        # 8446 華研
+        assert '8446' in result
+        result = otc_no.searchbyno(46)
+        assert '8446' in result
+
+    @staticmethod
+    def test_otc_code_comps():
+        twseno = grs.OTCNo()
+        industry_code = twseno.industry_code
+        industry_comps = twseno.industry_comps
+        for i in industry_comps:
+            assert i in industry_code
+
 
 if __name__ == '__main__':
     unittest.main()
