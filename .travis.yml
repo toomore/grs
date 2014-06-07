@@ -1,7 +1,6 @@
 language: python
 python:
     - 2.7
-    - pypy
 before_install: pip freeze
 install:
     - pip install -U "pip>=1.4" "setuptools>=0.9" "wheel>=0.21"
