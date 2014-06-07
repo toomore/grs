@@ -4,4 +4,6 @@ pip>=1.4
 pylint
 python-dateutil==1.5
 setuptools>=0.9
+ujson
+urllib3
 wheel>=0.21
