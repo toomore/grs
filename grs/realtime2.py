@@ -23,7 +23,42 @@ class Realtime(object):
                   'delay': delay}
 
         self.result = URL.request('GET', STOCKPATH % params)
-        self.data = json.loads(self.result.data)
+        self.raw = json.loads(self.result.data)
+        self.data = self.make_format(self.raw)
+
+    @staticmethod
+    def make_format(raw):
+        data = {}
+        for i in raw['msgArray']:
+            if i['c'] not in data:
+                data[i['c']] = {}
+
+            best_ask_price = [float(v) for v in i['a'].split('_')[:-1]]
+            best_bid_price = [float(v) for v in i['b'].split('_')[:-1]]
+            best_ask_volume = [int(v) for v in i['f'].split('_')[:-1]]
+            best_bid_volume = [int(v) for v in i['g'].split('_')[:-1]]
+
+            data[i['c']]['best_ask_list'] = zip(best_ask_price, best_ask_volume)
+            data[i['c']]['best_bid_list'] = zip(best_bid_price, best_bid_volume)
+            data[i['c']]['best_ask_price'] = best_ask_price[0]
+            data[i['c']]['best_ask_volume'] = best_ask_volume[0]
+            data[i['c']]['best_bid_price'] = best_bid_price[0]
+            data[i['c']]['best_bid_volume'] = best_bid_volume[0]
+            data[i['c']]['open'] = float(i['o'])
+            data[i['c']]['highest'] = float(i['h'])
+            data[i['c']]['lowest'] = float(i['l'])
+            data[i['c']]['price'] = float(i['z'])
+            data[i['c']]['limit_up'] = float(i['u'])
+            data[i['c']]['limit_down'] = float(i['w'])
+            data[i['c']]['volume'] = float(i['tv'])
+            data[i['c']]['volume_acc'] = float(i['v'])
+            data[i['c']]['yesterday_price'] = float(i['y'])
+
+            diff = data[i['c']]['price'] - data[i['c']]['open']
+            diff_percent = round(diff / data[i['c']]['open'] * 100, 2)
+            data[i['c']]['diff'] = (round(diff, 2), diff_percent)
+
+        return data
 
 
 class RealtimeTESE(Realtime):
@@ -42,5 +77,7 @@ class RealtimeOTC(Realtime):
 
 if __name__ == '__main__':
     from pprint import pprint
-    pprint(RealtimeTESE(2618, datetime(2014, 6, 5)).data)
-    pprint(RealtimeOTC(8446, datetime(2014, 6, 5)).data)
+    realtime_data = RealtimeTESE(1201, datetime(2014, 6, 6))
+    pprint(realtime_data.raw)
+    pprint(realtime_data.data)
+    #pprint(RealtimeOTC(8446, datetime(2014, 6, 5)).data)
