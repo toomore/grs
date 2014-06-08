@@ -1,12 +1,24 @@
 Realtime TWSE 台股盤中即時資訊
 ===============================
 
-.. warning::
+擷取上市即時盤的股價資訊
+---------------------------
+.. autoclass:: grs.RealtimeTESE
+   :show-inheritance:
+   :inherited-members:
 
-    目前無法使用
+擷取上櫃即時盤的股價資訊
+---------------------------
+.. autoclass:: grs.RealtimeOTC
+   :show-inheritance:
+   :inherited-members:
 
-.. autoclass:: grs.RealtimeStock
+擷取大盤即時盤的股價資訊
+---------------------------
+.. autoclass:: grs.RealtimeWeight
    :members:
 
-.. autoclass:: grs.RealtimeWeight
+擷取工具
+---------------------------
+.. autoclass:: grs.realtime2.Realtime
    :members:

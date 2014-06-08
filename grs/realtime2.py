@@ -15,6 +15,14 @@ WEIGHTPATH = '/stock/api/getStockInfo.jsp?ex_ch=tse_t00.tw_%(date)s|otc_o00.tw_%
 
 
 class Realtime(object):
+    """ Real time fetch TWSE, OTC stock data.
+        上市、上櫃即時盤擷取工具
+
+        :param str no: 股票代碼
+        :param datetime date: 時間
+        :param int delay: 延遲回傳
+        :rtype: dict
+    """
     def __init__(self, no, date, delay=0):
         if not date:
             date = datetime.now()
@@ -25,8 +33,48 @@ class Realtime(object):
                   'delay': delay}
 
         self.result = URL.request('GET', STOCKPATH % params)
-        self.raw = json.loads(self.result.data)
-        self.data = self.make_format(self.raw)
+
+    @property
+    def raw(self):
+        """ 原始資料
+
+            :rtype: dict
+        """
+        return json.loads(self.result.data)
+
+    @property
+    def data(self):
+        """ 整理後的資料
+
+            :rtype: dict
+
+            :returns:
+
+                :best_ask_list: 最佳五檔買出價量資訊（`list`）
+                :best_bid_list: 最佳五檔賣進價量資訊（`list`）
+                :best_ask_price: 最佳買出價格（`float`）
+                :best_ask_volume: 最佳買出數量（`int`）
+                :best_bid_price: 最佳買進價格（`float`）
+                :best_bid_volume: 最佳買進數量（`int`）
+                :open: 開盤價格（`float`）
+                :highest: 最高價（`float`）
+                :lowest: 最低價（`float`）
+                :price: 該盤成交價格（`float`）
+                :limit_up: 漲停價（`float`）
+                :limit_down: 跌停價（`float`）
+                :volume: 該盤成交量（`int`）
+                :volume_acc: 累計成交量（`int`）
+                :yesterday_price: 昨日收盤價格（`float`）
+                :diff: 漲跌價, 漲跌百分比（`tuple`）
+                :info: 相關資訊（`dict`）
+
+                    :name: 股票名稱（`str`）
+                    :full_name: 公司完整名稱（`str`）
+                    :no: 股票代碼（`str`）
+                    :ticker: 交易代碼（`str`）
+                    :exchange: 上市、上櫃（`str`）
+        """
+        return self.make_format(self.raw)
 
     @staticmethod
     def make_format(raw):
@@ -71,6 +119,13 @@ class Realtime(object):
 
 
 class RealtimeTESE(Realtime):
+    """ Real time fetch TWSE stock data.
+        擷取上市即時盤的股價資訊
+
+        :param str no: 股票代碼
+        :param datetime date: 時間
+        :rtype: dict
+    """
     _exchange = 'tse'
 
     def __init__(self, no, date=None):
@@ -78,6 +133,13 @@ class RealtimeTESE(Realtime):
 
 
 class RealtimeOTC(Realtime):
+    """ Real time fetch OTC stock data.
+        擷取上櫃即時盤的股價資訊
+
+        :param str no: 股票代碼
+        :param datetime date: 時間
+        :rtype: dict
+    """
     _exchange = 'otc'
 
     def __init__(self, no, date=None):
@@ -127,9 +189,9 @@ class RealtimeWeight(object):
 if __name__ == '__main__':
     from pprint import pprint
     realtime_data = RealtimeTESE(1201, datetime(2014, 6, 6))
-    pprint(realtime_data.raw)
+    #pprint(realtime_data.raw)
     pprint(realtime_data.data)
     #pprint(RealtimeOTC(8446, datetime(2014, 6, 5)).data)
-    realtime_weight = RealtimeWeight(datetime(2014, 6, 6))
-    pprint(realtime_weight.raw)
-    pprint(realtime_weight.data)
+    #realtime_weight = RealtimeWeight(datetime(2014, 6, 6))
+    #pprint(realtime_weight.raw)
+    #pprint(realtime_weight.data)
