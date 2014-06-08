@@ -58,6 +58,13 @@ class Realtime(object):
             diff_percent = round(diff / data[i['c']]['open'] * 100, 2)
             data[i['c']]['diff'] = (round(diff, 2), diff_percent)
 
+            data[i['c']]['info'] = {'name': i['n'],
+                                    'full_name': i['nf'],
+                                    'no': i['c'],
+                                    'ticker': i['ch'],
+                                    'exchange': i['ex'],
+                                   }
+
         return data
 
 
