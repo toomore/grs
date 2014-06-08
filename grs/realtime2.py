@@ -147,6 +147,18 @@ class RealtimeOTC(Realtime):
 
 
 class RealtimeWeight(object):
+    """ Real time fetch OTC stock data.
+        擷取指數即時盤的股價資訊
+
+        :param datetime date: 時間
+        :param int delay: 延遲回傳
+        :rtype: dict
+        :returns:
+
+            :t00: 加權指數（`dict`）
+            :o00: 櫃檯指數（`dict`）
+            :FRMSA: 寶島指數（`dict`）
+    """
     def __init__(self, date=None, delay=0):
         if not date:
             date = datetime.now()
@@ -156,8 +168,39 @@ class RealtimeWeight(object):
                   'delay': delay}
 
         self.result = URL.request('GET', WEIGHTPATH % params)
-        self.raw = json.loads(self.result.data)
-        self.data = self.make_format(self.raw)
+
+    @property
+    def raw(self):
+        """ 原始資料
+
+            :rtype: dict
+        """
+        return json.loads(self.result.data)
+
+    @property
+    def data(self):
+        """ 整理後的資料
+
+            :rtype: dict
+
+            :returns:
+
+                :open: 開盤價格（`float`）
+                :highest: 最高價（`float`）
+                :lowest: 最低價（`float`）
+                :price: 該盤成交價格（`float`）
+                :volume: 該盤成交量（`int`）
+                :volume_acc: 累計成交量（`int`）
+                :yesterday_price: 昨日收盤價格（`float`）
+                :diff: 漲跌價, 漲跌百分比（`tuple`）
+                :info: 相關資訊（`dict`）
+
+                    :name: 股票名稱（`str`）
+                    :no: 股票代碼（`str`）
+                    :ticker: 交易代碼（`str`）
+                    :exchange: 上市、上櫃（`str`）
+        """
+        return self.make_format(self.raw)
 
     @staticmethod
     def make_format(raw):
@@ -190,8 +233,8 @@ if __name__ == '__main__':
     from pprint import pprint
     realtime_data = RealtimeTESE(1201, datetime(2014, 6, 6))
     #pprint(realtime_data.raw)
-    pprint(realtime_data.data)
+    #pprint(realtime_data.data)
     #pprint(RealtimeOTC(8446, datetime(2014, 6, 5)).data)
-    #realtime_weight = RealtimeWeight(datetime(2014, 6, 6))
-    #pprint(realtime_weight.raw)
-    #pprint(realtime_weight.data)
+    realtime_weight = RealtimeWeight(datetime(2014, 6, 6))
+    pprint(realtime_weight.raw)
+    pprint(realtime_weight.data)
