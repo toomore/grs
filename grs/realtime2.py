@@ -9,7 +9,7 @@ URL = urllib3.connection_from_url('http://mis.tse.com.tw/',
         headers={'Accept-Language': 'zh-TW'})
 
 #STOCKPATH = '/stock/api/getStockInfo.jsp?ex_ch=tse_1101.tw_20140530&json=1&delay=0&_=1401450118102'
-STOCKPATH = '/stock/api/getStockInfo.jsp?ex_ch=%(etype)s_%(no)s.tw_%(date)s&json=1&delay=%(delay)s&_=%(timestamp)s'
+STOCKPATH = '/stock/api/getStockInfo.jsp?ex_ch=%(exchange)s_%(no)s.tw_%(date)s&json=1&delay=%(delay)s&_=%(timestamp)s'
 
 
 class Realtime(object):
@@ -17,7 +17,7 @@ class Realtime(object):
         if not date:
             date = datetime.now()
 
-        params = {'no': no, 'etype': self._etype,
+        params = {'no': no, 'exchange': self._exchange,
                   'date': date.strftime('%Y%m%d'),
                   'timestamp': int(time.time()),
                   'delay': delay}
@@ -69,14 +69,14 @@ class Realtime(object):
 
 
 class RealtimeTESE(Realtime):
-    _etype = 'tse'
+    _exchange = 'tse'
 
     def __init__(self, no, date=None):
         super(RealtimeTESE, self).__init__(no, date)
 
 
 class RealtimeOTC(Realtime):
-    _etype = 'otc'
+    _exchange = 'otc'
 
     def __init__(self, no, date=None):
         super(RealtimeOTC, self).__init__(no, date)
