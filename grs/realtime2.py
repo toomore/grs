@@ -217,8 +217,8 @@ class RealtimeWeight(object):
             data[i['c']]['volume_acc'] = float(i['v']) if 'v' in i else 0
             data[i['c']]['yesterday_price'] = float(i['y'])
 
-            diff = data[i['c']]['price'] - data[i['c']]['open']
-            diff_percent = round(diff / data[i['c']]['open'] * 100, 2)
+            diff = data[i['c']]['price'] - data[i['c']]['yesterday_price']
+            diff_percent = round(diff / data[i['c']]['yesterday_price'] * 100, 2)
             data[i['c']]['diff'] = (round(diff, 2), diff_percent)
 
             data[i['c']]['info'] = {'name': i['n'],
@@ -231,10 +231,12 @@ class RealtimeWeight(object):
 
 if __name__ == '__main__':
     from pprint import pprint
-    realtime_data = RealtimeTESE(1201, datetime(2014, 6, 6))
+    #realtime_data = RealtimeTESE(1201, datetime(2014, 6, 6))
+    realtime_data = RealtimeTESE(1201)
     #pprint(realtime_data.raw)
-    #pprint(realtime_data.data)
+    pprint(realtime_data.data)
     #pprint(RealtimeOTC(8446, datetime(2014, 6, 5)).data)
-    realtime_weight = RealtimeWeight(datetime(2014, 6, 6))
-    pprint(realtime_weight.raw)
+    #realtime_weight = RealtimeWeight(datetime(2014, 6, 6))
+    realtime_weight = RealtimeWeight()
+    #pprint(realtime_weight.raw)
     pprint(realtime_weight.data)
