@@ -21,7 +21,7 @@ setup(name='grs',
       license=grs.__license__,
       keywords="Taiwan Stock Exchange taipei twse otc gretai " + \
                "台灣 台北 股市 即時 上市 上櫃",
-      install_requires=['python-dateutil==1.5', 'urllib3'],
+      install_requires=['python-dateutil==1.5', 'ujson', 'urllib3'],
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Console',
