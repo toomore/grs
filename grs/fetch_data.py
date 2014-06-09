@@ -23,14 +23,19 @@
 import csv
 import logging
 import random
-import urllib2
+import urllib3
 from .error import ConnectionError
 from .error import StockNoError
 from .twseno import OTCNo
 from .twseno import TWSENo
+from cStringIO import StringIO
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+TWSE_HOST = 'http://www.twse.com.tw/'
+TWSE_CONNECTIONS = urllib3.connection_from_url(TWSE_HOST)
+GRETAI_HOST = 'http://www.gretai.org.tw/'
+GRETAI_CONNECTIONS = urllib3.connection_from_url(GRETAI_HOST)
 
 class FetchData(object):
     ''' FetchData '''
@@ -149,7 +154,7 @@ class OTCFetch(FetchData):
             :rtype: list
         """
         url = (
-            'http://www.gretai.org.tw/ch/stock/aftertrading/' +
+            '/ch/stock/aftertrading/' +
             'daily_trading_info/st43_download.php?d=%(year)d/%(mon)02d&' +
             'stkno=%(stock)s&r=%(rand)s') % {
                     'year': nowdatetime.year - 1911,
@@ -158,9 +163,10 @@ class OTCFetch(FetchData):
                     'rand': random.randrange(1, 1000000)}
 
         logging.info(url)
-        csv_read = csv.reader(urllib2.urlopen(url).readlines())
-        self.__url.append(url)
-        return csv_read
+        result = GRETAI_CONNECTIONS.urlopen('GET', url)
+        csv_files = csv.reader(StringIO(result.data))
+        self.__url.append(GRETAI_HOST + url)
+        return csv_files
 
 
 class TWSEFetch(FetchData):
@@ -189,7 +195,7 @@ class TWSEFetch(FetchData):
             :rtype: list
         """
         url = (
-            'http://www.twse.com.tw/ch/trading/exchange/' +
+            '/ch/trading/exchange/' +
             'STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/' +
             'Report%(year)d%(mon)02d/%(year)d%(mon)02d_F3_1_8_%(stock)s.php' +
             '&type=csv&r=%(rand)s') % {'year': nowdatetime.year,
@@ -197,9 +203,10 @@ class TWSEFetch(FetchData):
                                        'stock': stock_no,
                                        'rand': random.randrange(1, 1000000)}
         logging.info(url)
-        csv_read = csv.reader(urllib2.urlopen(url).readlines())
-        self.__url.append(url)
-        return csv_read
+        result = TWSE_CONNECTIONS.urlopen('GET', url)
+        csv_files = csv.reader(StringIO(result.data))
+        self.__url.append(TWSE_HOST + url)
+        return csv_files
 
 
 class SimpleAnalytics(object):
@@ -489,7 +496,9 @@ class Stock(object):
         try:
             cls.__raw_data = stock_proxy.serial_fetch(stock_no, mons, twse)
             stock_proxy._load_data(cls.__raw_data)
-        except urllib2.URLError:
+        except urllib3.exceptions.HTTPError:
             raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
+        except Exception as e:
+            print e
 
         return stock_proxy

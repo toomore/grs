@@ -24,9 +24,11 @@
 import csv
 import logging
 import random
-import urllib2
+import urllib3
 from .error import ConnectionError
 
+TSE_URL = 'http://mis.tse.com.tw/'
+TSE_CONNECTIONS = urllib3.connection_from_url(TSE_URL)
 
 def covstr(strings):
     """ convert string to int or float. """
@@ -48,16 +50,16 @@ class RealtimeStock(object):
         assert isinstance(no, basestring), '`no` must be a string'
         self.__raw = ''
         try:
-            page = urllib2.urlopen(
-                'http://mis.tse.com.tw/data/%s.csv?r=%s' % (no,
-                        random.randrange(1, 10000)))
-        except urllib2.URLError:
+            page = TSE_CONNECTIONS.urlopen('GET', '/data/%s.csv?r=%s' % (no,
+                        random.randrange(1, 10000))).data
+        except urllib3.exceptions.HTTPError:
             raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
 
         logging.info('twsk no %s', no)
-        reader = csv.reader(page)
+        reader = csv.reader(page.split('\r\n'))
         for i in reader:
-            self.__raw = i
+            if i:
+                self.__raw = i
 
     @property
     def raw(self):
@@ -157,15 +159,14 @@ class RealtimeWeight(object):
         """
         self.__raw = {}
         try:
-            page = urllib2.urlopen(
-                'http://mis.tse.com.tw/data/TSEIndex.csv?r=%s' % random.randrange(
-                        1, 10000))
-        except urllib2.URLError:
+            page = TSE_CONNECTIONS.urlopen('GET',
+                    '/data/TSEIndex.csv?r=%s' % random.randrange(1, 10000)).data
+        except urllib3.exceptions.HTTPError:
             raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
 
-        reader = csv.reader(page)
+        reader = csv.reader(page.split('\r\n'))
         for i in reader:
-            if len(i):
+            if i:
                 if '-' in i[3]:
                     up_or_down = False
                 else:
