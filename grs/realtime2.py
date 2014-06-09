@@ -118,7 +118,7 @@ class Realtime(object):
         return data
 
 
-class RealtimeTESE(Realtime):
+class RealtimeTWSE(Realtime):
     """ Real time fetch TWSE stock data.
         擷取上市即時盤的股價資訊
 
@@ -129,7 +129,7 @@ class RealtimeTESE(Realtime):
     _exchange = 'tse'
 
     def __init__(self, no, date=None):
-        super(RealtimeTESE, self).__init__(no, date)
+        super(RealtimeTWSE, self).__init__(no, date)
 
 
 class RealtimeOTC(Realtime):
@@ -231,8 +231,8 @@ class RealtimeWeight(object):
 
 if __name__ == '__main__':
     from pprint import pprint
-    #realtime_data = RealtimeTESE(1201, datetime(2014, 6, 6))
-    realtime_data = RealtimeTESE(1201)
+    #realtime_data = RealtimeTWSE(1201, datetime(2014, 6, 6))
+    realtime_data = RealtimeTWSE(1201)
     #pprint(realtime_data.raw)
     pprint(realtime_data.data)
     #pprint(RealtimeOTC(8446, datetime(2014, 6, 5)).data)

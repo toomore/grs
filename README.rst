@@ -133,40 +133,30 @@ Quick Start
     open_or_not.d_day(datetime(2012, 12, 22))  # 判斷 2012/12/22 是否開市
 
 
-各股即時盤資訊：RealtimeStock
-====================================
+各股即時盤資訊：RealtimeTWSE / RealtimeOTC
+----------------------------------
 
 ::
 
-    from grs import RealtimeStock 
+    from grs import RealtimeTWSE
 
-    realtime_stock = RealtimeStock('2618')  # 擷取長榮航即時股價
+    realtime_stock = RealtimeTWSE('2618')   # 擷取長榮航即時股價
     realtime_stock.raw                      # 原始資料
-    realtime_stock.real                     # 回傳 type: dict（如下表）
+    realtime_stock.data                     # 回傳 type: dict
 
 
-:name:     股票名稱 Unicode
-:no:       股票代碼
-:range:    漲跌價
-:ranges:   漲跌判斷 True, False
-:time:     取得時間
-:max:      漲停價
-:min:      跌停價
-:unch:     昨日收盤價
-:pp:       漲跌幅 %
-:o:        開盤價
-:h:        當日最高價
-:l:        當日最低價
-:c:        成交價/收盤價
-:value:    累計成交量
-:pvalue:   該盤成交量
-:top5buy:  最佳五檔買進價量資訊
-:top5sell: 最佳五檔賣出價量資訊
-:crosspic: K線圖 by Google Chart
+
+::
+
+    from grs import RealtimeOTC
+
+    realtime_stock = RealtimeOTC('8446')    # 擷取華研即時股價
+    realtime_stock.raw                      # 原始資料
+    realtime_stock.data                     # 回傳 type: dict
 
 
-大盤即時盤資訊：RealtimeWeight
-====================================
+大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
+---------------------------------
 
 ::
 
@@ -174,18 +164,7 @@ Quick Start
 
     realtime_weight = RealtimeWeight()  # 擷取即時大盤資訊
     realtime_weight.raw                 # 原始檔案
-    realtime_weight.real                # 回傳 type: dict（如下表）
-
-
-原始檔案包含其他資訊請參閱 `對照表 <http://goristock.appspot.com/API#apiweight>`_ 
-
-:no: 編號
-:date: 日期
-:time: 時間
-:c: 加權指數
-:value: 成交金額（億）
-:range: 漲跌指數
-:ud: 回傳漲（True）、跌（False）
+    realtime_weight.data                # 回傳 type: dict
 
 
 上市股票代碼列表：TWSENo

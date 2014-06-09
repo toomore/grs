@@ -32,7 +32,7 @@ try:
     from .fetch_data import Stock
 except ImportError:
     pass
-from .realtime2 import RealtimeTESE
+from .realtime2 import RealtimeTWSE
 from .realtime2 import RealtimeOTC
 from .realtime2 import RealtimeWeight
 from .tw_time import Countdown

@@ -3,7 +3,7 @@ Realtime TWSE 台股盤中即時資訊
 
 擷取上市即時盤的股價資訊
 ---------------------------
-.. autoclass:: grs.RealtimeTESE
+.. autoclass:: grs.RealtimeTWSE
    :show-inheritance:
    :inherited-members:
 
