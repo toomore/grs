@@ -43,6 +43,8 @@ Requires
 -----------------------------
 
 - python-dateutil==1.5
+- ujson
+- urllib3
 
 Report Issue or get involved
 -----------------------------
