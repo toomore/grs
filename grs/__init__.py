@@ -28,13 +28,15 @@ __copyright__ = 'Copyright (C) 2012, 2013, 2014 Toomore Chiang'
 
 
 from .best_buy_or_sell import BestFourPoint
+
 try:
     from .fetch_data import Stock
+    from .realtime2 import RealtimeTWSE
+    from .realtime2 import RealtimeOTC
+    from .realtime2 import RealtimeWeight
 except ImportError:
     pass
-from .realtime2 import RealtimeTWSE
-from .realtime2 import RealtimeOTC
-from .realtime2 import RealtimeWeight
+
 from .tw_time import Countdown
 from .tw_time import TWTime
 from .twseno import OTCNo
