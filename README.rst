@@ -36,6 +36,8 @@ Requires
 -----------------------------
 
 - python-dateutil==1.5
+- ujson
+- urllib3
 
 -----------------------------
 Report Issue or get involved
@@ -136,6 +138,8 @@ Quick Start
 各股即時盤資訊：RealtimeTWSE / RealtimeOTC
 ---------------------------------------------
 
+上市即時資訊
+
 ::
 
     from grs import RealtimeTWSE
@@ -145,6 +149,7 @@ Quick Start
     realtime_stock.data                     # 回傳 type: dict
 
 
+上櫃即時資訊
 
 ::
 
