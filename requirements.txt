@@ -7,4 +7,3 @@ setuptools>=0.9
 ujson
 urllib3
 wheel>=0.21
-urllib3
