@@ -5,16 +5,16 @@ grs 台灣上市上櫃股票價格擷取
 .. image:: https://secure.travis-ci.org/toomore/grs.png?branch=master
    :target: http://travis-ci.org/toomore/grs
 
-.. image:: https://pypip.in/d/grs/badge.png
+.. image:: https://img.shields.io/pypi/dm/grs.svg?maxAge=2592000
    :target: https://pypi.python.org/pypi/grs
 
-.. image:: https://pypip.in/v/grs/badge.png
+.. image:: https://img.shields.io/pypi/v/grs.svg?maxAge=2592000
    :target: https://pypi.python.org/pypi/grs
 
-.. image:: https://pypip.in/wheel/grs/badge.png
+.. image:: https://img.shields.io/pypi/wheel/grs.svg?maxAge=2592000
    :target: https://pypi.python.org/pypi/grs
 
-.. image:: https://pypip.in/license/grs/badge.png
+.. image:: https://img.shields.io/pypi/l/grs.svg?maxAge=2592000
    :target: https://pypi.python.org/pypi/grs
 
 主要開發擷取台灣股市（TWSE）股價資料
@@ -27,7 +27,7 @@ grs 台灣上市上櫃股票價格擷取
 -----------------------------
 
 :Authors: Toomore Chiang
-:Version: 0.6.2 of 2015/03/20
+:Version: 0.7.0 of 2016/09/11
 :Python Version: Python 2.7
 :Docs: http://grs-docs.toomore.net/
 
@@ -285,6 +285,11 @@ Quick Start
 -----------------------------
 Change Logs
 -----------------------------
+
+0.7.0 2016/09/11
+====================================
+
+- 修正：上市（TWSE）擷取連結
 
 0.6.2 2015/03/20
 ====================================

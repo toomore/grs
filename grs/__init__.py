@@ -21,10 +21,10 @@
 # THE SOFTWARE.
 
 __title__ = 'grs'
-__version__ = '0.6.2'
+__version__ = '0.7.0'
 __author__ = 'Toomore Chiang'
 __license__ = 'MIT'
-__copyright__ = 'Copyright (C) 2012, 2013, 2014 Toomore Chiang'
+__copyright__ = 'Copyright (C) 2012, 2013, 2014, 2015, 2016 Toomore Chiang'
 
 
 from .best_buy_or_sell import BestFourPoint
