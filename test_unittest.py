@@ -107,7 +107,7 @@ class TestGrs(unittest.TestCase):
     @staticmethod
     def test_taiwan_50():
         stock = grs.Stock('0050')
-        assert u'台灣50' == stock.info[1]
+        assert u'元大台灣50' == stock.info[1]
         try:
             stock = grs.Stock(0050)
         except AssertionError:

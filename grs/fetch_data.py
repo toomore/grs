@@ -97,8 +97,9 @@ class FetchData(object):
             tolist.append(i)
         if self._twse:
             if tolist:
-                self.__info = (tolist[0][0].split(' ')[1],
-                               tolist[0][0].split(' ')[2].decode('cp950'))
+                _stock_info = tolist[0][0].split(' ')[1].strip()
+                self.__info = (_stock_info[:4],
+                               _stock_info[4:].decode('utf-8'))
                 self.__raw_rows_name = tolist[1]
                 return tuple(tolist[2:])
             return tuple([])
@@ -194,18 +195,14 @@ class TWSEFetch(FetchData):
             :param datetime nowdatetime: 此刻時間
             :rtype: list
         """
-        url = (
-            '/ch/trading/exchange/' +
-            'STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/' +
-            'Report%(year)d%(mon)02d/%(year)d%(mon)02d_F3_1_8_%(stock)s.php' +
-            '&type=csv&r=%(rand)s') % {'year': nowdatetime.year,
-                                       'mon': nowdatetime.month,
-                                       'stock': stock_no,
-                                       'rand': random.randrange(1, 1000000)}
-        logging.info(url)
-        result = TWSE_CONNECTIONS.urlopen('GET', url)
-        csv_files = csv.reader(StringIO(result.data))
-        self.__url.append(TWSE_HOST + url)
+        result = TWSE_CONNECTIONS.request('POST',
+                '/ch/trading/exchange/STOCK_DAY/STOCK_DAYMAIN.php',
+                fields={'download': 'csv',
+                        'query_year': nowdatetime.year,
+                        'query_month': nowdatetime.month,
+                        'CO_ID': stock_no})
+        _de = result.data.decode('cp950', 'ignore')
+        csv_files = csv.reader(StringIO(_de.encode('utf-8')))
         return csv_files
 
 
