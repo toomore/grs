@@ -2,7 +2,7 @@
 grs 台灣上市上櫃股票價格擷取
 ===============================
 
-.. image:: https://secure.travis-ci.org/toomore/grs.png?branch=master
+.. image:: https://travis-ci.org/toomore/grs.svg?branch=master
    :target: http://travis-ci.org/toomore/grs
 
 .. image:: https://img.shields.io/pypi/dm/grs.svg?maxAge=2592000
