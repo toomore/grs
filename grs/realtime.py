@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ''' Get TWSE real time data. '''
 # From http://github.com/toomore/tw-stock
-# Copyright (c) 2012, 2013, 2014 Toomore Chiang, http://toomore.net/
+# Copyright (c) 2012, 2013, 2014, 2015, 2016 Toomore Chiang, https://toomore.net/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
