@@ -31,4 +31,3 @@ class StockNoError(Error):
 
 class ConnectionError(Error):
     """ Exception for no connection. """
-

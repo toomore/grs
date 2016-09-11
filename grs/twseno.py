@@ -54,8 +54,9 @@ class ImportCSV(object):
 
     def __industry_code(self):
         ''' import industry_code '''
-        csv_path = os.path.join(os.path.dirname(__file__),
-                self.industry_code_files)
+        csv_path = os.path.join(
+            os.path.dirname(__file__),
+            self.industry_code_files)
         with open(csv_path) as csv_file:
             csv_data = csv.reader(csv_file)
             result = {}

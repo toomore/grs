@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+''' Realtime (dev)  '''
 import time
-import ujson as json
-import urllib3
 from datetime import datetime
 
-URL = urllib3.connection_from_url('http://mis.tse.com.tw/',
-        #headers={'Accept-Language': 'en-US'})
-        headers={'Accept-Language': 'zh-TW'})
+import ujson as json
+import urllib3
+
+URL = urllib3.connection_from_url(
+    'http://mis.tse.com.tw/',
+    headers={'Accept-Language': 'zh-TW'})
+    #headers={'Accept-Language': 'en-US'})
 
 #STOCKPATH = '/stock/api/getStockInfo.jsp?ex_ch=tse_1101.tw_20140530&json=1&delay=0&_=1401450118102'
 STOCKPATH = '/stock/api/getStockInfo.jsp?ex_ch=%(exchange)s_%(no)s.tw_%(date)s&json=1&delay=%(delay)s&_=%(timestamp)s'

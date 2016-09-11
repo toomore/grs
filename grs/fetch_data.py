@@ -23,14 +23,16 @@
 import csv
 import logging
 import random
+from cStringIO import StringIO
+from datetime import datetime
+
 import urllib3
+from dateutil.relativedelta import relativedelta
+
 from .error import ConnectionError
 from .error import StockNoError
 from .twseno import OTCNo
 from .twseno import TWSENo
-from cStringIO import StringIO
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 TWSE_HOST = 'http://www.twse.com.tw/'
 TWSE_CONNECTIONS = urllib3.connection_from_url(TWSE_HOST)
@@ -158,10 +160,10 @@ class OTCFetch(FetchData):
             '/ch/stock/aftertrading/' +
             'daily_trading_info/st43_download.php?d=%(year)d/%(mon)02d&' +
             'stkno=%(stock)s&r=%(rand)s') % {
-                    'year': nowdatetime.year - 1911,
-                    'mon': nowdatetime.month,
-                    'stock': stock_no,
-                    'rand': random.randrange(1, 1000000)}
+                'year': nowdatetime.year - 1911,
+                'mon': nowdatetime.month,
+                'stock': stock_no,
+                'rand': random.randrange(1, 1000000)}
 
         logging.info(url)
         result = GRETAI_CONNECTIONS.urlopen('GET', url)
@@ -196,11 +198,11 @@ class TWSEFetch(FetchData):
             :rtype: list
         """
         result = TWSE_CONNECTIONS.request('POST',
-                '/ch/trading/exchange/STOCK_DAY/STOCK_DAYMAIN.php',
-                fields={'download': 'csv',
-                        'query_year': nowdatetime.year,
-                        'query_month': nowdatetime.month,
-                        'CO_ID': stock_no})
+                                          '/ch/trading/exchange/STOCK_DAY/STOCK_DAYMAIN.php',
+                                          fields={'download': 'csv',
+                                                  'query_year': nowdatetime.year,
+                                                  'query_month': nowdatetime.month,
+                                                  'CO_ID': stock_no})
         _de = result.data.decode('cp950', 'ignore')
         csv_files = csv.reader(StringIO(_de.encode('utf-8')))
         return csv_files
@@ -439,15 +441,15 @@ class SimpleAnalytics(object):
            :returns: (True or False, 第幾個轉折日, 轉折點值)
         """
         return cls.__cal_ma_bias_ratio_point(data, sample,
-                                              positive_or_negative)
+                                             positive_or_negative)
 
     @classmethod
-    def CKMAO(self, *args, **kwargs):
+    def CKMAO(cls, *args, **kwargs):
         """ alias :func:`grs.fetch_data.SimpleAnalytics.check_moving_average_bias_ratio()`
 
              .. versionadded:: 0.5.4
         """
-        return self.check_moving_average_bias_ratio(*args, **kwargs)
+        return cls.check_moving_average_bias_ratio(*args, **kwargs)
 
 
 class Stock(object):

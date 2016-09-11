@@ -19,11 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
-from .tw_time import TWTime
-from datetime import datetime
 import csv
 import os
+from datetime import datetime
+
+from .tw_time import TWTime
 
 
 class TWSEOpen(object):
@@ -40,9 +40,9 @@ class TWSEOpen(object):
             :rtype: bool
             :returns: True 為開市、False 為休市
         '''
-        if type(time) == type(TWTime().now):
+        if isinstance(time, type(TWTime().now)):
             self.twtime = TWTime().now
-        elif type(time) == type(TWTime().date):
+        elif isinstance(time, type(TWTime().date)):
             self.twtime = TWTime().date
         else:
             pass
@@ -82,7 +82,4 @@ class TWSEOpen(object):
         elif time.date() in self.__ocdate['open']:  # 判對是否為法定開市
             return True
         else:
-            if time.weekday() <= 4:  # 判斷是否為平常日開市
-                return True
-            else:
-                return False
+            return time.weekday() <= 4  # 判斷是否為平常日開市

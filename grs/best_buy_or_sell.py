@@ -35,8 +35,8 @@ class BestFourPoint(object):
             :param bool positive_or_negative: 正乖離 為 True，負乖離 為 False
         """
         return self.data.check_moving_average_bias_ratio(
-                               self.data.moving_average_bias_ratio(3, 6)[0],
-                               positive_or_negative=positive_or_negative)[0]
+            self.data.moving_average_bias_ratio(3, 6)[0],
+            positive_or_negative=positive_or_negative)[0]
 
     def check_plus_bias_ratio(self):
         """ 正乖離扣至最大 """

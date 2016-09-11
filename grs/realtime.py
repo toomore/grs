@@ -50,8 +50,9 @@ class RealtimeStock(object):
         assert isinstance(no, basestring), '`no` must be a string'
         self.__raw = ''
         try:
-            page = TSE_CONNECTIONS.urlopen('GET', '/data/%s.csv?r=%s' % (no,
-                        random.randrange(1, 10000))).data
+            page = TSE_CONNECTIONS.urlopen(
+                'GET',
+                '/data/%s.csv?r=%s' % (no, random.randrange(1, 10000))).data
         except urllib3.exceptions.HTTPError:
             raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
 
@@ -99,35 +100,34 @@ class RealtimeStock(object):
         try:
             unch = sum([covstr(self.__raw[3]), covstr(self.__raw[4])]) / 2
             result = {
-            'name': unicode(self.__raw[36].replace(' ', ''), 'cp950'),
-            'no': self.__raw[0],
-            'range': self.__raw[1],    # 漲跌價
-            'time': self.__raw[2],     # 取得時間
-            'max': self.__raw[3],      # 漲停價
-            'min': self.__raw[4],      # 跌停價
-            'unch': '%.2f' % unch,  # 昨日收盤價
-            'pp': '%.2f' % ((covstr(self.__raw[8]) - unch) / unch * 100),
-                                       # 漲跌幅 %
-            'o': self.__raw[5],        # 開盤價
-            'h': self.__raw[6],        # 當日最高價
-            'l': self.__raw[7],        # 當日最低價
-            'c': self.__raw[8],        # 成交價/收盤價
-            'value': self.__raw[9],    # 累計成交量
-            'pvalue': self.__raw[10],  # 該盤成交量
-            'top5buy': [
-                            (self.__raw[11], self.__raw[12]),
-                            (self.__raw[13], self.__raw[14]),
-                            (self.__raw[15], self.__raw[16]),
-                            (self.__raw[17], self.__raw[18]),
-                            (self.__raw[19], self.__raw[20])
-                            ],
-            'top5sell': [
-                            (self.__raw[21], self.__raw[22]),
-                            (self.__raw[23], self.__raw[24]),
-                            (self.__raw[25], self.__raw[26]),
-                            (self.__raw[27], self.__raw[28]),
-                            (self.__raw[29], self.__raw[30])
-                            ]
+                'name': unicode(self.__raw[36].replace(' ', ''), 'cp950'),
+                'no': self.__raw[0],
+                'range': self.__raw[1],    # 漲跌價
+                'time': self.__raw[2],     # 取得時間
+                'max': self.__raw[3],      # 漲停價
+                'min': self.__raw[4],      # 跌停價
+                'unch': '%.2f' % unch,  # 昨日收盤價
+                'pp': '%.2f' % ((covstr(self.__raw[8]) - unch) / unch * 100),  # 漲跌幅 %
+                'o': self.__raw[5],        # 開盤價
+                'h': self.__raw[6],        # 當日最高價
+                'l': self.__raw[7],        # 當日最低價
+                'c': self.__raw[8],        # 成交價/收盤價
+                'value': self.__raw[9],    # 累計成交量
+                'pvalue': self.__raw[10],  # 該盤成交量
+                'top5buy': [
+                    (self.__raw[11], self.__raw[12]),
+                    (self.__raw[13], self.__raw[14]),
+                    (self.__raw[15], self.__raw[16]),
+                    (self.__raw[17], self.__raw[18]),
+                    (self.__raw[19], self.__raw[20])
+                    ],
+                'top5sell': [
+                    (self.__raw[21], self.__raw[22]),
+                    (self.__raw[23], self.__raw[24]),
+                    (self.__raw[25], self.__raw[26]),
+                    (self.__raw[27], self.__raw[28]),
+                    (self.__raw[29], self.__raw[30])
+                    ]
             }
 
             if '-' in self.__raw[1]:  # 漲跌判斷 True, False
@@ -136,9 +136,9 @@ class RealtimeStock(object):
                 result['ranges'] = True  # price up
 
             result['crosspic'] = ("http://chart.apis.google.com/chart?" +
-                "chf=bg,s,ffffff&chs=20x50&cht=ls" +
-                "&chd=t1:0,0,0|0,%(h)s,0|0,%(c)s,0|0,%(o)s,0|0,%(l)s,0" +
-                "&chds=%(l)s,%(h)s&chm=F,,1,1:4,20") % result
+                                  "chf=bg,s,ffffff&chs=20x50&cht=ls" +
+                                  "&chd=t1:0,0,0|0,%(h)s,0|0,%(c)s,0|0,%(o)s,0|0,%(l)s,0" +
+                                  "&chds=%(l)s,%(h)s&chm=F,,1,1:4,20") % result
 
             result['top5buy'].sort()
             result['top5sell'].sort()
@@ -159,8 +159,9 @@ class RealtimeWeight(object):
         """
         self.__raw = {}
         try:
-            page = TSE_CONNECTIONS.urlopen('GET',
-                    '/data/TSEIndex.csv?r=%s' % random.randrange(1, 10000)).data
+            page = TSE_CONNECTIONS.urlopen(
+                'GET',
+                '/data/TSEIndex.csv?r=%s' % random.randrange(1, 10000)).data
         except urllib3.exceptions.HTTPError:
             raise ConnectionError(), u'IN OFFLINE, NO DATA FETCH.'
 
@@ -171,15 +172,14 @@ class RealtimeWeight(object):
                     up_or_down = False
                 else:
                     up_or_down = True
-                self.__raw[i[0]] = {
-                                    'no': i[0],
+                self.__raw[i[0]] = {'no': i[0],
                                     'time': i[1],
                                     'value': i[2],
                                     'range': i[3],
-                                    'up_or_down': up_or_down}
+                                    'up_or_down': up_or_down, }
         # 大盤成交量，單位：億。
         self.__raw['200']['v2'] = int(
-                    self.__raw['200']['value'].replace(',', '')) / 100000000
+            self.__raw['200']['value'].replace(',', '')) / 100000000
 
     @property
     def raw(self):
