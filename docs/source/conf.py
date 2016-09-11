@@ -36,10 +36,10 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.pngmath',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
+    #'sphinx.ext.pngmath',
+    #'sphinx.ext.mathjax',
+    #'sphinx.ext.ifconfig',
+    #'sphinx.ext.viewcode',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'grs'
-copyright = u'2014, 2015 Toomore Chiang'
+copyright = u'2012, 2013, 2014, 2015, 2016 Toomore Chiang'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
