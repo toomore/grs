@@ -358,7 +358,7 @@ class SimpleAnalytics(object):
         return self.moving_average_value(*args, **kwargs)
 
     def moving_average_bias_ratio(self, date1, date2):
-        """ 計算乖離率（均價）
+        """ 計算乖離（均價差）
             date1 - date2
 
             :param int data1: n 日
